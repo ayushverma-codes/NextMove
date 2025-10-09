@@ -1,27 +1,16 @@
 from langchain_core.prompts import ChatPromptTemplate
-from components.llm_loader import load_llm
+from components.LLM.llm_loader import load_llm
 from constants import *
+from components.analyzer_and_decomposer.query_analyzer import query_analyze
 
 # Load Gemini or Ollama dynamically
-llm = load_llm(CURRENT_LLM)
+# llm = load_llm(CURRENT_LLM)
 
-response = llm.invoke("who are you")
+natural_query = "Find the job in Princeton, NJ with a minimum salary of $17, list its company benefits, and explain what a 'Marketing Coordinator' typically does."
 
-print(response)
-# # Define prompt
-# prompt = ChatPromptTemplate.from_messages([
-#     ("system", "You are a helpful assistant that translates {input_language} to {output_language}."),
-#     ("human", "{input}")
-# ])
+# Run the query through query_analyze
+result = query_analyze(natural_query)
 
-# # Create a chain
-# chain = prompt | llm
-
-# # Run example
-# response = chain.invoke({
-#     "input_language": "English",
-#     "output_language": "German",
-#     "input": "I love programming."
-# })
-
-# print(response.content)
+# Print the result to check if it works
+print("Result from query_analyze:")
+print(result)

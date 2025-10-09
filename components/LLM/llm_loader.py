@@ -19,7 +19,7 @@ def load_llm(llm_name: str, temperature: float = 0.0):
     """
 
     # Load .env from project root
-    root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
+    root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
     env_path = os.path.join(root_dir, ".env")
     load_dotenv(env_path)
 
