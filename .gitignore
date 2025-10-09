@@ -117,4 +117,4 @@ Desktop.ini
 *.swp
 
 # folderx
-dataset/*.csv
+workspace_folder/dataset/*.csv
