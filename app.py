@@ -22,8 +22,26 @@ from pipelines.query_analyzer_test_pipeline import analyze_all_queries, run_sing
 # print("Result:")
 # print(json.dumps(result, indent=2))
 
-analyze_all_queries()
+# analyze_all_queries()
 
 # @app.post("/analyze/")
 # def analyze_query(query: str):
 #     return run_single_query(query)
+
+from pipelines.query_decomposer_test_pipeline import decompose_all_queries, decompose_single_query
+
+# To run the full decomposition pipeline
+decompose_all_queries()
+
+# # To test a single decomposed query manually
+# sample_decomposed_query = {
+#     "structured_query": {
+#         "location": "New York",
+#         "title": "Data Analyst"
+#     },
+#     "unstructured_query": "What benefits are commonly offered?"
+# }
+
+# result = decompose_single_query(sample_decomposed_query)
+# print("\nSingle federated decomposition result:")
+# print(json.dumps(result, indent=2))
