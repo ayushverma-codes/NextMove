@@ -8,12 +8,12 @@ from entities.config import GLOBAL_SCHEMA
 # Load Gemini or Ollama dynamically
 llm = load_llm(CURRENT_LLM)
 
-def parse_llm_json_response(llm_response_content: str) -> dict:
+def parse_llm_json_response(llm_response: str) -> dict:
     """
     Parses an LLM response that returns JSON wrapped in triple backticks (```json ... ```).
     
     Args:
-        llm_response_content (str): The raw response content from the LLM.
+        llm_response (str): The raw response content from the LLM.
     
     Returns:
         dict: Parsed JSON object.
@@ -21,7 +21,7 @@ def parse_llm_json_response(llm_response_content: str) -> dict:
     Raises:
         ValueError: If the content cannot be parsed as JSON.
     """
-    raw_content = llm_response_content.strip()
+    raw_content = llm_response.content.strip()
 
     # Remove surrounding triple backticks if present
     if raw_content.startswith("```") and raw_content.endswith("```"):
@@ -59,9 +59,9 @@ def query_analyze(natural_query: str):
 
     response = llm(prompt.messages)
 
-    print("\nLLM response: \n")
-    print(response)
-    print("\n")
+    # print("\nLLM response: \n")
+    # print(response)
+    # print("\n")
 
     result_json = parse_llm_json_response(response)
     return result_json

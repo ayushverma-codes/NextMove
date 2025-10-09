@@ -35,3 +35,9 @@ Output:
 
 QUERY_ANALYZER_HUMAN_PROMPT = """Input: {user_query}
 Output:"""
+
+# Query Analyzer
+
+QUERY_INPUT_FILE_PATH = r"D:\Projects\NextMove\workspace_folder\input\natural_queries.txt"  # Path to the input file with natural language queries
+QUERY_ANALYZE_OUTPUT_FILE_PATH = r"D:\Projects\NextMove\workspace_folder\artifacts\query_analysis.jsonl"
+
