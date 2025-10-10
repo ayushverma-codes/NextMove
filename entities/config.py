@@ -1,4 +1,18 @@
-# config.py
+import os
+from dotenv import load_dotenv
+
+# Use absolute path to .env file
+dotenv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.env'))
+load_dotenv(dotenv_path=dotenv_path)
+
+# ---------------------------
+# Database 1 Credentials (LinkedIn_Job_Postings)
+# ---------------------------
+DB_HOST = os.getenv("DB_HOST")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_NAME = os.getenv("DB_NAME")
+
 
 # ---------------------------
 # Global Schema: UnifiedJobPosting

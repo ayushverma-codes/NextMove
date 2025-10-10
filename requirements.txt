@@ -8,4 +8,7 @@
 # requests
 # tqdm
 # python-dotenv
-langchain-google-genai
+# langchain-google-genai
+
+## connectors
+mysql-connector-python
