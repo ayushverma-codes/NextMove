@@ -19,7 +19,7 @@ def run_pipeline():
             return
 
         # Step 3: Run a query
-        query = f"SELECT * FROM {table_name} LIMIT 10;"
+        query = f"SELECT * FROM {table_name} WHERE location LIKE '%New York%' AND title LIKE '%Data Analyst%';"
         print("[INFO] Executing query:", query)
         rows = mysql_connector.execute_query(query)
         for row in rows:

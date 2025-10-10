@@ -72,3 +72,11 @@ GAV_MAPPINGS = {
         "role_category": "Role"
     }
 }
+
+# ---------------------------
+# Map source (CSV name) to actual DB table name
+# ---------------------------
+SOURCE_TO_TABLE = {
+    "LinkedIn_Job_Postings.csv": "jobs",               # MySQL table in `linkedin_source`
+    "job_descriptions.csv": "job_descriptions"         # PostgreSQL table (assumed)
+}

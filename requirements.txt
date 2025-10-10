@@ -11,4 +11,7 @@
 # langchain-google-genai
 
 ## connectors
-mysql-connector-python
+# mysql-connector-python
+
+fastapi
+uvicorn
