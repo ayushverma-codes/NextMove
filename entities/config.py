@@ -74,9 +74,18 @@ GAV_MAPPINGS = {
 }
 
 # ---------------------------
-# Map source (CSV name) to actual DB table name
+# Map source to actual DB table name
 # ---------------------------
 SOURCE_TO_TABLE = {
-    "Linkedin_source": "jobs",               # MySQL table in `linkedin_source`
-    "Naukri_source": "job_listings"         # PostgreSQL table (assumed)
+    "Linkedin_source": "jobs",               
+    "Naukri_source": "job_listings"        
+}
+
+# ---------------------------
+# Map source to actual DB platform
+# ---------------------------
+SOURCE_TO_DB_Type = {
+    "GLOBAL_SCHEMA": "MySQL", 
+    "Linkedin_source": "MySQL",               
+    "Naukri_source": "MySQL"     
 }
