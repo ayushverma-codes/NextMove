@@ -52,6 +52,7 @@ def query_analyze(natural_query: str):
 
     prompt = chat_prompt.invoke(
         {
+            "DEFAULT_LIMIT": DEFAULT_LIMIT,
             "schema": ", ".join(GLOBAL_SCHEMA.keys()),
             "user_query": natural_query,
         }
