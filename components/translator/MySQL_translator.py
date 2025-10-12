@@ -1,3 +1,4 @@
+# D:\Projects\NextMove\components\translator\SQLTranslator.py
 import re
 from sqlglot import parse_one, exp
 from entities.config import GAV_MAPPINGS, SOURCE_TO_TABLE
@@ -5,17 +6,20 @@ from entities.config import GAV_MAPPINGS, SOURCE_TO_TABLE
 # Regex for safe unquoted identifier (lowercase, numbers, underscore)
 IDENT_RE = re.compile(r"^[a-z_][a-z0-9_]*$")
 
-
 class SQLTranslator:
-    def __init__(self, source: str, global_table_names=None):
+    def __init__(self, source: str, global_table_names=None, dialect: str = "mysql"):
         """
         source: name of the target source as defined in entities.config.GAV_MAPPINGS and SOURCE_TO_TABLE
-        global_table_names: list of logical global table names used in your global queries (default: ['jobs'])
-                            If your project uses more global logical tables, pass them here.
+        global_table_names: list of logical global table names used in your global queries
+        dialect: 'mysql' or 'postgres'
         """
         if source not in GAV_MAPPINGS:
             raise ValueError(f"Source '{source}' is not defined in GAV_MAPPINGS.")
+        if dialect.lower() not in ("mysql", "postgres"):
+            raise ValueError("Dialect must be either 'mysql' or 'postgres'")
+
         self.source = source
+        self.dialect = dialect.lower()
         self.column_mapping = self._generate_column_mapping(source)
         self.global_table_names = global_table_names or ["jobs"]
         self.table_mapping = self._generate_table_mapping(source)
@@ -29,7 +33,6 @@ class SQLTranslator:
         return mapping
 
     def _generate_table_mapping(self, source):
-        # Map each provided global logical table name to the source-specific table using SOURCE_TO_TABLE
         target_table = SOURCE_TO_TABLE.get(source)
         table_map = {}
         if target_table:
@@ -38,20 +41,26 @@ class SQLTranslator:
         return table_map
 
     def _should_quote(self, identifier: str) -> bool:
-        """Return True if identifier should be quoted for Postgres-like source (Naukri_source)."""
+        """Return True if identifier should be quoted (Postgres: reserved or contains spaces)."""
         if identifier is None:
             return False
-        return not bool(IDENT_RE.match(identifier))
+        # Only Postgres dialect uses quotes for non-simple identifiers
+        if self.dialect == "postgres":
+            return not bool(IDENT_RE.match(identifier))
+        # MySQL: only quote if contains spaces or special chars
+        if self.dialect == "mysql":
+            return not bool(re.match(r"^[A-Za-z0-9_]+$", identifier))
+        return False
 
     def _quote_if_needed(self, identifier: str) -> str:
         if identifier is None:
             return identifier
-        if self.source == "Naukri_source":
-            if self._should_quote(identifier):
+        if self._should_quote(identifier):
+            if self.dialect == "postgres":
                 safe = identifier.replace('"', '""')
                 return f'"{safe}"'
-            return identifier
-        # For MySQL (Linkedin_source) leave as-is (you could add backticks if desired)
+            elif self.dialect == "mysql":
+                return f"`{identifier}`"
         return identifier
 
     def _map_table(self, table_name: str) -> str:
@@ -69,7 +78,6 @@ class SQLTranslator:
         return self.column_mapping.get(col, col)
 
     def _extract_table_name(self, node):
-        """Robust extraction of table name from different AST node shapes."""
         if node is None:
             return None
         if isinstance(node, str):
@@ -92,45 +100,33 @@ class SQLTranslator:
             return None
 
     def _assign_column_node(self, col_node: exp.Column, parent_table):
-        """Map & assign a Column node. Handles mapped values 'table.col' or just 'col'."""
         if not isinstance(col_node, exp.Column):
             return
         tbl = col_node.table or parent_table
         mapped = self._map_column_lookup(tbl, col_node.name)
 
-        # If mapped contains a dot, it includes a table -> assign both
         if isinstance(mapped, str) and "." in mapped:
             table_part, col_part = mapped.split(".", 1)
             table_part_mapped = self._map_table(table_part)
-            col_assigned = self._quote_if_needed(col_part) if self.source == "Naukri_source" else col_part
+            col_assigned = self._quote_if_needed(col_part)
             col_node.set("this", col_assigned)
             col_node.set("table", table_part_mapped)
         else:
-            # single identifier mapping; quote if needed for Postgres-like
-            col_assigned = self._quote_if_needed(mapped) if self.source == "Naukri_source" else mapped
+            col_assigned = self._quote_if_needed(mapped)
             col_node.set("this", col_assigned)
             if col_node.table:
                 col_node.set("table", self._map_table(col_node.table))
 
     def _replace_recursive(self, node, parent_table=None, visited=None):
-        """
-        Loop-safe recursive traversal for mapping table and column nodes.
-        visited: set of id(node) to avoid infinite recursion on shared AST nodes.
-        """
         if visited is None:
             visited = set()
-
-        # Skip non-expression nodes
         if not isinstance(node, exp.Expression):
             return
-
-        # Avoid cycles / repeated nodes
         node_id = id(node)
         if node_id in visited:
             return
         visited.add(node_id)
 
-        # Map Table nodes anywhere in the tree
         if isinstance(node, exp.Table):
             tname = self._extract_table_name(node)
             if tname:
@@ -138,11 +134,9 @@ class SQLTranslator:
             if node.alias:
                 parent_table = node.alias
 
-        # Map Column nodes
         if isinstance(node, exp.Column):
             self._assign_column_node(node, parent_table)
 
-        # Handle JOIN nodes (join target may be Table or other)
         if isinstance(node, exp.Join):
             join_target = node.this
             if isinstance(join_target, exp.Table):
@@ -152,26 +146,21 @@ class SQLTranslator:
                 if join_target.alias:
                     parent_table = join_target.alias
             elif isinstance(join_target, str):
-                # In some AST variants join.this is a string
                 try:
                     node.set("this", self._map_table(join_target))
                 except Exception:
                     pass
-            # Recurse into ON clause
             on_clause = node.args.get("on")
             if on_clause and isinstance(on_clause, exp.Expression):
                 self._replace_recursive(on_clause, parent_table, visited)
 
-        # Recurse into node.this (covers Subquery.this, CTE internals, etc.)
         if hasattr(node, "this") and isinstance(getattr(node, "this"), exp.Expression):
             self._replace_recursive(node.this, parent_table, visited)
 
-        # Recurse into expressions list (SELECT projections, function args, etc.)
         for child in getattr(node, "expressions", []) or []:
             if isinstance(child, exp.Expression):
                 self._replace_recursive(child, parent_table, visited)
 
-        # Recurse into args dictionary (WHERE, GROUP, HAVING, ORDER BY, etc.)
         for arg in getattr(node, "args", {}).values():
             if isinstance(arg, list):
                 for item in arg:
@@ -182,14 +171,12 @@ class SQLTranslator:
 
     def translate_query(self, query: str) -> str:
         """
-        Parse the input SQL (assumed to use the global schema) and return
-        a translated SQL string adapted to the target source.
+        Translate a query from global schema to target source SQL.
+        Returns SQL string compatible with the specified dialect.
         """
         try:
             tree = parse_one(query)
             self._replace_recursive(tree)
-            # Return MySQL-compatible SQL string (you can change dialect if needed)
-            return tree.sql(dialect="mysql")
+            return tree.sql(dialect=self.dialect)
         except Exception as e:
             raise RuntimeError(f"Failed to translate query: {e}") from e
-
