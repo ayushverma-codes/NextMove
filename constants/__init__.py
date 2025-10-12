@@ -16,22 +16,35 @@ You receive a natural language query about jobs. Some information may exist in t
 
 1. Identify which parts of the query can be answered using the structured databases.
 2. Identify which parts require general knowledge (unstructured source).
-3. Return a JSON with two keys:
-   - structured_query: {{attribute: value}} pairs based on the GLOBAL_SCHEMA
+3. For the structured part, generate the SELECT and WHERE components of an SQL-like query, strictly based on the GLOBAL_SCHEMA attributes.
+
+Return a JSON with two keys:
+   - structured_query: {{
+         "select_clause": [list of attributes from GLOBAL_SCHEMA to retrieve],
+         "where_clause": {{attribute: value}}
+     }}
    - unstructured_query: text that needs to be answered by the LLM
 
 Global schema attributes: {schema}
 
 Example:
-Input: "Find the job in Princeton, NJ with a minimum salary of $17, list its company benefits, and explain what a 'Marketing Coordinator' typically does."
+Input: "Find remote Marketing Coordinator jobs in Princeton, NJ with a minimum salary of $17 that require skills like communication, Excel, SQL, and project management. Also, list the company benefits and explain what a 'Marketing Coordinator' typically does."
 Output:
 {{
   "structured_query": {{
-      "location": "Princeton, NJ",
-      "salary_range_min": 17
+      "select_clause": ["title", "company_name", "location", "skills", "salary_range", "work_type"],
+      "where_clause": {{
+          "title": "Marketing Coordinator",
+          "location": "Princeton, NJ",
+          "work_type": "remote",
+          "skills": ["communication", "Excel", "SQL", "project management"],
+          "salary_range": ">= 17"
+      }}
   }},
   "unstructured_query": "List company benefits and explain typical responsibilities of a 'Marketing Coordinator'."
-}}"""
+}}
+"""
+
 
 QUERY_ANALYZER_HUMAN_PROMPT = """Input: {user_query}
 Output:"""

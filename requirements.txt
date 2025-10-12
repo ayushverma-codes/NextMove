@@ -13,5 +13,6 @@
 ## connectors
 # mysql-connector-python
 
-fastapi
-uvicorn
+# fastapi
+# uvicorn
+sqlglot
