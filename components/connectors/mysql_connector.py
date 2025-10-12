@@ -37,7 +37,7 @@ class MySQLConnector:
         schema = {column[0]: column[1] for column in result}
         return schema
 
-    def match_schema_with_gav(self, table_name='jobs', source_file='LinkedIn_Job_Postings.csv'):
+    def match_schema_with_gav(self, table_name='jobs', source_file='Linkedin_source'):
         """Compare table schema with GAV mapping"""
         schema = self.get_schema(table_name)
         source_mapping = GAV_MAPPINGS.get(source_file, {})

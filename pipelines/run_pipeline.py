@@ -47,9 +47,9 @@ def run_pipeline(natural_language_query: str, show_analysis_json: bool = False, 
     results = {}
 
     # 🔹 MySQL: LinkedIn_Job_Postings
-    linkedin_sql = structured_queries.get("LinkedIn_Job_Postings.csv")
+    linkedin_sql = structured_queries.get("Linkedin_source")
     if linkedin_sql:
-        print("[MySQL] Running query on LinkedIn_Job_Postings.csv:")
+        print("[MySQL] Running query on Linkedin_source:")
         print(linkedin_sql)
         try:
             mysql = MySQLConnector()
@@ -57,23 +57,23 @@ def run_pipeline(natural_language_query: str, show_analysis_json: bool = False, 
             rows = mysql.execute_query(linkedin_sql)
             mysql.disconnect()
             print(f"[INFO] Retrieved {len(rows)} rows from MySQL.\n")
-            results["LinkedIn_Job_Postings.csv"] = rows
+            results["Linkedin_source"] = rows
         except Exception as e:
             print(f"[ERROR] MySQL query failed: {e}\n")
-            results["LinkedIn_Job_Postings.csv"] = None
+            results["Linkedin_source"] = None
     else:
-        print("[WARN] No SQL generated for LinkedIn_Job_Postings.csv\n")
-        results["LinkedIn_Job_Postings.csv"] = None
+        print("[WARN] No SQL generated for Linkedin_source\n")
+        results["Linkedin_source"] = None
 
-    # 🔸 Placeholder: Postgres (job_descriptions.csv)
-    job_desc_sql = structured_queries.get("job_descriptions.csv")
+    # Placeholder: Postgres (Naukri_source)
+    job_desc_sql = structured_queries.get("Naukri_source")
     if job_desc_sql:
-        print("[Postgres] SQL generated for job_descriptions.csv (execution not implemented):")
+        print("[Postgres] SQL generated for Naukri_source (execution not implemented):")
         print(job_desc_sql)
-        results["job_descriptions.csv"] = None
+        results["Naukri_source"] = None
     else:
-        print("[WARN] No SQL generated for job_descriptions.csv\n")
-        results["job_descriptions.csv"] = None
+        print("[WARN] No SQL generated for Naukri_source\n")
+        results["Naukri_source"] = None
 
     print("=== Pipeline Completed ===")
     return results

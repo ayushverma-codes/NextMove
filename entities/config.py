@@ -6,7 +6,7 @@ dotenv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.en
 load_dotenv(dotenv_path=dotenv_path)
 
 # ---------------------------
-# Database 1 Credentials (LinkedIn_Job_Postings)
+# Database 1 Credentials (Linkedin_source)
 # ---------------------------
 DB_HOST = os.getenv("DB_HOST")
 DB_USER = os.getenv("DB_USER")
@@ -39,7 +39,7 @@ GLOBAL_SCHEMA = {
 # Map each global attribute to source-specific columns
 # ---------------------------
 GAV_MAPPINGS = {
-    "LinkedIn_Job_Postings.csv": {
+    "Linkedin_source": {
         "job_id": "job_id",
         "title": "title",
         "company_name": "company_name",
@@ -55,7 +55,7 @@ GAV_MAPPINGS = {
         "job_posting_date": "listed_time",
         "role_category": None
     },
-    "job_descriptions.csv": {
+    "Naukri_source": {
         "job_id": "Job Id",
         "title": "Job Title",
         "company_name": "Company",
@@ -77,6 +77,6 @@ GAV_MAPPINGS = {
 # Map source (CSV name) to actual DB table name
 # ---------------------------
 SOURCE_TO_TABLE = {
-    "LinkedIn_Job_Postings.csv": "jobs",               # MySQL table in `linkedin_source`
-    "job_descriptions.csv": "job_descriptions"         # PostgreSQL table (assumed)
+    "Linkedin_source": "jobs",               # MySQL table in `linkedin_source`
+    "Naukri_source": "job_listings"         # PostgreSQL table (assumed)
 }
