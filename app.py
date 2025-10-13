@@ -36,14 +36,23 @@ def analyze_query(request: QueryRequest):
 # ---------------------
 @app.post("/decompose")
 def decompose_query(request: QueryRequest):
+    """
+    Step 1: Analyze → Step 2: Decompose (translate + validate + retry).
+    Supports debug=True to show intermediate LLM retries and validation.
+    """
     # Step 1: Analyze
     analyzed_result = run_single_query(request.query)
     if analyzed_result is None:
         return {"error": "Failed to analyze the query"}
 
+    # Attach the original natural language query for LLM context
+    analyzed_result["original_query"] = request.query
+
     # Step 2: Decompose
     try:
-        decomposed_result = decompose_single_query(analyzed_result)
+        decomposed_result = decompose_single_query(
+            analyzed_result,
+        )
         return {
             "analyzed_result": analyzed_result,
             "decomposed_result": decomposed_result
@@ -51,9 +60,8 @@ def decompose_query(request: QueryRequest):
     except Exception as e:
         return {
             "analyzed_result": analyzed_result,
-            "error": f"Failed to decompose: {e}"
+            "error": f"Failed to decompose: {str(e)}"
         }
-
 
 # ---------------------
 # 🔁 Full Pipeline Endpoint

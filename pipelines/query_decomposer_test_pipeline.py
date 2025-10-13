@@ -1,46 +1,43 @@
 import os
 import json
 from typing import Dict
-
 from constants import (
     QUERY_ANALYZE_OUTPUT_FILE_PATH,
     QUERY_DECOMPOSE_OUTPUT_FILE_PATH
 )
-
 from components.analyzer_and_decomposer.query_decomposer import prepare_federated_queries
 
 # -----------------------------
-# 🔹 Decompose a single structured query
+# 🔹 Decompose a single query
 # -----------------------------
-def decompose_single_query(decomposed_query: Dict) -> Dict:
+def decompose_single_query(analyzer_result: Dict) -> Dict:
     """
-    Takes a decomposed query with 'structured_query' and 'unstructured_query',
-    returns federated queries (structured + unstructured).
+    Takes analyzer output (dict containing sql_query + unstructured_query),
+    runs decomposition, translation, validation, and optional LLM retry.
     """
-    return prepare_federated_queries(decomposed_query, use_llm_retry=False)
+    return prepare_federated_queries(
+        analyzed_result=analyzer_result,
+        use_llm_retry=True,
+    )
 
 
 # -----------------------------
-# 🔹 Batch Decomposition from JSONL (Analyzer Output)
+# 🔹 Batch Decomposition from JSONL
 # -----------------------------
 def decompose_all_queries():
     """
     Reads the query_analyzer output .jsonl file, applies decomposition,
     and saves federated queries to another .jsonl file.
-    Prints federated query results per query.
     """
     if not os.path.exists(QUERY_ANALYZE_OUTPUT_FILE_PATH):
-        print(f"[ERROR] Input file not found: {QUERY_ANALYZE_OUTPUT_FILE_PATH}")
-        return
+        raise FileNotFoundError(f"Input file not found: {QUERY_ANALYZE_OUTPUT_FILE_PATH}")
 
     os.makedirs(os.path.dirname(QUERY_DECOMPOSE_OUTPUT_FILE_PATH), exist_ok=True)
 
     with open(QUERY_ANALYZE_OUTPUT_FILE_PATH, "r", encoding="utf-8") as infile, \
          open(QUERY_DECOMPOSE_OUTPUT_FILE_PATH, "w", encoding="utf-8") as outfile:
 
-        line_count = 0
-        for line in infile:
-            line_count += 1
+        for line_count, line in enumerate(infile, start=1):
             try:
                 record = json.loads(line)
                 query = record.get("query")
@@ -48,6 +45,9 @@ def decompose_all_queries():
 
                 if not result or not isinstance(result, dict):
                     raise ValueError("Missing or invalid 'result' in record.")
+
+                # Attach original query for retry context
+                result["original_query"] = query
 
                 federated = decompose_single_query(result)
 
@@ -58,13 +58,7 @@ def decompose_all_queries():
 
                 outfile.write(json.dumps(output_record) + "\n")
 
-                # Print per query
-                print(f"\n--- Query {line_count} ---")
-                print(f"Input Query:\n{query}")
-                print(f"Federated Query Output:\n{json.dumps(federated, indent=2)}")
-                print("-" * 60)
-
             except Exception as e:
-                print(f"Failed to process line {line_count}: {e}")
+                # Only essential error message
+                print(f"❌ Failed to process line {line_count}: {e}")
 
-    print(f"\nAll queries decomposed and saved to: {QUERY_DECOMPOSE_OUTPUT_FILE_PATH}")
