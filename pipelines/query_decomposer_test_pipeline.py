@@ -17,7 +17,7 @@ def decompose_single_query(decomposed_query: Dict) -> Dict:
     Takes a decomposed query with 'structured_query' and 'unstructured_query',
     returns federated queries (structured + unstructured).
     """
-    return prepare_federated_queries(decomposed_query)
+    return prepare_federated_queries(decomposed_query, use_llm_retry=False)
 
 
 # -----------------------------
