@@ -1,71 +1,81 @@
+# D:\Projects\NextMove\components\connectors\mysql_connector.py
+
 import mysql.connector
-import pandas as pd
-from entities.config import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, GAV_MAPPINGS
+from mysql.connector import Error
+from typing import List, Dict, Any
 
 class MySQLConnector:
-    def __init__(self):
-        self.conn = None
+    """
+    A MySQL connector class that supports connecting to
+    specific databases with provided credentials and a timeout.
+    """
+    def __init__(self, host, user, password, database, timeout=5):
+        self.host = host
+        self.user = user
+        self.password = password
+        self.database = database
+        self.port = 3306
+        self.timeout = timeout  # Connection timeout
+        self.connection = None
         self.cursor = None
 
     def connect(self):
-        """Establish connection to the database"""
-        self.conn = mysql.connector.connect(
-            host=DB_HOST,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            database=DB_NAME
-        )
-        self.cursor = self.conn.cursor()
-        print("[INFO] Connected to the database.")
+        """Establishes the database connection with a timeout."""
+        try:
+            self.connection = mysql.connector.connect(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                database=self.database,
+                port=self.port,
+                connection_timeout=self.timeout # Fail fast if DB is down
+            )
+            if self.connection.is_connected():
+                self.cursor = self.connection.cursor()
+        except Error as e:
+            print(f"[ERROR] Could not connect to {self.database}: {e}")
+            raise e
 
     def disconnect(self):
-        """Close the database connection"""
-        if self.cursor:
+        """Closes the database connection."""
+        if self.connection and self.connection.is_connected():
             self.cursor.close()
-        if self.conn:
-            self.conn.close()
-        print("[INFO] Disconnected from the database.")
+            self.connection.close()
 
-    def get_schema(self, table_name='jobs'):
-        """Retrieve the schema of a table"""
-        if not self.conn:
-            raise Exception("Connection not established.")
+    def execute_query_as_dict(self, query: str) -> List[Dict[str, Any]]:
+        """
+        Executes a query and returns the results as a list of dictionaries.
+        This is essential for JSON serialization and for the LLM.
+        """
+        if not self.connection or not self.cursor:
+            print("[ERROR] Not connected. Call connect() first.")
+            return []
+            
+        try:
+            self.cursor.execute(query)
+            rows = self.cursor.fetchall()
+            # Get column names from cursor description
+            columns = [col[0] for col in self.cursor.description]
+            
+            # Convert list of tuples to list of dicts
+            result_list = [dict(zip(columns, row)) for row in rows]
+            return result_list
+            
+        except Error as e:
+            print(f"[ERROR] Query failed: {e}\nQuery: {query}")
+            # Raise the exception so the pipeline can catch it
+            raise e
+
+    def execute_query(self, query: str):
+        """Executes a query and returns raw tuples."""
+        if not self.connection or not self.cursor:
+            print("[ERROR] Not connected. Call connect() first.")
+            return []
         
-        query = f"DESCRIBE {table_name};"
-        self.cursor.execute(query)
-        result = self.cursor.fetchall()
-        schema = {column[0]: column[1] for column in result}
-        return schema
-
-    def match_schema_with_gav(self, table_name='jobs', source_file='Linkedin_source'):
-        """Compare table schema with GAV mapping"""
-        schema = self.get_schema(table_name)
-        source_mapping = GAV_MAPPINGS.get(source_file, {})
-
-        all_matched = True
-        for global_attr, source_col in source_mapping.items():
-            if source_col and source_col not in schema:
-                print(f"[WARN] Mismatch: '{source_col}' not found in '{table_name}' table.")
-                all_matched = False
-        if all_matched:
-            print("[INFO] Table schema matches the GAV mapping.")
-        return all_matched
-
-    def execute_query(self, query):
-        """Run a SQL query and return rows"""
-        if not self.conn:
-            raise Exception("Connection not established.")
-        
-        self.cursor.execute(query)
-        return self.cursor.fetchall()
-
-    def fetch_data_as_dataframe(self, query):
-        """Run a SQL query and return result as DataFrame"""
-        if not self.conn:
-            raise Exception("Connection not established.")
-        
-        return pd.read_sql(query, self.conn)
-
-    def fetch_query(self, query):
-        """Alias for execute_query for compatibility with pipeline"""
-        return self.execute_query(query)
+        try:
+            self.cursor.execute(query)
+            rows = self.cursor.fetchall()
+            return rows
+        except Error as e:
+            print(f"[ERROR] Query failed: {e}\nQuery: {query}")
+            raise e
