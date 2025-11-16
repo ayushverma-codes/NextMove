@@ -12,21 +12,22 @@ from entities.config import (
     LINKEDIN_DB_HOST, LINKEDIN_DB_USER, LINKEDIN_DB_PASSWORD, LINKEDIN_DB_NAME,
     NAUKRI_DB_HOST, NAUKRI_DB_USER, NAUKRI_DB_PASSWORD, NAUKRI_DB_NAME
 )
+from typing import Dict, Any
 
 # Define a short timeout for API robustness
 DB_CONNECTION_TIMEOUT = 3 # 3 seconds
 
 
-def run_pipeline(natural_language_query: str, show_analysis_json: bool = False, show_decomposition_json: bool = False):
+def run_pipeline(natural_language_query: str, debug_mode: bool = False) -> Dict[str, Any]:
     """
-    Executes the full NextMove pipeline:
-    1. Analyze natural language query
-    2. Decompose structured JSON into SQL
-    3. Execute SQL queries on corresponding sources (robustly)
-    4. Synthesize results with an LLM into a final answer
+    Executes the full NextMove pipeline and returns a structured dictionary.
+
+    Args:
+        natural_language_query (str): The natural language query to process.
+        debug_mode (bool): If True, returns intermediate artifacts.
 
     Returns:
-        str: A single, synthesized natural language answer.
+        dict: Contains 'final_answer' and optional 'debug_info'.
     """
     print("=== NextMove Pipeline Started ===\n")
 
@@ -35,26 +36,21 @@ def run_pipeline(natural_language_query: str, show_analysis_json: bool = False, 
     analyzed_result = run_single_query(natural_language_query)
     if analyzed_result is None:
         print("[ERROR] Failed to analyze query. Pipeline aborted.")
-        return "I'm sorry, I wasn't able to understand your query. Could you please rephrase it?"
+        return {
+            "final_answer": "I'm sorry, I wasn't able to understand your query. Could you please rephrase it?",
+            "debug_info": {"error": "Query analysis failed"}
+        }
 
-    if show_analysis_json:
-        print("\n[DEBUG] Analyzer Output:")
-        print(json.dumps(analyzed_result, indent=2))
-        
     unstructured_query = analyzed_result.get("unstructured_query", "")
 
     # Step 2: Decompose Query
     print("\n[STEP 2] Decomposing analyzed query...")
     federated_queries = decompose_single_query(analyzed_result)
-
-    if show_decomposition_json:
-        print("\n[DEBUG] Decomposer Output (Federated Queries):")
-        print(json.dumps(federated_queries, indent=2))
-
+    
     structured_queries = federated_queries.get("structured", {})
-    results = {}
+    db_results = {}
 
-    # Step 3: Execute Structured Queries (Now Robust)
+    # Step 3: Execute Structured Queries
     print("\n[STEP 3] Executing structured queries on data sources...\n")
 
     # 🔹 MySQL: Linkedin_source
@@ -68,22 +64,21 @@ def run_pipeline(natural_language_query: str, show_analysis_json: bool = False, 
                 user=LINKEDIN_DB_USER,
                 password=LINKEDIN_DB_PASSWORD,
                 database=LINKEDIN_DB_NAME,
-                timeout=DB_CONNECTION_TIMEOUT  # Pass the timeout
+                timeout=DB_CONNECTION_TIMEOUT
             )
-            mysql_linkedin.connect() # This will fail fast if DB is down
+            mysql_linkedin.connect()
             rows = mysql_linkedin.execute_query_as_dict(linkedin_sql)
             mysql_linkedin.disconnect()
             print(f"[INFO] Retrieved {len(rows)} rows from Linkedin_source.\n")
-            results["Linkedin_source"] = rows
+            db_results["Linkedin_source"] = rows
         except Exception as e:
-            # This is our robustness! We log the error and continue.
             print(f"[ERROR] Linkedin_source query failed: {e}\n")
-            results["Linkedin_source"] = [{"error": f"Failed to connect or query: {e}"}]
+            db_results["Linkedin_source"] = {"error": f"Failed to connect or query: {e}"}
     else:
         print("[WARN] No SQL generated for Linkedin_source\n")
-        results["Linkedin_source"] = [] # Use empty list for no query
+        db_results["Linkedin_source"] = "No query generated." # Report this in debug mode
 
-    # 🔹 MySQL: Naukri_source (Now Robustly Implemented)
+    # 🔹 MySQL: Naukri_source
     naukri_sql = structured_queries.get("Naukri_source")
     if naukri_sql:
         print("[MySQL] Running query on Naukri_source:")
@@ -94,29 +89,41 @@ def run_pipeline(natural_language_query: str, show_analysis_json: bool = False, 
                 user=NAUKRI_DB_USER,
                 password=NAUKRI_DB_PASSWORD,
                 database=NAUKRI_DB_NAME,
-                timeout=DB_CONNECTION_TIMEOUT # Pass the timeout
+                timeout=DB_CONNECTION_TIMEOUT
             )
-            mysql_naukri.connect() # This will also fail fast
+            mysql_naukri.connect()
             rows = mysql_naukri.execute_query_as_dict(naukri_sql)
             mysql_naukri.disconnect()
             print(f"[INFO] Retrieved {len(rows)} rows from Naukri_source.\n")
-            results["Naukri_source"] = rows
+            db_results["Naukri_source"] = rows
         except Exception as e:
-            # Robustness for the second DB
             print(f"[ERROR] Naukri_source query failed: {e}\n")
-            results["Naukri_source"] = [{"error": f"Failed to connect or query: {e}"}]
+            db_results["Naukri_source"] = {"error": f"Failed to connect or query: {e}"}
     else:
         print("[WARN] No SQL generated for Naukri_source\n")
-        results["Naukri_source"] = []
+        db_results["Naukri_source"] = "No query generated." # Report this in debug mode
 
-    # Step 4: Synthesize Results (New Step)
-    # This step runs even if one or both DBs failed.
-    # The LLM will be given the error messages to explain to the user.
+    # Step 4: Synthesize Results
     final_answer = synthesize_results(
         natural_language_query=natural_language_query,
         unstructured_query=unstructured_query,
-        database_results=results
+        database_results=db_results
     )
 
     print("\n=== Pipeline Completed ===")
-    return final_answer
+    
+    # Construct the final response dictionary based on debug_mode
+    if debug_mode:
+        return {
+            "final_answer": final_answer,
+            "debug_info": {
+                "1_query_analysis": analyzed_result,
+                "2_query_decomposition": federated_queries,
+                "3_database_results": db_results
+            }
+        }
+    else:
+        return {
+            "final_answer": final_answer,
+            "debug_info": None # No debug info in normal mode
+        }

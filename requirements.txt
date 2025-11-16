@@ -15,4 +15,5 @@
 
 # fastapi
 # uvicorn
-sqlglot
+# sqlglot
+# streamlit

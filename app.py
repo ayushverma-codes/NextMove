@@ -15,15 +15,15 @@ app = FastAPI(title="NextMove Query Processing API")
 
 
 # ---------------------
-# 📦 Request Model
+# 📦 Request Model (Updated)
 # ---------------------
 class QueryRequest(BaseModel):
     query: str
-    show_analysis_json: Optional[bool] = False
-    show_decomposition_json: Optional[bool] = False
+    debug_mode: Optional[bool] = False # Use one flag for debug mode
+
 
 # ---------------------
-# 📦 Response Models
+# 📦 Response Models (Updated)
 # ---------------------
 class AnalyzeResponse(BaseModel):
     analyzed_result: Dict[str, Any]
@@ -34,6 +34,7 @@ class DecomposeResponse(BaseModel):
 
 class RunResponse(BaseModel):
     final_answer: str
+    debug_info: Optional[Dict[str, Any]] = None # Add debug_info field
 
 class ErrorResponse(BaseModel):
     error: str
@@ -60,7 +61,6 @@ def decompose_query(request: QueryRequest):
         return Response(content=json.dumps({"error": "Failed to analyze the query"}), status_code=500, media_type="application/json")
 
     analyzed_result["original_query"] = request.query
-
     try:
         decomposed_result = decompose_single_query(analyzed_result)
         return {
@@ -79,20 +79,17 @@ def decompose_query(request: QueryRequest):
 @app.post("/run", response_model=RunResponse, responses={500: {"model": ErrorResponse}})
 def run_full_pipeline(request: QueryRequest):
     
-    # The pipeline now returns a single string answer
-    final_answer = run_pipeline(
+    # Pass the debug_mode flag from the request to the pipeline
+    pipeline_response = run_pipeline(
         natural_language_query=request.query,
-        show_analysis_json=request.show_analysis_json,
-        show_decomposition_json=request.show_decomposition_json
+        debug_mode=request.debug_mode
     )
 
-    if final_answer is None:
-        return Response(content=json.dumps({"error": "Pipeline execution failed to produce an answer"}), status_code=500, media_type="application/json")
+    if pipeline_response is None:
+        return Response(content=json.dumps({"error": "Pipeline execution failed"}), status_code=500, media_type="application/json")
     
-    # Return the synthesized answer
-    return {
-        "final_answer": final_answer
-    }
+    # Return the entire response dictionary (final_answer + debug_info)
+    return pipeline_response
 
 
 # ---------------------
