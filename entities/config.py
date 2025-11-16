@@ -8,10 +8,19 @@ load_dotenv(dotenv_path=dotenv_path)
 # ---------------------------
 # Database 1 Credentials (Linkedin_source)
 # ---------------------------
-DB_HOST = os.getenv("DB_HOST")
-DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_NAME = os.getenv("DB_NAME")
+LINKEDIN_DB_HOST = os.getenv("LINKEDIN_DB_HOST")
+LINKEDIN_DB_USER = os.getenv("LINKEDIN_DB_USER")
+LINKEDIN_DB_PASSWORD = os.getenv("LINKEDIN_DB_PASSWORD")
+LINKEDIN_DB_NAME = os.getenv("LINKEDIN_DB_NAME")
+
+
+# ---------------------------
+# Database 2 Credentials (Naukri_source)
+# ---------------------------
+NAUKRI_DB_HOST = os.getenv("NAUKRI_DB_HOST")
+NAUKRI_DB_USER = os.getenv("NAUKRI_DB_USER")
+NAUKRI_DB_PASSWORD = os.getenv("NAUKRI_DB_PASSWORD")
+NAUKRI_DB_NAME = os.getenv("NAUKRI_DB_NAME")
 
 
 # ---------------------------

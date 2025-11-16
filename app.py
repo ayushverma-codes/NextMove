@@ -1,6 +1,9 @@
-from fastapi import FastAPI
+# D:\Projects\NextMove\app.py
+
+from fastapi import FastAPI, Response
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Dict, Any
+import json
 
 from pipelines.query_analyzer_test_pipeline import run_single_query
 from pipelines.query_decomposer_test_pipeline import decompose_single_query
@@ -19,61 +22,76 @@ class QueryRequest(BaseModel):
     show_analysis_json: Optional[bool] = False
     show_decomposition_json: Optional[bool] = False
 
+# ---------------------
+# 📦 Response Models
+# ---------------------
+class AnalyzeResponse(BaseModel):
+    analyzed_result: Dict[str, Any]
+
+class DecomposeResponse(BaseModel):
+    analyzed_result: Dict[str, Any]
+    decomposed_result: Dict[str, Any]
+
+class RunResponse(BaseModel):
+    final_answer: str
+
+class ErrorResponse(BaseModel):
+    error: str
+
 
 # ---------------------
 # 🔍 Analyze Endpoint
 # ---------------------
-@app.post("/analyze")
+@app.post("/analyze", response_model=AnalyzeResponse, responses={500: {"model": ErrorResponse}})
 def analyze_query(request: QueryRequest):
     result = run_single_query(request.query)
     if result is None:
-        return {"error": "Failed to analyze the query"}
+        return Response(content=json.dumps({"error": "Failed to analyze the query"}), status_code=500, media_type="application/json")
     return {"analyzed_result": result}
 
 
 # ---------------------
 # 🔨 Decompose Endpoint
 # ---------------------
-@app.post("/decompose")
+@app.post("/decompose", response_model=DecomposeResponse, responses={500: {"model": ErrorResponse}})
 def decompose_query(request: QueryRequest):
-    # Step 1: Analyze
     analyzed_result = run_single_query(request.query)
     if analyzed_result is None:
-        return {"error": "Failed to analyze the query"}
+        return Response(content=json.dumps({"error": "Failed to analyze the query"}), status_code=500, media_type="application/json")
 
-    # Attach the original natural language query for LLM context
     analyzed_result["original_query"] = request.query
 
-    # Step 2: Decompose
     try:
-        decomposed_result = decompose_single_query(
-            analyzed_result,
-        )
+        decomposed_result = decompose_single_query(analyzed_result)
         return {
             "analyzed_result": analyzed_result,
             "decomposed_result": decomposed_result
         }
     except Exception as e:
-        return {
+        return Response(content=json.dumps({
             "analyzed_result": analyzed_result,
             "error": f"Failed to decompose: {str(e)}"
-        }
+        }), status_code=500, media_type="application/json")
 
 # ---------------------
-# 🔁 Full Pipeline Endpoint
+# 🔁 Full Pipeline Endpoint (Updated)
 # ---------------------
-@app.post("/run")
+@app.post("/run", response_model=RunResponse, responses={500: {"model": ErrorResponse}})
 def run_full_pipeline(request: QueryRequest):
-    results = run_pipeline(
+    
+    # The pipeline now returns a single string answer
+    final_answer = run_pipeline(
         natural_language_query=request.query,
         show_analysis_json=request.show_analysis_json,
         show_decomposition_json=request.show_decomposition_json
     )
 
-    if results is None:
-        return {"error": "Pipeline execution failed"}
+    if final_answer is None:
+        return Response(content=json.dumps({"error": "Pipeline execution failed to produce an answer"}), status_code=500, media_type="application/json")
+    
+    # Return the synthesized answer
     return {
-        "results": results
+        "final_answer": final_answer
     }
 
 

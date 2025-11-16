@@ -57,7 +57,7 @@ def test_mysql_connection(host, user, password, database=None):
 
 # 🔧 Update your MySQL credentials here
 test_mysql_connection(
-    host="192.168.238.131",        # MySQL server IP
+    host="192.168.41.131",        # MySQL server IP
     user="source_server1",              # MySQL username
     password="24025",       # MySQL password
     database="linkedin_source"      # Database to check
