@@ -36,10 +36,6 @@ def analyze_query(request: QueryRequest):
 # ---------------------
 @app.post("/decompose")
 def decompose_query(request: QueryRequest):
-    """
-    Step 1: Analyze → Step 2: Decompose (translate + validate + retry).
-    Supports debug=True to show intermediate LLM retries and validation.
-    """
     # Step 1: Analyze
     analyzed_result = run_single_query(request.query)
     if analyzed_result is None:
