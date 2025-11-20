@@ -1,21 +1,12 @@
 import os
 from dotenv import load_dotenv
-
 from langchain_google_genai import ChatGoogleGenerativeAI
-# from langchain_ollama import ChatOllama
-
+from langchain_groq import ChatGroq 
 
 def load_llm(llm_name: str, temperature: float = 0.0):
     """
-    Load and return a LangChain LLM instance (Gemini or Ollama)
+    Load and return a LangChain LLM instance (Gemini or Ollama/Groq)
     based on the provided llm_name.
-
-    Args:
-        llm_name (str): Name of the model. Example: "gemini" or "ollama"
-        temperature (float): Controls randomness in output.
-
-    Returns:
-        An initialized LLM object ready for chaining.
     """
 
     # Load .env from project root
@@ -37,7 +28,22 @@ def load_llm(llm_name: str, temperature: float = 0.0):
             google_api_key=api_key,
         )
 
-    elif "ollama" in llm_name or "llama" in llm_name:
+    elif "groq" in llm_name:
+        api_key = os.getenv("GROQ_API_KEY")
+        if not api_key:
+            raise ValueError("GROQ_API_KEY not found in .env")
+            
+        # UPDATED: Switched to Llama 3.3 70B (Versatile) as the previous model is decommissioned
+        return ChatGroq(
+            model="llama-3.3-70b-versatile", 
+            temperature=temperature,
+            max_retries=2,
+            api_key=api_key
+        )
+
+    elif "ollama" in llm_name:
+        # Keep fallback for local Ollama if needed
+        from langchain_ollama import ChatOllama
         return ChatOllama(
             model="llama3.1",
             temperature=temperature,

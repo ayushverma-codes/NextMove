@@ -17,3 +17,4 @@
 # uvicorn
 # sqlglot
 # streamlit
+langchain-groq

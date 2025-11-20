@@ -1,52 +1,52 @@
 from langchain_core.prompts import ChatPromptTemplate
 from ..LLM.llm_loader import load_llm
-from constants import *
+from constants import CURRENT_LLM, CURRENT_PROMPTS, DEFAULT_LIMIT, QUERY_ANALYZER_HUMAN_PROMPT, GLOBAL_SCHEMA
 import json
-from entities.config import GLOBAL_SCHEMA
 
-
-# Load Gemini or Ollama dynamically
+# Load current LLM
 llm = load_llm(CURRENT_LLM)
 
 def parse_llm_json_response(llm_response: str) -> dict:
     """
     Parses an LLM response that returns JSON wrapped in triple backticks (```json ... ```).
-    
-    Args:
-        llm_response (str): The raw response content from the LLM.
-    
-    Returns:
-        dict: Parsed JSON object.
-    
-    Raises:
-        ValueError: If the content cannot be parsed as JSON.
     """
-    raw_content = llm_response.content.strip()
+    # Handle both string and AIMessage object
+    raw_content = llm_response.content.strip() if hasattr(llm_response, 'content') else str(llm_response).strip()
 
     # Remove surrounding triple backticks if present
     if raw_content.startswith("```") and raw_content.endswith("```"):
         lines = raw_content.splitlines()
-        # Remove the first line if it contains ``` or ```json
         if lines[0].startswith("```"):
             lines = lines[1:]
-        # Remove the last line if it contains ```
         if lines and lines[-1].startswith("```"):
             lines = lines[:-1]
         raw_content = "\n".join(lines).strip()
 
-    # Parse the cleaned string as JSON
     try:
         result_json = json.loads(raw_content)
     except json.JSONDecodeError as e:
-        raise ValueError(
-            f"Failed to parse JSON from LLM response: {e}\nRaw content:\n{raw_content}"
-        )
+        # Fallback: try to find the first '{' and last '}'
+        try:
+            start = raw_content.find('{')
+            end = raw_content.rfind('}') + 1
+            if start != -1 and end != -1:
+                json_str = raw_content[start:end]
+                result_json = json.loads(json_str)
+            else:
+                raise ValueError("No JSON found")
+        except Exception:
+            raise ValueError(
+                f"Failed to parse JSON from LLM response: {e}\nRaw content:\n{raw_content}"
+            )
 
     return result_json
 
 def query_analyze(natural_query: str):
+    # Get the specific prompt for the active LLM
+    system_prompt = CURRENT_PROMPTS["analyzer_system"]
+    
     chat_prompt = ChatPromptTemplate.from_messages([
-        ("system", QUERY_ANALYZER_SYSTEM_PROMPT),
+        ("system", system_prompt),
         ("human", QUERY_ANALYZER_HUMAN_PROMPT),
     ])
 
@@ -58,11 +58,8 @@ def query_analyze(natural_query: str):
         }
     )
 
-    response = llm(prompt.messages)
-
-    # print("\nLLM response: \n")
-    # print(response)
-    # print("\n")
-
+    # FIX: Use .invoke() instead of calling llm() directly
+    response = llm.invoke(prompt.messages)
+    
     result_json = parse_llm_json_response(response)
     return result_json

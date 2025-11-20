@@ -1,18 +1,16 @@
 import json
 from langchain_core.prompts import ChatPromptTemplate
 from ..LLM.llm_loader import load_llm
-from constants import *
-from entities.config import GLOBAL_SCHEMA
+from constants import CURRENT_LLM, CURRENT_PROMPTS, GLOBAL_SCHEMA
 
 # Load current LLM dynamically
 llm = load_llm(CURRENT_LLM)
-
 
 def parse_llm_json_response(llm_response: str) -> dict:
     """
     Parse LLM JSON response wrapped in triple backticks if present.
     """
-    raw_content = llm_response.content.strip() if hasattr(llm_response, 'content') else llm_response.strip()
+    raw_content = llm_response.content.strip() if hasattr(llm_response, 'content') else str(llm_response).strip()
 
     # Remove surrounding triple backticks
     if raw_content.startswith("```") and raw_content.endswith("```"):
@@ -26,7 +24,13 @@ def parse_llm_json_response(llm_response: str) -> dict:
     try:
         result_json = json.loads(raw_content)
     except json.JSONDecodeError as e:
-        raise ValueError(f"Failed to parse JSON from LLM response: {e}")
+        # Simple fallback to try and find brace boundaries
+        try:
+            start = raw_content.find('{')
+            end = raw_content.rfind('}') + 1
+            result_json = json.loads(raw_content[start:end])
+        except:
+            raise ValueError(f"Failed to parse JSON from LLM response: {e}")
 
     return result_json
 
@@ -42,8 +46,10 @@ class QueryRetryHandler:
         self.max_retries = max_retries
 
     def retry_global_sql(self, natural_query: str, previous_sql: str, validation_errors: list) -> str:
+        system_prompt = CURRENT_PROMPTS["retry_global"]
+
         prompt_template = ChatPromptTemplate.from_messages([
-            ("system", QUERY_ANALYZER_RETRY_SYSTEM_PROMPT),
+            ("system", system_prompt),
             ("human", "{user_query}")
         ])
 
@@ -56,11 +62,16 @@ class QueryRetryHandler:
                 "validation_errors": "\n".join(validation_errors)
             })
 
-            response = llm(prompt.messages)
-            result = parse_llm_json_response(response)
-            corrected_sql = result.get("corrected_sql")
-            if corrected_sql:
-                return corrected_sql
+            # FIX: Use .invoke()
+            response = llm.invoke(prompt.messages)
+            
+            try:
+                result = parse_llm_json_response(response)
+                corrected_sql = result.get("corrected_sql")
+                if corrected_sql:
+                    return corrected_sql
+            except Exception:
+                continue # Try again if parsing fails
 
         raise RuntimeError(f"Failed to generate valid global SQL after {self.max_retries} retries.")
 
@@ -73,8 +84,10 @@ class QueryRetryHandler:
         local_schema: dict,
         validation_errors: list
     ) -> str:
+        system_prompt = CURRENT_PROMPTS["retry_translation"]
+        
         prompt_template = ChatPromptTemplate.from_messages([
-            ("system", QUERY_TRANSLATE_RETRY_SYSTEM_PROMPT),
+            ("system", system_prompt),
             ("human", "{user_query}")
         ])
 
@@ -90,10 +103,15 @@ class QueryRetryHandler:
                 "validation_errors": "\n".join(validation_errors)
             })
 
-            response = llm(prompt.messages)
-            result = parse_llm_json_response(response)
-            corrected_sql = result.get("corrected_sql")
-            if corrected_sql:
-                return corrected_sql
+            # FIX: Use .invoke()
+            response = llm.invoke(prompt.messages)
+            
+            try:
+                result = parse_llm_json_response(response)
+                corrected_sql = result.get("corrected_sql")
+                if corrected_sql:
+                    return corrected_sql
+            except Exception:
+                continue
 
         raise RuntimeError(f"Failed to generate valid translation for source '{source_name}' after {self.max_retries} retries.")

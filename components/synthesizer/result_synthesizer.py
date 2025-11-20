@@ -3,7 +3,7 @@
 import json
 from typing import Dict, Any, List
 from constants import (
-    RESULT_SYNTHESIZER_SYSTEM_PROMPT,
+    CURRENT_PROMPTS,  # <-- UPDATED: Import the dynamic prompt registry
     RESULT_SYNTHESIZER_HUMAN_PROMPT,
     CURRENT_LLM
 )
@@ -15,7 +15,7 @@ def synthesize_results(
     natural_language_query: str,
     unstructured_query: str,
     database_results: Dict[str, Any]
-) -> Dict[str, Any]:  # <-- MODIFIED: Return type is now a Dict
+) -> Dict[str, Any]:
     """
     Takes retrieved data, calls LLM, and returns a dictionary with
     the final answer and the prompts used.
@@ -29,7 +29,10 @@ def synthesize_results(
         results_json = str(database_results)
 
     # --- Format prompts *before* the try block so they are available in 'except' ---
-    system_prompt_str = RESULT_SYNTHESIZER_SYSTEM_PROMPT
+    
+    # 1. Retrieve the correct System Prompt dynamically based on CURRENT_LLM
+    system_prompt_str = CURRENT_PROMPTS["synthesizer_system"]
+    
     human_prompt_str = RESULT_SYNTHESIZER_HUMAN_PROMPT.format(
         natural_language_query=natural_language_query,
         unstructured_query=unstructured_query or "None",
@@ -38,10 +41,10 @@ def synthesize_results(
     # ---
 
     try:
-        # 1. Load the LLM using your loader
+        # 2. Load the LLM using your loader
         llm = load_llm(CURRENT_LLM, temperature=0.1)
 
-        # 2. Create LangChain messages
+        # 3. Create LangChain messages
         messages = [
             SystemMessage(content=system_prompt_str),
             HumanMessage(content=human_prompt_str)
@@ -49,13 +52,13 @@ def synthesize_results(
         
         print(f"\n[LLM Call] Invoking {CURRENT_LLM} for synthesis...")
         
-        # 3. Invoke the model
+        # 4. Invoke the model
         response = llm.invoke(messages)
         
-        # 4. Get the text content
+        # 5. Get the text content
         final_answer = response.content
         
-        # 5. MODIFIED: Return a dictionary
+        # 6. Return a dictionary
         return {
             "final_answer": final_answer,
             "prompts_used": {
@@ -66,11 +69,11 @@ def synthesize_results(
         
     except Exception as e:
         print(f"[ERROR] Final LLM synthesis failed: {e}")
-        if "GEMINI_API_KEY" in str(e):
-            print("CRITICAL: 'GEMINI_API_KEY not found' error.")
-            print("Please make sure GEMINI_API_KEY is set in your .env file.")
+        if "GEMINI_API_KEY" in str(e) or "GROQ_API_KEY" in str(e):
+            print(f"CRITICAL: API Key for {CURRENT_LLM} not found or invalid.")
+            print("Please make sure your API keys are set in the .env file.")
         
-        # MODIFIED: Return a dictionary even on error
+        # Return a dictionary even on error
         return {
             "final_answer": "I was able to retrieve the data, but I encountered an error when trying to formulate a final answer. Here is the raw data: " + results_json,
             "prompts_used": {

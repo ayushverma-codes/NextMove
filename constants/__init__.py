@@ -1,15 +1,46 @@
-# LLM
+import os
 
-LLM1 = "gemini"
-LLM2 = "ollama"
+# =========================================
+# 1. FILE PATHS & SYSTEM CONFIG
+# =========================================
 
-CURRENT_LLM = LLM1
-
-# Prompts
+QUERY_INPUT_FILE_PATH = r"D:\Projects\NextMove\workspace_folder\input\natural_queries.txt"
+QUERY_ANALYZE_OUTPUT_FILE_PATH = r"D:\Projects\NextMove\workspace_folder\artifacts\query_analysis.jsonl"
+QUERY_DECOMPOSE_OUTPUT_FILE_PATH = r"D:\Projects\NextMove\workspace_folder\artifacts\query_decompose.jsonl"
 
 DEFAULT_LIMIT = 10
 
-QUERY_ANALYZER_SYSTEM_PROMPT = """
+# =========================================
+# 2. GLOBAL SCHEMA (Crucial for SQL Generation)
+# =========================================
+
+# Defines the standard fields available across all job databases
+GLOBAL_SCHEMA = {
+    "title": "Job title (e.g. Software Engineer, Marketing Manager)",
+    "company_name": "Name of the hiring company",
+    "location": "City, State, Country, or 'Remote'",
+    "skills": "List of required technical or soft skills (e.g. Python, SQL)",
+    "salary_range": "Numeric salary or text range",
+    "work_type": "Employment type (e.g. Full-time, Contract, Remote)"
+}
+
+# =========================================
+# 3. LLM CONFIGURATION
+# =========================================
+
+LLM_GEMINI = "gemini"
+LLM_GROQ = "groq"
+
+# --- CONTROL SWITCH ---
+# Change this value to switch between LLMs
+CURRENT_LLM = LLM_GEMINI 
+# ======================
+
+# =========================================
+# 4. GEMINI SPECIFIC PROMPTS
+# =========================================
+
+GEMINI_QUERY_ANALYZER_SYSTEM_PROMPT = """
 You are a Query Analyzer for a federated job information system.
 
 You receive a natural language query about jobs. Some information may exist in the structured databases (CSV sources) and some may require general knowledge (unstructured, LLM).
@@ -22,48 +53,20 @@ You receive a natural language query about jobs. Some information may exist in t
    - Generate the SELECT and WHERE components strictly based on the GLOBAL_SCHEMA attributes.
    - Generate a full SQL query string in **standard SQL** syntax using the Global Schema. Use `LIMIT` for number of rows.
 
-
 Return a JSON with four keys:
    - user_intent: string describing what the user wants
    - limit: integer number of rows requested
    - structured_query: {{
-         "select_clause": [list of attributes from GLOBAL_SCHEMA to retrieve],
-         "where_clause": {{attribute: value}}
-     }}
+          "select_clause": [list of attributes from GLOBAL_SCHEMA to retrieve],
+          "where_clause": {{attribute: value}}
+      }}
    - sql_query: Full SQL query string in Global Schema
    - unstructured_query: text that needs to be answered by the LLM
 
 Global schema attributes: {schema}
-
-Example:
-Input: "Find remote Marketing Coordinator jobs in Princeton, NJ with a minimum salary of $17 that require skills like communication, Excel, SQL, and project management. Also, list the company benefits and explain what a 'Marketing Coordinator' typically does. Show 5 results."
-Output:
-{{
-  "user_intent": "Find remote Marketing Coordinator jobs with required skills and salary in Princeton, NJ",
-  "limit": 5,
-  "structured_query": {{
-      "select_clause": ["title", "company_name", "location", "skills", "salary_range", "work_type"],
-      "where_clause": {{
-          "title": "Marketing Coordinator",
-          "location": "Princeton, NJ",
-          "work_type": "remote",
-          "skills": ["communication", "Excel", "SQL", "project management"],
-          "salary_range": ">= 17"
-      }}
-  }},
-  "sql_query": "SELECT title, company_name, location, skills, salary_range, work_type FROM Global_Job_Postings WHERE title='Marketing Coordinator' AND location='Princeton, NJ' AND work_type='remote' AND skills LIKE '%communication%' AND skills LIKE '%Excel%' AND skills LIKE '%SQL%' AND skills LIKE '%project management%' AND salary_range >= 17 LIMIT 5;",
-  "unstructured_query": "List company benefits and explain typical responsibilities of a 'Marketing Coordinator'."
-}}
 """
 
-
-QUERY_ANALYZER_HUMAN_PROMPT = """Input: {user_query}
-Output:"""
-
-# ---------------------------
-# Result Synthesizer
-# ---------------------------
-RESULT_SYNTHESIZER_SYSTEM_PROMPT = """
+GEMINI_RESULT_SYNTHESIZER_SYSTEM_PROMPT = """
 You are a helpful assistant for the 'NextMove' job search platform.
 Your task is to provide a single, comprehensive, and user-friendly answer to the user's query.
 
@@ -77,52 +80,10 @@ Your job:
 2.  **Answer the unstructured query:** If the user asked a general question (like "what does a data scientist do?"), answer it.
 3.  **Present the data:** Neatly list the job results found in the databases. If no results are found, state that clearly.
 4.  **Be conversational:** Address the user directly. Do not return JSON.
-
-Example:
-If the user asks "Find me 2 data scientist jobs in London and tell me what skills they need"
-And the data is:
-{
-  "Linkedin_source": [{"title": "Data Scientist", "company": "TechCo", "skills": "Python, SQL"}],
-  "Naukri_source": [{"title": "Jr. Data Scientist", "company": "DataCorp", "skills": "R, Excel"}]
-}
-And the unstructured query is "what skills do data scientists need"
-
-Your response should be:
-"Certainly! I looked for data scientist jobs in London and also found some information on the skills they typically require.
-
-**Here are the jobs I found:**
-* **Data Scientist** at **TechCo** (from LinkedIn). Requires: Python, SQL
-* **Jr. Data Scientist** at **DataCorp** (from Naukri). Requires: R, Excel
-
-Regarding your question, data scientists typically need a mix of technical skills like **Python, R, SQL, and machine learning**, along with soft skills like **communication and problem-solving**."
 """
 
-RESULT_SYNTHESIZER_HUMAN_PROMPT = """
-User Query: {natural_language_query}
-Unstructured Query: {unstructured_query}
-Database Results:
-{database_results_json}
-
-Answer:
-"""
-
-# Query Retry
-
-QUERY_ANALYZER_RETRY_SYSTEM_PROMPT = """
+GEMINI_RETRY_SYSTEM_PROMPT = """
 You are a Query Analyzer for a federated job system. The SQL query generated from the user's natural language input is invalid.
-
-User's natural query:
-{natural_query}
-
-Global Schema:
-{global_schema}
-
-Previous SQL generated by LLM:
-{previous_sql}
-
-Validation errors returned by the SQL validator:
-{validation_errors}
-
 Your task:
 1. Correct the SQL query so that it is valid against the Global Schema.
 2. Keep the intended semantics of the user's query intact.
@@ -135,24 +96,8 @@ Return JSON with key:
 }}
 """
 
-QUERY_TRANSLATE_RETRY_SYSTEM_PROMPT = """
+GEMINI_TRANSLATE_RETRY_SYSTEM_PROMPT = """
 You are a SQL Translator for a federated job system.
-
-Global SQL query:
-{global_sql}
-
-Previous translation for source "{source_name}" (db_type={db_type}) is invalid:
-{previous_translation}
-
-Global Schema:
-{global_schema}
-
-Local source schema (columns and types):
-{local_schema}
-
-Validation errors returned by the SQL validator:
-{validation_errors}
-
 Your task:
 1. Translate the global SQL query correctly to the target source schema.
 2. Ensure all column names and table names exist in the local schema.
@@ -166,11 +111,84 @@ Return JSON with key:
 }}
 """
 
+# =========================================
+# 5. GROQ SPECIFIC PROMPTS (Optimized for Llama3/Mixtral)
+# =========================================
 
-# Query Analyzer and Decomposer
+GROQ_QUERY_ANALYZER_SYSTEM_PROMPT = """
+You are a precise JSON-only Query Analyzer for a job search system.
+Your Goal: Convert natural language into structured SQL arguments.
 
-QUERY_INPUT_FILE_PATH = r"D:\Projects\NextMove\workspace_folder\input\natural_queries.txt"  # Path to the input file with natural language queries
-QUERY_ANALYZE_OUTPUT_FILE_PATH = r"D:\Projects\NextMove\workspace_folder\artifacts\query_analysis.jsonl"
+Instructions:
+1. Analyze the user query.
+2. Identify structured data (SQL) vs general knowledge (LLM).
+3. Default LIMIT is {DEFAULT_LIMIT}.
+4. IMPORTANT: You must output ONLY valid JSON. Do not include markdown syntax like ```json or any preambles.
 
-QUERY_DECOMPOSE_OUTPUT_FILE_PATH = r"D:\Projects\NextMove\workspace_folder\artifacts\query_decompose.jsonl"
+Global Schema: {schema}
 
+Return EXACTLY this JSON structure:
+{{
+   "user_intent": "string",
+   "limit": int,
+   "structured_query": {{ "select_clause": [], "where_clause": {{}} }},
+   "sql_query": "SELECT ...",
+   "unstructured_query": "string"
+}}
+"""
+
+GROQ_RESULT_SYNTHESIZER_SYSTEM_PROMPT = """
+You are 'NextMove', a professional job search assistant.
+Synthesize the provided database results and general knowledge into a concise, friendly response.
+
+Rules:
+1. Do NOT output JSON. Output natural text.
+2. Bold the job titles and company names.
+3. If results are empty, suggest refining the search.
+4. Be direct and avoid filler phrases like "Here is the information".
+"""
+
+GROQ_RETRY_SYSTEM_PROMPT = """
+System: SQL Correction Mode.
+Task: Fix the invalid SQL query based on the error message.
+Output: JSON ONLY. No conversational text.
+Format: {{ "corrected_sql": "SELECT ..." }}
+"""
+
+GROQ_TRANSLATE_RETRY_SYSTEM_PROMPT = """
+System: SQL Translation Correction.
+Task: Adapt the Global SQL to the Local Schema based on the validation error.
+Output: JSON ONLY.
+Format: {{ "corrected_sql": "SELECT ..." }}
+"""
+
+# =========================================
+# 6. PROMPT REGISTRY
+# =========================================
+
+PROMPT_REGISTRY = {
+    LLM_GEMINI: {
+        "analyzer_system": GEMINI_QUERY_ANALYZER_SYSTEM_PROMPT,
+        "synthesizer_system": GEMINI_RESULT_SYNTHESIZER_SYSTEM_PROMPT,
+        "retry_global": GEMINI_RETRY_SYSTEM_PROMPT,
+        "retry_translation": GEMINI_TRANSLATE_RETRY_SYSTEM_PROMPT,
+    },
+    LLM_GROQ: {
+        "analyzer_system": GROQ_QUERY_ANALYZER_SYSTEM_PROMPT,
+        "synthesizer_system": GROQ_RESULT_SYNTHESIZER_SYSTEM_PROMPT,
+        "retry_global": GROQ_RETRY_SYSTEM_PROMPT,
+        "retry_translation": GROQ_TRANSLATE_RETRY_SYSTEM_PROMPT,
+    }
+}
+
+def get_current_prompts():
+    if CURRENT_LLM not in PROMPT_REGISTRY:
+        raise ValueError(f"Configuration Error: CURRENT_LLM '{CURRENT_LLM}' not found in registry.")
+    return PROMPT_REGISTRY[CURRENT_LLM]
+
+# Universal Prompt Accessor
+CURRENT_PROMPTS = get_current_prompts()
+
+# Shared Human Prompts
+QUERY_ANALYZER_HUMAN_PROMPT = """Input: {user_query}\nOutput:"""
+RESULT_SYNTHESIZER_HUMAN_PROMPT = """User Query: {natural_language_query}\nUnstructured Query: {unstructured_query}\nDatabase Results:\n{database_results_json}\nAnswer:"""
