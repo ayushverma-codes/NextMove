@@ -41,13 +41,5 @@ def load_llm(llm_name: str, temperature: float = 0.0):
             api_key=api_key
         )
 
-    elif "ollama" in llm_name:
-        # Keep fallback for local Ollama if needed
-        from langchain_ollama import ChatOllama
-        return ChatOllama(
-            model="llama3.1",
-            temperature=temperature,
-        )
-
     else:
         raise ValueError(f"Unsupported LLM name: {llm_name}")
