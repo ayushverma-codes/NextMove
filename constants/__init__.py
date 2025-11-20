@@ -8,6 +8,10 @@ QUERY_INPUT_FILE_PATH = r"D:\Projects\NextMove\workspace_folder\input\natural_qu
 QUERY_ANALYZE_OUTPUT_FILE_PATH = r"D:\Projects\NextMove\workspace_folder\artifacts\query_analysis.jsonl"
 QUERY_DECOMPOSE_OUTPUT_FILE_PATH = r"D:\Projects\NextMove\workspace_folder\artifacts\query_decompose.jsonl"
 
+# --- NEW: HISTORY CONFIGURATION ---
+HISTORY_FILE_PATH = r"D:\Projects\NextMove\workspace_folder\artifacts\chat_history.json"
+HISTORY_LIMIT_K = 3  # Summarize context after every 3 turns
+
 DEFAULT_LIMIT = 10
 
 # =========================================
@@ -33,7 +37,7 @@ LLM_GROQ = "groq"
 
 # --- CONTROL SWITCH ---
 # Change this value to switch between LLMs
-CURRENT_LLM = LLM_GEMINI 
+CURRENT_LLM = LLM_GEMINI
 # ======================
 
 # =========================================
@@ -111,6 +115,19 @@ Return JSON with key:
 }}
 """
 
+# --- NEW: GEMINI SUMMARIZER PROMPT ---
+GEMINI_SUMMARIZER_PROMPT = """
+You are a Conversation Summarizer. 
+Your goal is to condense the conversation history into a concise context summary that preserves key details (user preferences, specific job titles mentioned, locations, or constraints).
+
+Input format:
+- Current Summary: (The existing summary of older chats)
+- Recent Interaction: (The new messages that triggered the limit)
+
+Output: 
+Return ONLY the new updated summary text. Do not add "Here is the summary".
+"""
+
 # =========================================
 # 5. GROQ SPECIFIC PROMPTS (Optimized for Llama3/Mixtral)
 # =========================================
@@ -162,6 +179,14 @@ Output: JSON ONLY.
 Format: {{ "corrected_sql": "SELECT ..." }}
 """
 
+# --- NEW: GROQ SUMMARIZER PROMPT ---
+GROQ_SUMMARIZER_PROMPT = """
+System: Conversation Summarizer.
+Task: Merge the Current Summary and Recent Interactions into a single concise paragraph.
+Focus: Keep specific filters (salary > 100k, location=Remote) and user intent.
+Output: Plain text summary only.
+"""
+
 # =========================================
 # 6. PROMPT REGISTRY
 # =========================================
@@ -172,12 +197,14 @@ PROMPT_REGISTRY = {
         "synthesizer_system": GEMINI_RESULT_SYNTHESIZER_SYSTEM_PROMPT,
         "retry_global": GEMINI_RETRY_SYSTEM_PROMPT,
         "retry_translation": GEMINI_TRANSLATE_RETRY_SYSTEM_PROMPT,
+        "summarizer": GEMINI_SUMMARIZER_PROMPT  # <--- ADDED
     },
     LLM_GROQ: {
         "analyzer_system": GROQ_QUERY_ANALYZER_SYSTEM_PROMPT,
         "synthesizer_system": GROQ_RESULT_SYNTHESIZER_SYSTEM_PROMPT,
         "retry_global": GROQ_RETRY_SYSTEM_PROMPT,
         "retry_translation": GROQ_TRANSLATE_RETRY_SYSTEM_PROMPT,
+        "summarizer": GROQ_SUMMARIZER_PROMPT    # <--- ADDED
     }
 }
 

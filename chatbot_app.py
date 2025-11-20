@@ -1,5 +1,3 @@
-# D:\Projects\NextMove\chatbot_app.py
-
 import streamlit as st
 import requests
 import json
@@ -14,16 +12,21 @@ st.set_page_config(
 
 # --- API Endpoint ---
 FASTAPI_ENDPOINT = "http://127.0.0.1:8000/run"
-
 # --- Page Title and Sidebar ---
 st.title("🤖 NextMove Job Chatbot")
 
 with st.sidebar:
-    st.header("Mode")
-    debug_mode = st.checkbox("Debug Mode", value=False)
-    st.caption("If Debug Mode is on, you will see the intermediate outputs from the pipeline.")
+    st.header("Settings")
     
-    if st.button("Clear Chat History"):
+    # 1. Debug Mode Toggle
+    debug_mode = st.checkbox("🛠️ Debug Mode", value=False, help="Show intermediate steps (SQL, JSON, etc.)")
+    
+    # 2. History/Context Toggle
+    use_history = st.checkbox("🧠 History Aware", value=True, help="Allow the bot to remember previous messages.")
+    
+    st.divider()
+    
+    if st.button("🗑️ Clear Chat UI"):
         st.session_state.messages = []
         st.rerun()
 
@@ -56,8 +59,12 @@ if prompt := st.chat_input("Ask about job postings..."):
         start_time = time.time()
         
         try:
-            # Prepare request payload
-            payload = {"query": prompt, "debug_mode": debug_mode}
+            # UPDATED PAYLOAD with 'use_history'
+            payload = {
+                "query": prompt, 
+                "debug_mode": debug_mode,
+                "use_history": use_history
+            }
             
             # Send POST request
             response = requests.post(FASTAPI_ENDPOINT, json=payload, timeout=300)

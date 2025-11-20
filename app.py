@@ -1,5 +1,3 @@
-# D:\Projects\NextMove\app.py
-
 from fastapi import FastAPI, Response
 from pydantic import BaseModel
 from typing import Optional, Dict, Any
@@ -19,7 +17,8 @@ app = FastAPI(title="NextMove Query Processing API")
 # ---------------------
 class QueryRequest(BaseModel):
     query: str
-    debug_mode: Optional[bool] = False # Use one flag for debug mode
+    debug_mode: Optional[bool] = False 
+    use_history: Optional[bool] = False # <--- NEW FIELD
 
 
 # ---------------------
@@ -34,7 +33,7 @@ class DecomposeResponse(BaseModel):
 
 class RunResponse(BaseModel):
     final_answer: str
-    debug_info: Optional[Dict[str, Any]] = None # Add debug_info field
+    debug_info: Optional[Dict[str, Any]] = None
 
 class ErrorResponse(BaseModel):
     error: str
@@ -79,16 +78,16 @@ def decompose_query(request: QueryRequest):
 @app.post("/run", response_model=RunResponse, responses={500: {"model": ErrorResponse}})
 def run_full_pipeline(request: QueryRequest):
     
-    # Pass the debug_mode flag from the request to the pipeline
+    # Pass both flags to the pipeline
     pipeline_response = run_pipeline(
         natural_language_query=request.query,
-        debug_mode=request.debug_mode
+        debug_mode=request.debug_mode,
+        use_history=request.use_history # <--- PASSING FLAG
     )
 
     if pipeline_response is None:
         return Response(content=json.dumps({"error": "Pipeline execution failed"}), status_code=500, media_type="application/json")
     
-    # Return the entire response dictionary (final_answer + debug_info)
     return pipeline_response
 
 

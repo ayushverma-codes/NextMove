@@ -41,20 +41,31 @@ def parse_llm_json_response(llm_response: str) -> dict:
 
     return result_json
 
-def query_analyze(natural_query: str):
+def query_analyze(natural_query: str, chat_history_context: str = ""):
     # Get the specific prompt for the active LLM
     system_prompt = CURRENT_PROMPTS["analyzer_system"]
     
+    # Construct the human prompt manually to inject context safely
+    context_block = ""
+    if chat_history_context:
+        context_block = f"PREVIOUS CONVERSATION CONTEXT:\n{chat_history_context}\n\n"
+
+    # Format the standard prompt
+    current_request = QUERY_ANALYZER_HUMAN_PROMPT.format(user_query=natural_query)
+    
+    # Combine
+    full_human_content = f"{context_block}CURRENT REQUEST:\n{current_request}"
+    
     chat_prompt = ChatPromptTemplate.from_messages([
         ("system", system_prompt),
-        ("human", QUERY_ANALYZER_HUMAN_PROMPT),
+        ("human", full_human_content),
     ])
 
     prompt = chat_prompt.invoke(
         {
             "DEFAULT_LIMIT": DEFAULT_LIMIT,
             "schema": ", ".join(GLOBAL_SCHEMA.keys()),
-            "user_query": natural_query,
+            # Note: user_query is already formatted into full_human_content
         }
     )
 

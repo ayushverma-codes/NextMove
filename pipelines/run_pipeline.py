@@ -1,10 +1,11 @@
-# D:\Projects\NextMove\pipelines\run_pipeline.py
-
 import json
-from pipelines.query_analyzer_test_pipeline import run_single_query
+# Ensure we import the analyzer directly to pass the context argument
+from components.analyzer_and_decomposer.query_analyzer import query_analyze
 from pipelines.query_decomposer_test_pipeline import decompose_single_query
 from components.connectors.mysql_connector import MySQLConnector
-from components.synthesizer.result_synthesizer import synthesize_results 
+from components.synthesizer.result_synthesizer import synthesize_results
+# Import History Handler
+from components.history_manager.history_handler import HistoryHandler
 
 from entities.config import (
     LINKEDIN_DB_HOST, LINKEDIN_DB_USER, LINKEDIN_DB_PASSWORD, LINKEDIN_DB_NAME,
@@ -15,16 +16,37 @@ from typing import Dict, Any
 DB_CONNECTION_TIMEOUT = 3 # 3 seconds
 
 
-def run_pipeline(natural_language_query: str, debug_mode: bool = False) -> Dict[str, Any]:
+def run_pipeline(
+    natural_language_query: str, 
+    debug_mode: bool = False,
+    use_history: bool = False
+) -> Dict[str, Any]:
     """
     Executes the full NextMove pipeline and returns a structured dictionary.
-    ...
+    Supports History Awareness and Debug Mode.
     """
     print("=== NextMove Pipeline Started ===\n")
 
+    # --- 0. Context Management ---
+    chat_context = ""
+    history_handler = None
+
+    if use_history:
+        print("[INFO] History Aware Mode: ON. Loading context...")
+        try:
+            history_handler = HistoryHandler()
+            chat_context = history_handler.get_context_string()
+        except Exception as e:
+            print(f"[WARN] Failed to load history: {e}. Proceeding without context.")
+    else:
+        print("[INFO] History Aware Mode: OFF.")
+
     # Step 1: Analyze Query
     print("[STEP 1] Analyzing query...")
-    analyzed_result = run_single_query(natural_language_query)
+    
+    # Pass the context (it will be empty if use_history is False)
+    analyzed_result = query_analyze(natural_language_query, chat_history_context=chat_context)
+    
     if analyzed_result is None:
         print("[ERROR] Failed to analyze query. Pipeline aborted.")
         return {
@@ -106,7 +128,6 @@ def run_pipeline(natural_language_query: str, debug_mode: bool = False) -> Dict[
 
 
     # Step 4: Synthesize Results
-    # --- MODIFIED: Unpack the new dictionary response ---
     synthesis_response = synthesize_results(
         natural_language_query=natural_language_query,
         unstructured_query=unstructured_query,
@@ -114,7 +135,14 @@ def run_pipeline(natural_language_query: str, debug_mode: bool = False) -> Dict[
     )
     final_answer = synthesis_response["final_answer"]
     final_llm_prompts = synthesis_response["prompts_used"]
-    # --- End of Modification ---
+
+    # --- Step 5: Update History (Conditional) ---
+    if use_history and history_handler:
+        print("[STEP 5] Updating Persistent History...")
+        try:
+            history_handler.add_interaction(natural_language_query, final_answer)
+        except Exception as e:
+            print(f"[ERROR] Failed to save history: {e}")
 
     print("\n=== Pipeline Completed ===")
     
@@ -123,10 +151,12 @@ def run_pipeline(natural_language_query: str, debug_mode: bool = False) -> Dict[
         return {
             "final_answer": final_answer,
             "debug_info": {
+                "mode_settings": {"use_history": use_history},
+                "0_history_context": chat_context,
                 "1_query_analysis": analyzed_result,
                 "2_query_decomposition": federated_queries,
                 "3_database_results": db_results,
-                "4_final_llm_prompts": final_llm_prompts  # <-- NEWLY ADDED
+                "4_final_llm_prompts": final_llm_prompts
             }
         }
     else:
