@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import json
 import time
+import uuid
 
 # --- Page Configuration ---
 st.set_page_config(
@@ -10,81 +11,87 @@ st.set_page_config(
     layout="wide"
 )
 
+# --- 1. INITIALIZATION (Must be at the top) ---
+# Initialize Session ID if missing
+if "session_id" not in st.session_state:
+    st.session_state.session_id = str(uuid.uuid4())
+
+# Initialize Chat Messages if missing
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
 # --- API Endpoint ---
 FASTAPI_ENDPOINT = "http://127.0.0.1:8000/run"
-# --- Page Title and Sidebar ---
+
+# --- Page Title ---
 st.title("🤖 NextMove Job Chatbot")
 
+# --- Sidebar & Settings ---
 with st.sidebar:
     st.header("Settings")
     
-    # 1. Debug Mode Toggle
     debug_mode = st.checkbox("🛠️ Debug Mode", value=False, help="Show intermediate steps (SQL, JSON, etc.)")
+    use_history = st.checkbox("🧠 History Aware", value=True, help="Enable persistent memory.")
     
-    # 2. History/Context Toggle
-    use_history = st.checkbox("🧠 History Aware", value=True, help="Allow the bot to remember previous messages.")
+    st.caption(f"Session ID: {st.session_state.session_id[:8]}...") 
     
     st.divider()
     
-    if st.button("🗑️ Clear Chat UI"):
+    if st.button("🗑️ Clear Chat & Reset Session"):
+        # Clear local UI history
         st.session_state.messages = []
+        # Generate new session ID (simulate fresh start)
+        st.session_state.session_id = str(uuid.uuid4())
+        # Rerun immediately to reflect empty state
         st.rerun()
-
-# --- Chat History Initialization ---
-if "messages" not in st.session_state:
-    st.session_state.messages = []
 
 # --- Display Past Messages ---
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
-        # If debug data exists from a previous turn, display it
         if "debug_info" in message:
             with st.expander("Show Debug Info"):
                 st.json(message["debug_info"])
 
 # --- Handle User Input ---
 if prompt := st.chat_input("Ask about job postings..."):
-    # Add user message to chat history
+    # 1. Append user message to state
     st.session_state.messages.append({"role": "user", "content": prompt})
     
-    # Display user message
+    # 2. Display user message immediately
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # --- Call FastAPI Backend ---
+    # 3. Call Backend
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         message_placeholder.markdown("Thinking... ⏳")
         start_time = time.time()
         
         try:
-            # UPDATED PAYLOAD with 'use_history'
+            # Prepare payload
             payload = {
                 "query": prompt, 
                 "debug_mode": debug_mode,
-                "use_history": use_history
+                "use_history": use_history,
+                "session_id": st.session_state.session_id
             }
             
-            # Send POST request
+            # Send Request
             response = requests.post(FASTAPI_ENDPOINT, json=payload, timeout=300)
-            response.raise_for_status() # Raise an exception for bad status codes
+            response.raise_for_status()
             
-            # Parse the response
+            # Parse Response
             data = response.json()
             final_answer = data.get("final_answer", "Sorry, I received an invalid response.")
             debug_info = data.get("debug_info")
             
-            end_time = time.time()
-            elapsed_time = f"(Time: {end_time - start_time:.2f}s)"
-
-            # Display the final answer
+            # Display Answer
             message_placeholder.markdown(final_answer)
 
-            # Store assistant response in history
+            # Store Assistant Response
             assistant_message = {"role": "assistant", "content": final_answer}
             
-            # If in debug mode, show and store debug info
             if debug_mode and debug_info:
                 assistant_message["debug_info"] = debug_info
                 with st.expander("Show Debug Info"):
@@ -93,11 +100,6 @@ if prompt := st.chat_input("Ask about job postings..."):
             st.session_state.messages.append(assistant_message)
 
         except requests.exceptions.ConnectionError:
-            message_placeholder.error("Connection Error: Could not connect to the NextMove API. Is the FastAPI server running?")
-            st.stop()
-        except requests.exceptions.RequestException as e:
-            message_placeholder.error(f"API Error: {e}")
-            st.stop()
+            message_placeholder.error("Connection Error: Is the FastAPI server running?")
         except Exception as e:
-            message_placeholder.error(f"An unexpected error occurred: {e}")
-            st.stop()
+            message_placeholder.error(f"An error occurred: {e}")

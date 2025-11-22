@@ -1,17 +1,15 @@
-# D:\Projects\NextMove\components\translator\SQLTranslator.py
 import re
 from sqlglot import parse_one, exp
-from entities.config import GAV_MAPPINGS, SOURCE_TO_TABLE
+from entities.config import GAV_MAPPINGS
 
 # Regex for safe unquoted identifier (lowercase, numbers, underscore)
 IDENT_RE = re.compile(r"^[a-z_][a-z0-9_]*$")
 
 class SQLTranslator:
-    def __init__(self, source: str, global_table_names=None, dialect: str = "mysql"):
+    def __init__(self, source: str, global_table_names=None, target_table_name: str = None, dialect: str = "mysql"):
         """
-        source: name of the target source as defined in entities.config.GAV_MAPPINGS and SOURCE_TO_TABLE
-        global_table_names: list of logical global table names used in your global queries
-        dialect: 'mysql' or 'postgres'
+        source: name of the target source (e.g., 'Linkedin_source')
+        target_table_name: The actual physical table name (e.g., 'jobs')
         """
         if source not in GAV_MAPPINGS:
             raise ValueError(f"Source '{source}' is not defined in GAV_MAPPINGS.")
@@ -20,35 +18,49 @@ class SQLTranslator:
 
         self.source = source
         self.dialect = dialect.lower()
+        self.target_table_name = target_table_name
+
+        # --- FIX: Add 'job_listings' and 'job_postings' to the detection list ---
+        # This ensures that if the LLM generates 'FROM job_listings', we catch it and map it.
+        self.global_table_names = global_table_names or [
+            "jobs", 
+            "job_listings", 
+            "job_postings", 
+            "Global_Job_Postings",
+            "unified_job_posting"
+        ]
+        
         self.column_mapping = self._generate_column_mapping(source)
-        self.global_table_names = global_table_names or ["jobs"]
-        self.table_mapping = self._generate_table_mapping(source)
+        self.table_mapping = self._generate_table_mapping()
 
     def _generate_column_mapping(self, source):
         mapping = {}
         gav = GAV_MAPPINGS.get(source, {})
         for global_col, source_col in gav.items():
             if source_col:
-                mapping[global_col] = source_col
+                # Normalize to lowercase for consistent lookup
+                mapping[global_col.lower()] = source_col
         return mapping
 
-    def _generate_table_mapping(self, source):
-        target_table = SOURCE_TO_TABLE.get(source)
+    def _generate_table_mapping(self):
+        """
+        Maps ALL detected global table variations to the single target table.
+        """
         table_map = {}
-        if target_table:
+        if self.target_table_name:
             for g in self.global_table_names:
-                table_map[g] = target_table
+                # Map both raw and lowercase versions to be safe
+                table_map[g] = self.target_table_name
+                table_map[g.lower()] = self.target_table_name
         return table_map
 
     def _should_quote(self, identifier: str) -> bool:
-        """Return True if identifier should be quoted (Postgres: reserved or contains spaces)."""
         if identifier is None:
             return False
-        # Only Postgres dialect uses quotes for non-simple identifiers
         if self.dialect == "postgres":
             return not bool(IDENT_RE.match(identifier))
-        # MySQL: only quote if contains spaces or special chars
         if self.dialect == "mysql":
+            # Quote if it contains spaces or special chars
             return not bool(re.match(r"^[A-Za-z0-9_]+$", identifier))
         return False
 
@@ -66,102 +78,87 @@ class SQLTranslator:
     def _map_table(self, table_name: str) -> str:
         if not table_name:
             return table_name
-        mapped = self.table_mapping.get(table_name, table_name)
-        return self._quote_if_needed(mapped)
+        
+        # Case-insensitive lookup
+        lower_name = table_name.lower()
+        
+        # Check if this table name is in our "Global List" that needs mapping
+        # OR if we simply have a direct mapping for it
+        mapped_name = self.table_mapping.get(lower_name, self.table_mapping.get(table_name))
+        
+        if mapped_name:
+            return self._quote_if_needed(mapped_name)
+        
+        # If not found in mapping, return original (quoted if needed)
+        return self._quote_if_needed(table_name)
 
     def _map_column_lookup(self, table, col):
-        # Prefer table-qualified mapping (table.col) then unqualified column mapping
+        # 1. Try fully qualified lookup (table.col)
         if table:
-            fq = f"{table}.{col}"
-            if fq in self.column_mapping:
-                return self.column_mapping[fq]
-        return self.column_mapping.get(col, col)
+            # We don't rely on table name here for mapping keys, usually just global column name
+            pass
+        
+        # 2. Try simple column lookup (case-insensitive input)
+        return self.column_mapping.get(col.lower(), col)
 
     def _extract_table_name(self, node):
-        if node is None:
-            return None
-        if isinstance(node, str):
-            return node
+        if node is None: return None
+        if isinstance(node, str): return node
         if isinstance(node, exp.Table):
-            t = node.this
-            if isinstance(t, str):
-                return t
-            if hasattr(t, "name"):
-                return t.name
-            try:
-                return str(t)
-            except Exception:
-                return None
-        if hasattr(node, "name"):
             return node.name
-        try:
-            return str(node)
-        except Exception:
-            return None
+        return str(node)
 
     def _assign_column_node(self, col_node: exp.Column, parent_table):
         if not isinstance(col_node, exp.Column):
             return
-        tbl = col_node.table or parent_table
-        mapped = self._map_column_lookup(tbl, col_node.name)
+        
+        # Get mapped column name
+        mapped_col_name = self._map_column_lookup(None, col_node.name)
 
-        if isinstance(mapped, str) and "." in mapped:
-            table_part, col_part = mapped.split(".", 1)
-            table_part_mapped = self._map_table(table_part)
-            col_assigned = self._quote_if_needed(col_part)
-            col_node.set("this", col_assigned)
-            col_node.set("table", table_part_mapped)
+        # If specific source requires table prefix (e.g. "t1.col"), split it
+        if isinstance(mapped_col_name, str) and "." in mapped_col_name:
+            table_part, col_part = mapped_col_name.split(".", 1)
+            col_node.set("this", exp.Identifier(this=col_part, quoted=self._should_quote(col_part)))
+            col_node.set("table", exp.Identifier(this=table_part, quoted=self._should_quote(table_part)))
         else:
-            col_assigned = self._quote_if_needed(mapped)
-            col_node.set("this", col_assigned)
+            # Update the column name
+            col_node.set("this", exp.Identifier(this=mapped_col_name, quoted=self._should_quote(mapped_col_name)))
+            
+            # IMPORTANT: If the column had a table alias/name attached (e.g. job_listings.title),
+            # we must update that table identifier to the LOCAL table name too.
             if col_node.table:
-                col_node.set("table", self._map_table(col_node.table))
+                mapped_table = self._map_table(col_node.table)
+                # Remove quotes for the Identifier constructor, it adds them based on quoted=True
+                clean_table = mapped_table.replace("`", "").replace('"', "")
+                col_node.set("table", exp.Identifier(this=clean_table, quoted=True))
 
     def _replace_recursive(self, node, parent_table=None, visited=None):
         if visited is None:
             visited = set()
         if not isinstance(node, exp.Expression):
             return
+        
         node_id = id(node)
         if node_id in visited:
             return
         visited.add(node_id)
 
+        # 1. Handle Table Nodes (FROM clauses, JOINs)
         if isinstance(node, exp.Table):
             tname = self._extract_table_name(node)
             if tname:
-                node.set("this", self._map_table(tname))
+                mapped = self._map_table(tname)
+                # Update node
+                node.set("this", exp.Identifier(this=mapped.replace("`", "").replace('"', ""), quoted=True))
             if node.alias:
                 parent_table = node.alias
 
+        # 2. Handle Column Nodes (SELECT list, WHERE clauses)
         if isinstance(node, exp.Column):
             self._assign_column_node(node, parent_table)
 
-        if isinstance(node, exp.Join):
-            join_target = node.this
-            if isinstance(join_target, exp.Table):
-                jt_name = self._extract_table_name(join_target)
-                if jt_name:
-                    join_target.set("this", self._map_table(jt_name))
-                if join_target.alias:
-                    parent_table = join_target.alias
-            elif isinstance(join_target, str):
-                try:
-                    node.set("this", self._map_table(join_target))
-                except Exception:
-                    pass
-            on_clause = node.args.get("on")
-            if on_clause and isinstance(on_clause, exp.Expression):
-                self._replace_recursive(on_clause, parent_table, visited)
-
-        if hasattr(node, "this") and isinstance(getattr(node, "this"), exp.Expression):
-            self._replace_recursive(node.this, parent_table, visited)
-
-        for child in getattr(node, "expressions", []) or []:
-            if isinstance(child, exp.Expression):
-                self._replace_recursive(child, parent_table, visited)
-
-        for arg in getattr(node, "args", {}).values():
+        # 3. Recurse into args/expressions
+        for arg in node.args.values():
             if isinstance(arg, list):
                 for item in arg:
                     if isinstance(item, exp.Expression):
@@ -171,12 +168,18 @@ class SQLTranslator:
 
     def translate_query(self, query: str) -> str:
         """
-        Translate a query from global schema to target source SQL.
-        Returns SQL string compatible with the specified dialect.
+        Translate a query from global schema to target source SQL using sqlglot.
         """
         try:
+            # Parse
             tree = parse_one(query)
+            
+            # Transform
             self._replace_recursive(tree)
+            
+            # Generate SQL
             return tree.sql(dialect=self.dialect)
+            
         except Exception as e:
-            raise RuntimeError(f"Failed to translate query: {e}") from e
+            print(f"[Translator Error] {e}")
+            return query

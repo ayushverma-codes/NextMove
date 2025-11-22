@@ -4,7 +4,6 @@ from components.validator.SQLValidatorWrapper import FederatedSQLValidator
 from components.translator.MySQL_translator import SQLTranslator
 from components.LLM.query_retry_handler import QueryRetryHandler
 
-
 def prepare_federated_queries(
     analyzed_result: dict,
     max_retries: int = 3,
@@ -49,13 +48,23 @@ def prepare_federated_queries(
 
     # Translate and validate per source
     structured_queries = {}
+    
     for source in GAV_MAPPINGS.keys():
         db_type = SOURCE_TO_DB_Type.get(source, "MySQL")
         dialect = "mysql" if db_type.lower() == "mysql" else "postgres"
+        
+        # Fetch correct target table name from config
+        target_table_name = SOURCE_TO_TABLE.get(source)
+        if not target_table_name:
+            print(f"[WARN] No table mapping found for source {source}. Defaulting to 'jobs'.")
+            target_table_name = "jobs"
 
+        # --- FIX: DO NOT PASS global_table_names MANUALLY ---
+        # Letting it default to None allows the Translator to use its internal comprehensive list
+        # (which includes 'jobs', 'job_listings', etc.)
         translator = SQLTranslator(
             source=source,
-            global_table_names=["Global_Job_Postings"],
+            target_table_name=target_table_name, 
             dialect=dialect
         )
 

@@ -8,7 +8,7 @@ llm = load_llm(CURRENT_LLM)
 
 def parse_llm_json_response(llm_response: str) -> dict:
     """
-    Parses an LLM response that returns JSON wrapped in triple backticks (```json ... ```).
+    Parses an LLM response that returns JSON wrapped in triple backticks.
     """
     # Handle both string and AIMessage object
     raw_content = llm_response.content.strip() if hasattr(llm_response, 'content') else str(llm_response).strip()
@@ -42,35 +42,47 @@ def parse_llm_json_response(llm_response: str) -> dict:
     return result_json
 
 def query_analyze(natural_query: str, chat_history_context: str = ""):
+    """
+    Analyzes the query.
+    CRITICAL: Injects 'chat_history_context' into the prompt to allow Intent Resolution.
+    """
     # Get the specific prompt for the active LLM
     system_prompt = CURRENT_PROMPTS["analyzer_system"]
     
-    # Construct the human prompt manually to inject context safely
-    context_block = ""
+    # --- CONTEXT INJECTION ---
+    # We manually build the top part of the human input to ensure Context is visible
     if chat_history_context:
-        context_block = f"PREVIOUS CONVERSATION CONTEXT:\n{chat_history_context}\n\n"
+        full_human_input = (
+            f"=== PREVIOUS CONVERSATION CONTEXT ===\n"
+            f"{chat_history_context}\n"
+            f"=====================================\n\n"
+            f"LATEST USER QUERY: {natural_query}\n"
+        )
+    else:
+        full_human_input = f"LATEST USER QUERY: {natural_query}"
 
-    # Format the standard prompt
-    current_request = QUERY_ANALYZER_HUMAN_PROMPT.format(user_query=natural_query)
-    
-    # Combine
-    full_human_content = f"{context_block}CURRENT REQUEST:\n{current_request}"
-    
+    # Create the prompt template
     chat_prompt = ChatPromptTemplate.from_messages([
         ("system", system_prompt),
-        ("human", full_human_content),
+        ("human", "{input_content}"), # We pass the combined string here
     ])
 
+    # Fill variables
     prompt = chat_prompt.invoke(
         {
             "DEFAULT_LIMIT": DEFAULT_LIMIT,
             "schema": ", ".join(GLOBAL_SCHEMA.keys()),
-            # Note: user_query is already formatted into full_human_content
+            "input_content": full_human_input 
         }
     )
 
-    # FIX: Use .invoke() instead of calling llm() directly
+    # Invoke LLM
     response = llm.invoke(prompt.messages)
     
     result_json = parse_llm_json_response(response)
+    
+    # Fallback: If LLM forgot to generate 'user_intent', use raw query
+    if result_json and "user_intent" not in result_json:
+        result_json["user_intent"] = natural_query
+
     return result_json

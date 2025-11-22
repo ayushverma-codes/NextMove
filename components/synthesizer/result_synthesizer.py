@@ -1,9 +1,7 @@
-# D:\Projects\NextMove\components\synthesizer\result_synthesizer.py
-
 import json
-from typing import Dict, Any, List
+from typing import Dict, Any
 from constants import (
-    CURRENT_PROMPTS,  # <-- UPDATED: Import the dynamic prompt registry
+    CURRENT_PROMPTS, 
     RESULT_SYNTHESIZER_HUMAN_PROMPT,
     CURRENT_LLM
 )
@@ -14,7 +12,8 @@ from langchain_core.messages import SystemMessage, HumanMessage
 def synthesize_results(
     natural_language_query: str,
     unstructured_query: str,
-    database_results: Dict[str, Any]
+    database_results: Dict[str, Any],
+    user_intent: str = None # <--- NEW: Context Resolved Intent
 ) -> Dict[str, Any]:
     """
     Takes retrieved data, calls LLM, and returns a dictionary with
@@ -28,13 +27,17 @@ def synthesize_results(
         print(f"[WARN] Could not serialize DB results to JSON: {e}")
         results_json = str(database_results)
 
-    # --- Format prompts *before* the try block so they are available in 'except' ---
+    # --- Format prompts ---
     
     # 1. Retrieve the correct System Prompt dynamically based on CURRENT_LLM
     system_prompt_str = CURRENT_PROMPTS["synthesizer_system"]
     
+    # Use resolved intent if available, else raw query
+    intent_to_use = user_intent if user_intent else natural_language_query
+
+    # 2. Format human prompt
     human_prompt_str = RESULT_SYNTHESIZER_HUMAN_PROMPT.format(
-        natural_language_query=natural_language_query,
+        user_intent=intent_to_use, # <--- Use Resolved Intent
         unstructured_query=unstructured_query or "None",
         database_results_json=results_json
     )
@@ -69,10 +72,6 @@ def synthesize_results(
         
     except Exception as e:
         print(f"[ERROR] Final LLM synthesis failed: {e}")
-        if "GEMINI_API_KEY" in str(e) or "GROQ_API_KEY" in str(e):
-            print(f"CRITICAL: API Key for {CURRENT_LLM} not found or invalid.")
-            print("Please make sure your API keys are set in the .env file.")
-        
         # Return a dictionary even on error
         return {
             "final_answer": "I was able to retrieve the data, but I encountered an error when trying to formulate a final answer. Here is the raw data: " + results_json,

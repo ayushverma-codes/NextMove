@@ -1,0 +1,13 @@
+{
+  "summary": "",
+  "recent_turns": [
+    {
+      "user": "what does data analyst do",
+      "ai": "I couldn't find any jobs matching \"what does data analyst do\" in the database.\n\nA Data Analyst collects, processes, and performs statistical analyses on data. They translate numbers into plain language, helping organizations make better business decisions. This often involves using tools like SQL, Excel, Python, R, and data visualization software to identify trends, patterns, and insights."
+    },
+    {
+      "user": "provide latest job listing in this field",
+      "ai": "I couldn't retrieve any job listings at this moment due to a temporary issue connecting to the job databases. Please try again later."
+    }
+  ]
+}
