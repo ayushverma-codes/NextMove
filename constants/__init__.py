@@ -32,7 +32,7 @@ GLOBAL_SCHEMA = {
 LLM_GEMINI = "gemini"
 LLM_GROQ = "groq"
 
-CURRENT_LLM = LLM_GROQ 
+CURRENT_LLM = LLM_GEMINI 
 # =========================================
 
 # =========================================
@@ -45,6 +45,7 @@ You are the Query Analyzer for the NextMove job search system.
 INPUT:
 - Context: Previous conversation summary
 - Query: Latest user message
+- Semantic Hints: Synonyms or related skills derived from a Knowledge Graph.
 
 TASKS:
 
@@ -59,6 +60,10 @@ TASKS:
        → Put that part into unstructured_query only if it is job or job search related otherwise NULL.
    - If both conditions apply → generate both.
    - Set `limit` from the user request if stated; otherwise use DEFAULT_LIMIT.
+   - Use the Semantic Hints to expand the search.
+   - **CRITICAL RULE**: If the Semantic Hints suggest a synonym (e.g., AI -> Artificial Intelligence), or an implicit skill (Data Scientist -> Python), you MUST include them in the SQL using `OR` logic and `LIKE` operators.
+   - Example: If user says "AI jobs" and hint says "AI implies Artificial Intelligence", generate:
+     `WHERE (title LIKE '%AI%' OR title LIKE '%Artificial Intelligence%')`
 
 3. **OUTPUT JSON:**
    - `user_intent`: The fully resolved, standalone user request.

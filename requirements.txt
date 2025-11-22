@@ -17,4 +17,11 @@
 # uvicorn
 # sqlglot
 # streamlit
-langchain-groq
+# langchain-groq
+
+# sentence-transformers
+# networkx
+# torch
+# scikit-learn
+faiss-cpu
+keybert 
