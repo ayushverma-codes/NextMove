@@ -1,3 +1,5 @@
+# D:\Projects\NextMove\pipelines\run_pipeline.py
+
 import json
 from typing import Dict, Any
 from components.analyzer_and_decomposer.query_analyzer import query_analyze
@@ -6,7 +8,7 @@ from components.connectors.mysql_connector import MySQLConnector
 from components.synthesizer.result_synthesizer import synthesize_results
 from components.history_manager.history_handler import HistoryHandler
 from components.learner.graph_learner import GraphLearner 
-from components.synthesizer.deduplicator import ResultDeduplicator # <--- NEW IMPORT
+from components.synthesizer.integration import ResultIntegrator  # <--- UPDATED IMPORT
 
 from entities.config import (
     LINKEDIN_DB_HOST, LINKEDIN_DB_USER, LINKEDIN_DB_PASSWORD, LINKEDIN_DB_NAME,
@@ -22,7 +24,7 @@ def run_pipeline(
     session_id: str = "default_session"
 ) -> Dict[str, Any]:
     """
-    Executes the full NextMove pipeline with Deduplication and Active Learning.
+    Executes the full NextMove pipeline with Integration, Ranking, and Active Learning.
     """
     print(f"=== NextMove Pipeline Started (Session: {session_id}) ===\n")
 
@@ -86,37 +88,49 @@ def run_pipeline(
             LINKEDIN_DB_HOST, LINKEDIN_DB_USER, LINKEDIN_DB_PASSWORD, LINKEDIN_DB_NAME,
             structured_queries.get("Linkedin_source"), "Linkedin"
         )
+        
         db_results["Naukri_source"] = run_mysql(
             NAUKRI_DB_HOST, NAUKRI_DB_USER, NAUKRI_DB_PASSWORD, NAUKRI_DB_NAME,
             structured_queries.get("Naukri_source"), "Naukri"
         )
 
-        # --- NEW: Entity Resolution (Deduplication) ---
-        # Week 2: Creating a "Single View" by merging sources
-        print("[INFO] Deduplicating results from multiple sources...")
+        # --- STEP 3.5: Integration & Ranking (Updated) ---
+        print("[INFO] Integrating and Ranking results...")
         try:
-            deduplicator = ResultDeduplicator()
-            # Isolate successful lists from potential error dicts
+            # Initialize Integrator
+            integrator = ResultIntegrator()
+            
+            # Isolate valid job lists (filter out error dicts)
             valid_job_lists = {k: v for k, v in db_results.items() if isinstance(v, list)}
             
             if valid_job_lists:
-                merged_jobs = deduplicator.deduplicate(valid_job_lists)
+                # Determine Limit (Extract from analyzer result or default to 10)
+                limit = analyzed_result.get("limit", 10)
                 
-                # Reconstruct db_results: Unified list + any errors
-                new_results = {"Unified_Jobs": merged_jobs}
+                # CALL THE INTEGRATOR to Deduplicate + Rank
+                top_k_jobs = integrator.integrate_and_rank(
+                    results_dict=valid_job_lists,
+                    user_intent=user_intent,
+                    limit=limit
+                )
+                
+                # Reconstruct db_results structure for Synthesizer
+                new_results = {"Top_Ranked_Jobs": top_k_jobs}
+                
+                # Preserve errors/messages from individual sources if any occurred
                 for k, v in db_results.items():
                     if isinstance(v, dict) and "error" in v:
-                        new_results[k] = v # Keep the error message
+                        new_results[k] = v 
                 
                 db_results = new_results
-                print(f"[INFO] Deduplication complete. Unified items: {len(merged_jobs)}")
+                print(f"[INFO] Integration complete. Returning top {len(top_k_jobs)} ranked jobs.")
         except Exception as e:
-            print(f"[WARN] Deduplication failed: {e}. Using raw results.")
-        # ----------------------------------------------
+            print(f"[WARN] Integration/Ranking failed: {e}. Using raw results.")
+        # ------------------------------------------------
 
         # --- PHASE 2: ACTIVE LEARNING ---
         try:
-            # Fire the learner to update the graph based on what we found (Unified List)
+            # Fire the learner to update the graph based on what we found
             learner = GraphLearner()
             learner.learn_from_results(user_intent, db_results)
         except Exception as e:
