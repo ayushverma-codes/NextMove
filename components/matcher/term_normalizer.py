@@ -1,7 +1,7 @@
 import json
 import os
 import faiss
-import numpy as np
+import re
 from sentence_transformers import SentenceTransformer
 
 class TermNormalizer:
@@ -13,6 +13,7 @@ class TermNormalizer:
         self.graph_neighbors = {}
         self.synonyms = {}
         self.term_list = []
+        self.term_types = {} # New: mapping term -> type
         self.index = None
         self.model = None
         
@@ -26,6 +27,7 @@ class TermNormalizer:
                     self.graph_neighbors = data.get("graph_neighbors", {})
                     self.synonyms = data.get("synonyms", {})
                     self.term_list = data.get("terms", [])
+                    self.term_types = data.get("term_types", {})
             except Exception as e:
                 print(f"[WARN] Ontology load failed: {e}")
 
@@ -44,6 +46,23 @@ class TermNormalizer:
             return self.term_list[ids[0][0]]
         return None
 
+    def _get_experience_hint(self, word):
+        """Rule-based matching for Experience (The 'How Much')"""
+        word_lower = word.lower()
+        rules = {
+            "fresher": "0-1 years",
+            "graduate": "0-1 years",
+            "entry": "0-2 years",
+            "junior": "1-3 years",
+            "senior": "5+ years",
+            "lead": "8+ years",
+            "intern": "0 years"
+        }
+        for key, val in rules.items():
+            if key in word_lower:
+                return f"Experience Context: '{word}' implies '{val}'"
+        return None
+
     def expand_query(self, natural_query: str) -> str:
         words = natural_query.split()
         hints = []
@@ -51,23 +70,36 @@ class TermNormalizer:
         for word in words:
             clean_word = word.strip("?,.!").lower()
             
-            # 1. Explicit Synonyms (e.g., "ml" -> "Machine Learning")
+            # 1. Check Experience Rules (Rule Based)
+            exp_hint = self._get_experience_hint(clean_word)
+            if exp_hint:
+                hints.append(exp_hint)
+                continue
+
+            # 2. Check Synonyms (Exact Match)
             matched_term = None
             if clean_word in self.synonyms:
                 matched_term = self.synonyms[clean_word]
                 hints.append(f"Synonym: '{word}' implies '{matched_term}'")
             
-            # 2. Vector Search (Fuzzy match)
+            # 3. Vector Search (Fuzzy Match)
             if not matched_term:
                 matched_term = self._semantic_search(word)
             
-            # 3. Graph Context (The Robustness Layer)
-            # If matched_term is "Machine Learning", we find "Data Scientist"
-            if matched_term and matched_term in self.graph_neighbors:
-                related = self.graph_neighbors[matched_term]
-                # Top 5 related terms (roles or skills)
-                top_related = related[:5] 
-                hints.append(f"Graph Context: '{matched_term}' is associated with roles/skills: {top_related}")
+            # 4. Context Generation (Type Aware)
+            if matched_term:
+                # Identify Type (Location vs Role vs Company)
+                t_type = self.term_types.get(matched_term, "entity")
+                
+                if t_type == "location":
+                    hints.append(f"Location Context: '{word}' refers to city '{matched_term}'")
+                elif t_type == "company":
+                    hints.append(f"Company Context: '{word}' refers to '{matched_term}'")
+                elif t_type in ["role", "skill"]:
+                    # Look for graph neighbors (only for roles/skills)
+                    if matched_term in self.graph_neighbors:
+                        related = self.graph_neighbors[matched_term][:4]
+                        hints.append(f"Graph Context: '{matched_term}' is associated with: {related}")
 
         if not hints: return ""
         return "\n[SEMANTIC HINTS FROM KNOWLEDGE GRAPH]\n" + "\n".join(list(set(hints)))

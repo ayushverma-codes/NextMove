@@ -1,55 +1,103 @@
 {
   "terms": [
+    "Data Scientist",
+    "Software Engineer",
     "Frontend Developer",
     "Backend Developer",
-    "Communication",
-    "Machine Learning",
-    "Redux",
-    "AWS",
+    "DevOps Engineer",
     "HR Manager",
-    "MongoDB",
-    "Node.js",
-    "Linux",
-    "Recruiting",
-    "Data Scientist",
-    "HTML",
-    "System Design",
-    "Kubernetes",
+    "Machine Learning",
     "Artificial Intelligence",
-    "Pandas",
-    "Payroll",
-    "Software Engineer",
-    "Spring Boot",
-    "Python",
-    "React",
-    "API",
-    "Data Structures and Algorithms",
-    "Docker",
-    "Microservices",
-    "DSA",
-    "Screening",
-    "CSS",
-    "Jenkins",
-    "Deep Learning",
     "JavaScript",
-    "SQL",
-    "Java",
-    "DevOps Engineer"
+    "React",
+    "Kubernetes",
+    "System Design",
+    "Data Structures and Algorithms",
+    "Bengaluru",
+    "Gurugram",
+    "Mumbai",
+    "Hyderabad",
+    "Pune",
+    "Noida",
+    "Chennai",
+    "Delhi",
+    "Kolkata",
+    "Remote",
+    "Tata Consultancy Services",
+    "Infosys",
+    "Google",
+    "Amazon",
+    "Microsoft",
+    "Flipkart",
+    "Swiggy",
+    "Zomato",
+    "Wipro",
+    "HCLTech",
+    "Accenture",
+    "Reliance Jio",
+    "Paytm"
   ],
+  "term_types": {
+    "Data Scientist": "role",
+    "Software Engineer": "role",
+    "Frontend Developer": "role",
+    "Backend Developer": "role",
+    "DevOps Engineer": "role",
+    "HR Manager": "role",
+    "Machine Learning": "skill",
+    "Artificial Intelligence": "skill",
+    "JavaScript": "skill",
+    "React": "skill",
+    "Kubernetes": "skill",
+    "System Design": "skill",
+    "Data Structures and Algorithms": "skill",
+    "Bengaluru": "location",
+    "Gurugram": "location",
+    "Mumbai": "location",
+    "Hyderabad": "location",
+    "Pune": "location",
+    "Noida": "location",
+    "Chennai": "location",
+    "Delhi": "location",
+    "Kolkata": "location",
+    "Remote": "location",
+    "Tata Consultancy Services": "company",
+    "Infosys": "company",
+    "Google": "company",
+    "Amazon": "company",
+    "Microsoft": "company",
+    "Flipkart": "company",
+    "Swiggy": "company",
+    "Zomato": "company",
+    "Wipro": "company",
+    "HCLTech": "company",
+    "Accenture": "company",
+    "Reliance Jio": "company",
+    "Paytm": "company"
+  },
   "graph_neighbors": {
-    "Frontend Developer": [
-      "React",
-      "JavaScript",
-      "CSS",
-      "HTML",
-      "Redux"
+    "Data Scientist": [
+      "Python",
+      "Machine Learning",
+      "SQL",
+      "Pandas",
+      "Deep Learning"
     ],
-    "Backend Developer": [
-      "Java",
-      "Spring Boot",
-      "Node.js",
-      "MongoDB",
-      "SQL"
+    "Python": [
+      "Data Scientist"
+    ],
+    "Machine Learning": [
+      "Data Scientist"
+    ],
+    "SQL": [
+      "Data Scientist",
+      "Backend Developer"
+    ],
+    "Pandas": [
+      "Data Scientist"
+    ],
+    "Deep Learning": [
+      "Data Scientist"
     ],
     "Software Engineer": [
       "Java",
@@ -58,18 +106,59 @@
       "API",
       "Microservices"
     ],
-    "HR Manager": [
-      "Recruiting",
-      "Communication",
-      "Payroll",
-      "Screening"
+    "Java": [
+      "Software Engineer",
+      "Backend Developer"
     ],
-    "Data Scientist": [
-      "Python",
-      "Machine Learning",
-      "SQL",
-      "Pandas",
-      "Deep Learning"
+    "System Design": [
+      "Software Engineer"
+    ],
+    "DSA": [
+      "Software Engineer"
+    ],
+    "API": [
+      "Software Engineer"
+    ],
+    "Microservices": [
+      "Software Engineer"
+    ],
+    "Frontend Developer": [
+      "React",
+      "JavaScript",
+      "CSS",
+      "HTML",
+      "Redux"
+    ],
+    "React": [
+      "Frontend Developer"
+    ],
+    "JavaScript": [
+      "Frontend Developer"
+    ],
+    "CSS": [
+      "Frontend Developer"
+    ],
+    "HTML": [
+      "Frontend Developer"
+    ],
+    "Redux": [
+      "Frontend Developer"
+    ],
+    "Backend Developer": [
+      "Java",
+      "Spring Boot",
+      "Node.js",
+      "MongoDB",
+      "SQL"
+    ],
+    "Spring Boot": [
+      "Backend Developer"
+    ],
+    "Node.js": [
+      "Backend Developer"
+    ],
+    "MongoDB": [
+      "Backend Developer"
     ],
     "DevOps Engineer": [
       "AWS",
@@ -78,106 +167,41 @@
       "Jenkins",
       "Linux"
     ],
-    "Communication": [
-      "HR Manager"
-    ],
-    "Machine Learning": [
-      "Data Scientist"
-    ],
-    "Redux": [
-      "Frontend Developer"
-    ],
     "AWS": [
       "DevOps Engineer"
     ],
-    "MongoDB": [
-      "Backend Developer"
-    ],
-    "Node.js": [
-      "Backend Developer"
-    ],
-    "Linux": [
-      "DevOps Engineer"
-    ],
-    "Recruiting": [
-      "HR Manager"
-    ],
-    "HTML": [
-      "Frontend Developer"
-    ],
-    "System Design": [
-      "Software Engineer"
-    ],
-    "Artificial Intelligence": [],
-    "Kubernetes": [
-      "DevOps Engineer"
-    ],
-    "Pandas": [
-      "Data Scientist"
-    ],
-    "Payroll": [
-      "HR Manager"
-    ],
-    "Spring Boot": [
-      "Backend Developer"
-    ],
-    "Python": [
-      "Data Scientist"
-    ],
-    "React": [
-      "Frontend Developer"
-    ],
-    "API": [
-      "Software Engineer"
-    ],
-    "Data Structures and Algorithms": [],
     "Docker": [
       "DevOps Engineer"
     ],
-    "Microservices": [
-      "Software Engineer"
-    ],
-    "DSA": [
-      "Software Engineer"
-    ],
-    "Screening": [
-      "HR Manager"
-    ],
-    "CSS": [
-      "Frontend Developer"
+    "Kubernetes": [
+      "DevOps Engineer"
     ],
     "Jenkins": [
       "DevOps Engineer"
     ],
-    "Deep Learning": [
-      "Data Scientist"
+    "Linux": [
+      "DevOps Engineer"
     ],
-    "JavaScript": [
-      "Frontend Developer"
+    "HR Manager": [
+      "Recruiting",
+      "Communication",
+      "Payroll",
+      "Screening"
     ],
-    "SQL": [
-      "Data Scientist",
-      "Backend Developer"
+    "Recruiting": [
+      "HR Manager"
     ],
-    "Java": [
-      "Software Engineer",
-      "Backend Developer"
+    "Communication": [
+      "HR Manager"
+    ],
+    "Payroll": [
+      "HR Manager"
+    ],
+    "Screening": [
+      "HR Manager"
     ]
   },
   "synonyms": {
-    "ml": "Machine Learning",
-    "ai": "Artificial Intelligence",
-    "predictive modeling": "Machine Learning",
-    "js": "JavaScript",
-    "ecmascript": "JavaScript",
-    "react.js": "React",
-    "reactjs": "React",
-    "k8s": "Kubernetes",
-    "lld": "System Design",
-    "hld": "System Design",
-    "architecture": "System Design",
-    "dsa": "Data Structures and Algorithms",
-    "algo": "Data Structures and Algorithms",
     "ds": "Data Scientist",
     "ml engineer": "Data Scientist",
     "ai specialist": "Data Scientist",
@@ -194,6 +218,75 @@
     "sre": "DevOps Engineer",
     "cloud engineer": "DevOps Engineer",
     "human resources": "HR Manager",
-    "talent acquisition": "HR Manager"
+    "talent acquisition": "HR Manager",
+    "ml": "Machine Learning",
+    "ai": "Artificial Intelligence",
+    "predictive modeling": "Machine Learning",
+    "js": "JavaScript",
+    "ecmascript": "JavaScript",
+    "react.js": "React",
+    "reactjs": "React",
+    "k8s": "Kubernetes",
+    "lld": "System Design",
+    "hld": "System Design",
+    "architecture": "System Design",
+    "dsa": "Data Structures and Algorithms",
+    "algo": "Data Structures and Algorithms",
+    "bangalore": "Bengaluru",
+    "blr": "Bengaluru",
+    "bengaluru urban": "Bengaluru",
+    "silicon valley of india": "Bengaluru",
+    "gurgaon": "Gurugram",
+    "ncr": "Delhi",
+    "delhi ncr": "Delhi",
+    "gurugram haryana": "Gurugram",
+    "bombay": "Mumbai",
+    "navi mumbai": "Mumbai",
+    "thane": "Mumbai",
+    "mumbai city": "Mumbai",
+    "hyd": "Hyderabad",
+    "cyberabad": "Hyderabad",
+    "secunderabad": "Hyderabad",
+    "telangana": "Hyderabad",
+    "poona": "Pune",
+    "pimpri-chinchwad": "Pune",
+    "pune city": "Pune",
+    "new okhla": "Noida",
+    "gautam buddh nagar": "Noida",
+    "madras": "Chennai",
+    "chennai city": "Chennai",
+    "new delhi": "Delhi",
+    "calcutta": "Kolkata",
+    "kol": "Kolkata",
+    "work from home": "Remote",
+    "wfh": "Remote",
+    "anywhere": "Remote",
+    "pan india": "Remote",
+    "tcs": "Tata Consultancy Services",
+    "tata": "Tata Consultancy Services",
+    "tcs limited": "Tata Consultancy Services",
+    "infy": "Infosys",
+    "infosys limited": "Infosys",
+    "google india": "Google",
+    "alphabet": "Google",
+    "aws": "Amazon",
+    "amazon development centre": "Amazon",
+    "amazon india": "Amazon",
+    "ms": "Microsoft",
+    "microsoft india": "Microsoft",
+    "msft": "Microsoft",
+    "flipkart internet": "Flipkart",
+    "walmart india": "Flipkart",
+    "bundl technologies": "Swiggy",
+    "swiggy india": "Swiggy",
+    "zomato ltd": "Zomato",
+    "wipro limited": "Wipro",
+    "wipro technologies": "Wipro",
+    "hcl": "HCLTech",
+    "hcl technologies": "HCLTech",
+    "accenture india": "Accenture",
+    "jio": "Reliance Jio",
+    "jio platforms": "Reliance Jio",
+    "one97 communications": "Paytm"
   }
 }
