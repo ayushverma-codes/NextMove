@@ -8,7 +8,7 @@ from components.connectors.mysql_connector import MySQLConnector
 from components.synthesizer.result_synthesizer import synthesize_results
 from components.history_manager.history_handler import HistoryHandler
 from components.learner.graph_learner import GraphLearner 
-from components.synthesizer.integration import ResultIntegrator  # <--- UPDATED IMPORT
+from components.synthesizer.integration import ResultIntegrator 
 
 from entities.config import (
     LINKEDIN_DB_HOST, LINKEDIN_DB_USER, LINKEDIN_DB_PASSWORD, LINKEDIN_DB_NAME,
@@ -82,6 +82,7 @@ def run_pipeline(
                 conn.disconnect()
                 return rows
             except Exception as e:
+                # We return a dict with 'error' key to track failures per source
                 return {"error": f"Failed: {e}"}
 
         db_results["Linkedin_source"] = run_mysql(
@@ -94,44 +95,55 @@ def run_pipeline(
             structured_queries.get("Naukri_source"), "Naukri"
         )
 
-        # --- STEP 3.5: Integration & Ranking (Updated) ---
+        # --- STEP 3.5: Integration & Ranking (Updated for Robustness) ---
         print("[INFO] Integrating and Ranking results...")
         try:
-            # Initialize Integrator
             integrator = ResultIntegrator()
             
-            # Isolate valid job lists (filter out error dicts)
+            # 1. Isolate valid job lists (ignore errors for calculation)
             valid_job_lists = {k: v for k, v in db_results.items() if isinstance(v, list)}
             
+            # 2. Determine Limit
+            limit = analyzed_result.get("limit", 10)
+            
+            # 3. Run Integration Logic
             if valid_job_lists:
-                # Determine Limit (Extract from analyzer result or default to 10)
-                limit = analyzed_result.get("limit", 10)
-                
-                # CALL THE INTEGRATOR to Deduplicate + Rank
                 top_k_jobs = integrator.integrate_and_rank(
                     results_dict=valid_job_lists,
                     user_intent=user_intent,
                     limit=limit
                 )
+            else:
+                top_k_jobs = []
+
+            # 4. ROBUST OUTPUT CONSTRUCTION
+            # If we found jobs, we ONLY send the jobs to the LLM. 
+            # We suppress errors from specific sources so the LLM focuses on the data we found.
+            if top_k_jobs:
+                print(f"[INFO] Success: Found {len(top_k_jobs)} jobs. Suppressing partial errors.")
+                db_results = {"Top_Ranked_Jobs": top_k_jobs}
+            else:
+                # If NO jobs found, check if it was due to errors.
+                # Collect errors to pass to LLM so it can apologize correctly.
+                errors = {k: v for k, v in db_results.items() if isinstance(v, dict) and "error" in v}
                 
-                # Reconstruct db_results structure for Synthesizer
-                new_results = {"Top_Ranked_Jobs": top_k_jobs}
-                
-                # Preserve errors/messages from individual sources if any occurred
-                for k, v in db_results.items():
-                    if isinstance(v, dict) and "error" in v:
-                        new_results[k] = v 
-                
-                db_results = new_results
-                print(f"[INFO] Integration complete. Returning top {len(top_k_jobs)} ranked jobs.")
+                if errors:
+                    print("[WARN] No jobs found due to DB errors.")
+                    db_results = errors # Pass errors to LLM
+                else:
+                    print("[INFO] Query ran successfully but returned 0 results.")
+                    db_results = {"Top_Ranked_Jobs": []} # Empty list implies valid search, just no matches
+
         except Exception as e:
             print(f"[WARN] Integration/Ranking failed: {e}. Using raw results.")
+            # In a catastrophic integration fail, we fall back to whatever db_results we had
         # ------------------------------------------------
 
         # --- PHASE 2: ACTIVE LEARNING ---
         try:
             # Fire the learner to update the graph based on what we found
             learner = GraphLearner()
+            # We pass the raw db_results or integrated ones; learner handles format check
             learner.learn_from_results(user_intent, db_results)
         except Exception as e:
             print(f"[WARN] Learning step skipped: {e}")
