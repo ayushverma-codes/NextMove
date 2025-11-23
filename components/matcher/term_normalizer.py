@@ -2,10 +2,12 @@ import json
 import os
 import faiss
 import re
+import difflib
 from sentence_transformers import SentenceTransformer
 
 class TermNormalizer:
     def __init__(self):
+        # Define paths relative to this file
         base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         self.ontology_path = os.path.join(base_dir, 'workspace_folder', 'artifacts', 'ontology.json')
         self.index_path = os.path.join(base_dir, 'workspace_folder', 'artifacts', 'skills.index')
@@ -13,13 +15,15 @@ class TermNormalizer:
         self.graph_neighbors = {}
         self.synonyms = {}
         self.term_list = []
-        self.term_types = {} # New: mapping term -> type
+        self.term_types = {} # mapping term -> type
         self.index = None
         self.model = None
         
+        # Load the resources immediately
         self._load_resources()
 
     def _load_resources(self):
+        """Loads the JSON ontology and FAISS index."""
         if os.path.exists(self.ontology_path):
             try:
                 with open(self.ontology_path, 'r') as f:
@@ -30,6 +34,8 @@ class TermNormalizer:
                     self.term_types = data.get("term_types", {})
             except Exception as e:
                 print(f"[WARN] Ontology load failed: {e}")
+        else:
+            print(f"[WARN] Ontology file missing at {self.ontology_path}")
 
         if os.path.exists(self.index_path):
             try:
@@ -37,17 +43,41 @@ class TermNormalizer:
                 self.model = SentenceTransformer('all-MiniLM-L6-v2')
             except Exception as e:
                 print(f"[WARN] FAISS load failed: {e}")
+        else:
+            print(f"[WARN] FAISS index missing at {self.index_path}")
+
+    def _lexical_search(self, query_term, threshold=0.85):
+        """
+        Week 5: Lexical Matching (Sequence/Edit Distance).
+        Catches typos in specific entity names (e.g., 'Flipcart' -> 'Flipkart').
+        """
+        if not self.term_list:
+            return None
+        # get_close_matches uses a variation of Ratcliff-Obershelp similarity
+        matches = difflib.get_close_matches(query_term, self.term_list, n=1, cutoff=threshold)
+        return matches[0] if matches else None
 
     def _semantic_search(self, query_term, threshold=0.7):
+        """
+        Week 5: Vector-based Semantic Matching.
+        """
         if not self.index or not self.model: return None
-        vec = self.model.encode([query_term])
-        distances, ids = self.index.search(vec, 1)
-        if ids[0][0] != -1 and distances[0][0] < threshold:
-            return self.term_list[ids[0][0]]
+        
+        try:
+            vec = self.model.encode([query_term])
+            distances, ids = self.index.search(vec, 1)
+            
+            best_id = ids[0][0]
+            dist = distances[0][0]
+            
+            if best_id != -1 and dist < threshold:
+                return self.term_list[best_id]
+        except Exception:
+            pass
         return None
 
     def _get_experience_hint(self, word):
-        """Rule-based matching for Experience (The 'How Much')"""
+        """Rule-based matching for Experience levels."""
         word_lower = word.lower()
         rules = {
             "fresher": "0-1 years",
@@ -64,6 +94,9 @@ class TermNormalizer:
         return None
 
     def expand_query(self, natural_query: str) -> str:
+        """
+        Main function to analyze the query and return semantic hints.
+        """
         words = natural_query.split()
         hints = []
         
@@ -82,10 +115,17 @@ class TermNormalizer:
                 matched_term = self.synonyms[clean_word]
                 hints.append(f"Synonym: '{word}' implies '{matched_term}'")
             
-            # 3. Vector Search (Fuzzy Match)
+            # 3. HYBRID MATCHING (Lexical + Semantic)
             if not matched_term:
-                matched_term = self._semantic_search(word)
-            
+                # A. Try Lexical First (Fast, catches typos)
+                matched_term = self._lexical_search(word)
+                if matched_term:
+                     hints.append(f"Spelling Correction: '{word}' treated as '{matched_term}'")
+                
+                # B. If no lexical match, try Semantic (Vector)
+                else:
+                    matched_term = self._semantic_search(word)
+
             # 4. Context Generation (Type Aware)
             if matched_term:
                 # Identify Type (Location vs Role vs Company)

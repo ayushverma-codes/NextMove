@@ -5,7 +5,8 @@ from pipelines.query_decomposer_test_pipeline import decompose_single_query
 from components.connectors.mysql_connector import MySQLConnector
 from components.synthesizer.result_synthesizer import synthesize_results
 from components.history_manager.history_handler import HistoryHandler
-from components.learner.graph_learner import GraphLearner # <--- NEW IMPORT
+from components.learner.graph_learner import GraphLearner 
+from components.synthesizer.deduplicator import ResultDeduplicator # <--- NEW IMPORT
 
 from entities.config import (
     LINKEDIN_DB_HOST, LINKEDIN_DB_USER, LINKEDIN_DB_PASSWORD, LINKEDIN_DB_NAME,
@@ -21,7 +22,7 @@ def run_pipeline(
     session_id: str = "default_session"
 ) -> Dict[str, Any]:
     """
-    Executes the full NextMove pipeline with Active Learning.
+    Executes the full NextMove pipeline with Deduplication and Active Learning.
     """
     print(f"=== NextMove Pipeline Started (Session: {session_id}) ===\n")
 
@@ -90,9 +91,32 @@ def run_pipeline(
             structured_queries.get("Naukri_source"), "Naukri"
         )
 
-        # --- PHASE 2: ACTIVE LEARNING (NEW) ---
+        # --- NEW: Entity Resolution (Deduplication) ---
+        # Week 2: Creating a "Single View" by merging sources
+        print("[INFO] Deduplicating results from multiple sources...")
         try:
-            # Fire the learner to update the graph based on what we found
+            deduplicator = ResultDeduplicator()
+            # Isolate successful lists from potential error dicts
+            valid_job_lists = {k: v for k, v in db_results.items() if isinstance(v, list)}
+            
+            if valid_job_lists:
+                merged_jobs = deduplicator.deduplicate(valid_job_lists)
+                
+                # Reconstruct db_results: Unified list + any errors
+                new_results = {"Unified_Jobs": merged_jobs}
+                for k, v in db_results.items():
+                    if isinstance(v, dict) and "error" in v:
+                        new_results[k] = v # Keep the error message
+                
+                db_results = new_results
+                print(f"[INFO] Deduplication complete. Unified items: {len(merged_jobs)}")
+        except Exception as e:
+            print(f"[WARN] Deduplication failed: {e}. Using raw results.")
+        # ----------------------------------------------
+
+        # --- PHASE 2: ACTIVE LEARNING ---
+        try:
+            # Fire the learner to update the graph based on what we found (Unified List)
             learner = GraphLearner()
             learner.learn_from_results(user_intent, db_results)
         except Exception as e:
