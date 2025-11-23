@@ -212,7 +212,10 @@
       "Backend Engineer",
       "Engineer Backend",
       "Senior Software",
-      "Engineer"
+      "Engineer",
+      "Product Manager",
+      "Manager Senior",
+      "Manager"
     ],
     "Give Bengaluru Jobs.": [
       "Software Engineer",
@@ -227,6 +230,22 @@
       "Software Engineer",
       "Backend",
       "Senior"
+    ],
+    "Give Jobs In Bengaluru.": [
+      "Software Engineer",
+      "Backend Engineer",
+      "Engineer Backend",
+      "Senior Software",
+      "Engineer",
+      "Product Manager",
+      "Manager Backend"
+    ],
+    "Find Jobs At Infosys.": [
+      "Marketing Specialist",
+      "Skills Marketing",
+      "Specialist Technical",
+      "Specialist Content",
+      "Experience Design"
     ]
   },
   "synonyms": {

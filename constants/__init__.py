@@ -64,6 +64,8 @@ TASKS:
    - **CRITICAL RULE**: If the Semantic Hints suggest a synonym (e.g., AI -> Artificial Intelligence), or an implicit skill (Data Scientist -> Python), you MUST include them in the SQL using `OR` logic and `LIKE` operators.
    - Example: If user says "AI jobs" and hint says "AI implies Artificial Intelligence", generate:
      `WHERE (title LIKE '%AI%' OR title LIKE '%Artificial Intelligence%')`
+   - ALWAYS use `LIKE '%term%'` for text columns (`title`, `company_name`, `location`, `skills`, `description`).
+   - NEVER use `=` for text columns unless searching for an exact ID or Code.
 
 3. **OUTPUT JSON:**
    - `user_intent`: The fully resolved, standalone user request.
@@ -150,6 +152,8 @@ TASKS:
        → Put that part into unstructured_query only if it is job or job search related otherwise NULL.
    - If both conditions apply → generate both.
    - Set `limit` from the user request if stated; otherwise use DEFAULT_LIMIT.
+   - ALWAYS use `LIKE '%term%'` for text columns (`title`, `company_name`, `location`, `skills`, `description`).
+   - NEVER use `=` for text columns unless searching for an exact ID or Code.
 
 3. **OUTPUT JSON:**
    - `user_intent`: The fully resolved, standalone user request.
