@@ -1,0 +1,199 @@
+{
+  "terms": [
+    "Frontend Developer",
+    "Backend Developer",
+    "Communication",
+    "Machine Learning",
+    "Redux",
+    "AWS",
+    "HR Manager",
+    "MongoDB",
+    "Node.js",
+    "Linux",
+    "Recruiting",
+    "Data Scientist",
+    "HTML",
+    "System Design",
+    "Kubernetes",
+    "Artificial Intelligence",
+    "Pandas",
+    "Payroll",
+    "Software Engineer",
+    "Spring Boot",
+    "Python",
+    "React",
+    "API",
+    "Data Structures and Algorithms",
+    "Docker",
+    "Microservices",
+    "DSA",
+    "Screening",
+    "CSS",
+    "Jenkins",
+    "Deep Learning",
+    "JavaScript",
+    "SQL",
+    "Java",
+    "DevOps Engineer"
+  ],
+  "graph_neighbors": {
+    "Frontend Developer": [
+      "React",
+      "JavaScript",
+      "CSS",
+      "HTML",
+      "Redux"
+    ],
+    "Backend Developer": [
+      "Java",
+      "Spring Boot",
+      "Node.js",
+      "MongoDB",
+      "SQL"
+    ],
+    "Software Engineer": [
+      "Java",
+      "System Design",
+      "DSA",
+      "API",
+      "Microservices"
+    ],
+    "HR Manager": [
+      "Recruiting",
+      "Communication",
+      "Payroll",
+      "Screening"
+    ],
+    "Data Scientist": [
+      "Python",
+      "Machine Learning",
+      "SQL",
+      "Pandas",
+      "Deep Learning"
+    ],
+    "DevOps Engineer": [
+      "AWS",
+      "Docker",
+      "Kubernetes",
+      "Jenkins",
+      "Linux"
+    ],
+    "Communication": [
+      "HR Manager"
+    ],
+    "Machine Learning": [
+      "Data Scientist"
+    ],
+    "Redux": [
+      "Frontend Developer"
+    ],
+    "AWS": [
+      "DevOps Engineer"
+    ],
+    "MongoDB": [
+      "Backend Developer"
+    ],
+    "Node.js": [
+      "Backend Developer"
+    ],
+    "Linux": [
+      "DevOps Engineer"
+    ],
+    "Recruiting": [
+      "HR Manager"
+    ],
+    "HTML": [
+      "Frontend Developer"
+    ],
+    "System Design": [
+      "Software Engineer"
+    ],
+    "Artificial Intelligence": [],
+    "Kubernetes": [
+      "DevOps Engineer"
+    ],
+    "Pandas": [
+      "Data Scientist"
+    ],
+    "Payroll": [
+      "HR Manager"
+    ],
+    "Spring Boot": [
+      "Backend Developer"
+    ],
+    "Python": [
+      "Data Scientist"
+    ],
+    "React": [
+      "Frontend Developer"
+    ],
+    "API": [
+      "Software Engineer"
+    ],
+    "Data Structures and Algorithms": [],
+    "Docker": [
+      "DevOps Engineer"
+    ],
+    "Microservices": [
+      "Software Engineer"
+    ],
+    "DSA": [
+      "Software Engineer"
+    ],
+    "Screening": [
+      "HR Manager"
+    ],
+    "CSS": [
+      "Frontend Developer"
+    ],
+    "Jenkins": [
+      "DevOps Engineer"
+    ],
+    "Deep Learning": [
+      "Data Scientist"
+    ],
+    "JavaScript": [
+      "Frontend Developer"
+    ],
+    "SQL": [
+      "Data Scientist",
+      "Backend Developer"
+    ],
+    "Java": [
+      "Software Engineer",
+      "Backend Developer"
+    ]
+  },
+  "synonyms": {
+    "ml": "Machine Learning",
+    "ai": "Artificial Intelligence",
+    "predictive modeling": "Machine Learning",
+    "js": "JavaScript",
+    "ecmascript": "JavaScript",
+    "react.js": "React",
+    "reactjs": "React",
+    "k8s": "Kubernetes",
+    "lld": "System Design",
+    "hld": "System Design",
+    "architecture": "System Design",
+    "dsa": "Data Structures and Algorithms",
+    "algo": "Data Structures and Algorithms",
+    "ds": "Data Scientist",
+    "ml engineer": "Data Scientist",
+    "ai specialist": "Data Scientist",
+    "sde": "Software Engineer",
+    "sde-1": "Software Engineer",
+    "software developer": "Software Engineer",
+    "coder": "Software Engineer",
+    "ui developer": "Frontend Developer",
+    "react developer": "Frontend Developer",
+    "web designer": "Frontend Developer",
+    "java dev": "Backend Developer",
+    "node.js dev": "Backend Developer",
+    "api engineer": "Backend Developer",
+    "sre": "DevOps Engineer",
+    "cloud engineer": "DevOps Engineer",
+    "human resources": "HR Manager",
+    "talent acquisition": "HR Manager"
+  }
+}

@@ -1,75 +1,73 @@
-# components/matcher/term_normalizer.py
 import json
 import os
-import difflib
+import faiss
+import numpy as np
+from sentence_transformers import SentenceTransformer
 
 class TermNormalizer:
     def __init__(self):
-        self.ontology_path = os.path.join(os.path.dirname(__file__), '../../entities/ontology.json')
+        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        self.ontology_path = os.path.join(base_dir, 'workspace_folder', 'artifacts', 'ontology.json')
+        self.index_path = os.path.join(base_dir, 'workspace_folder', 'artifacts', 'skills.index')
+        
         self.graph_neighbors = {}
         self.synonyms = {}
-        self._load_ontology()
+        self.term_list = []
+        self.index = None
+        self.model = None
+        
+        self._load_resources()
 
-    def _load_ontology(self):
+    def _load_resources(self):
         if os.path.exists(self.ontology_path):
             try:
                 with open(self.ontology_path, 'r') as f:
                     data = json.load(f)
                     self.graph_neighbors = data.get("graph_neighbors", {})
                     self.synonyms = data.get("synonyms", {})
+                    self.term_list = data.get("terms", [])
             except Exception as e:
                 print(f"[WARN] Ontology load failed: {e}")
-        else:
-            print("[WARN] Ontology file not found. Please run scripts/generate_ontology.py")
 
-    def _fuzzy_match(self, term, corpus, threshold=0.8):
-        """
-        Week 5: String Matching. Uses SequenceMatcher (Ratcliff-Obershelp similar logic)
-        to find the closest term in our known vocabulary if exact match fails.
-        """
-        matches = difflib.get_close_matches(term, corpus, n=1, cutoff=threshold)
-        return matches[0] if matches else None
+        if os.path.exists(self.index_path):
+            try:
+                self.index = faiss.read_index(self.index_path)
+                self.model = SentenceTransformer('all-MiniLM-L6-v2')
+            except Exception as e:
+                print(f"[WARN] FAISS load failed: {e}")
+
+    def _semantic_search(self, query_term, threshold=0.7):
+        if not self.index or not self.model: return None
+        vec = self.model.encode([query_term])
+        distances, ids = self.index.search(vec, 1)
+        if ids[0][0] != -1 and distances[0][0] < threshold:
+            return self.term_list[ids[0][0]]
+        return None
 
     def expand_query(self, natural_query: str) -> str:
-        """
-        Analyzes the user query and returns a 'Hint String' with 
-        synonyms and implicit skills.
-        """
         words = natural_query.split()
         hints = []
         
-        # Combine all known keys for fuzzy matching
-        all_known_terms = list(self.graph_neighbors.keys()) + list(self.synonyms.keys())
-        
         for word in words:
-            # 1. Normalization & Typo Correction
             clean_word = word.strip("?,.!").lower()
             
-            # Try to match case-insensitive first
+            # 1. Explicit Synonyms (e.g., "ml" -> "Machine Learning")
             matched_term = None
-            for known in all_known_terms:
-                if known.lower() == clean_word:
-                    matched_term = known
-                    break
+            if clean_word in self.synonyms:
+                matched_term = self.synonyms[clean_word]
+                hints.append(f"Synonym: '{word}' implies '{matched_term}'")
             
-            # If no exact match, try fuzzy
+            # 2. Vector Search (Fuzzy match)
             if not matched_term:
-                matched_term = self._fuzzy_match(clean_word, all_known_terms)
-
-            if matched_term:
-                # 2. Synonym Expansion (Vocabulary Mismatch Problem)
-                if matched_term in self.synonyms:
-                    syn = self.synonyms[matched_term]
-                    hints.append(f"Synonym: '{word}' implies '{syn}'")
-                
-                # 3. Implicit Skill Inference (Graph Traversal)
-                if matched_term in self.graph_neighbors:
-                    related = self.graph_neighbors[matched_term]
-                    # Limit to top 3 related skills to avoid prompt bloat
-                    top_related = related[:3] 
-                    hints.append(f"Implicit Context: '{matched_term}' relates to {top_related}")
-
-        if not hints:
-            return ""
+                matched_term = self._semantic_search(word)
             
-        return "\n[SEMANTIC HINTS FROM KNOWLEDGE GRAPH]\n" + "\n".join(hints)
+            # 3. Graph Context (The Robustness Layer)
+            # If matched_term is "Machine Learning", we find "Data Scientist"
+            if matched_term and matched_term in self.graph_neighbors:
+                related = self.graph_neighbors[matched_term]
+                # Top 5 related terms (roles or skills)
+                top_related = related[:5] 
+                hints.append(f"Graph Context: '{matched_term}' is associated with roles/skills: {top_related}")
+
+        if not hints: return ""
+        return "\n[SEMANTIC HINTS FROM KNOWLEDGE GRAPH]\n" + "\n".join(list(set(hints)))

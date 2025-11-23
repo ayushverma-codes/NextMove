@@ -5,6 +5,7 @@ from pipelines.query_decomposer_test_pipeline import decompose_single_query
 from components.connectors.mysql_connector import MySQLConnector
 from components.synthesizer.result_synthesizer import synthesize_results
 from components.history_manager.history_handler import HistoryHandler
+from components.learner.graph_learner import GraphLearner # <--- NEW IMPORT
 
 from entities.config import (
     LINKEDIN_DB_HOST, LINKEDIN_DB_USER, LINKEDIN_DB_PASSWORD, LINKEDIN_DB_NAME,
@@ -20,7 +21,7 @@ def run_pipeline(
     session_id: str = "default_session"
 ) -> Dict[str, Any]:
     """
-    Executes the full NextMove pipeline.
+    Executes the full NextMove pipeline with Active Learning.
     """
     print(f"=== NextMove Pipeline Started (Session: {session_id}) ===\n")
 
@@ -88,6 +89,16 @@ def run_pipeline(
             NAUKRI_DB_HOST, NAUKRI_DB_USER, NAUKRI_DB_PASSWORD, NAUKRI_DB_NAME,
             structured_queries.get("Naukri_source"), "Naukri"
         )
+
+        # --- PHASE 2: ACTIVE LEARNING (NEW) ---
+        try:
+            # Fire the learner to update the graph based on what we found
+            learner = GraphLearner()
+            learner.learn_from_results(user_intent, db_results)
+        except Exception as e:
+            print(f"[WARN] Learning step skipped: {e}")
+        # --------------------------------------
+
     else:
         print("\n[INFO] No SQL query detected. Bypassing Steps 2 & 3.")
         federated_queries = {"info": "Bypassed: General knowledge query."}
