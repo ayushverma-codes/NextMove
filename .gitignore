@@ -118,3 +118,6 @@ Desktop.ini
 
 # folderx
 workspace_folder/dataset/*.csv
+
+# template.sh
+template.sh
