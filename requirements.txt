@@ -1,0 +1,29 @@
+# transformers
+# torch
+# sentence-transformers
+# mysql-connector-python
+# psycopg2-binary
+# pandas
+# spacy
+# requests
+# tqdm
+# python-dotenv
+# langchain-google-genai
+
+## connectors
+# mysql-connector-python
+
+# fastapi
+# uvicorn
+# sqlglot
+# streamlit
+# langchain-groq
+
+# sentence-transformers
+# networkx
+# torch
+# scikit-learn
+# faiss-cpu
+# keybert 
+# tqdm
+matplotlib

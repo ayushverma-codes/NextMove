@@ -1,0 +1,494 @@
+Role,Synonyms,Skills
+Admin Big Data,Administrator Big Data|Manager Data|Big Data Admin|Manager Big Data|Admin Data|Administrator Data,Hadoop|Spark|MapReduce|Data Lakes|Data Warehousing|Big Data Architecture|NoSQL|Data Modeling|ETL|Cloud Computing|AWS|Azure|Data Governance|Security
+Ansible Operations Engineer,Ansible Operations Specialist|Ansible Operations Programmer|Ansible Ops Engineer|Ansible Ops Developer|Ansible Ops Programmer|Ansible Operations Developer|Ansible Ops Specialist,Ansible|Linux|Automation|Cloud Platforms|CI/CD|Infrastructure as Code|Kubernetes|Docker|AWS|Terraform|Python|Scripting|Networking
+Artifactory Administrator,Artifactory Administratoristrator|Artifactory Ops|Artifactory Admin|Artifactory Manager|Artifactory Manageristrator,Artifactory|CI/CD|Jenkins|Docker|Maven|Gradle|Build Automation|Version Control|Git|Cloud Computing|Linux|JFrog CLI
+Artificial Intelligence / Machine Learning Leader,AI / ML Manager|AI / ML Head|Artificial Intelligence / Machine Learning Manager|Artificial Intelligence / Machine Learning Head|AI / ML Leader,AI Strategy|Machine Learning|Team Management|Project Management|Cloud Computing|Data Science|Deep Learning|Communication|Budgeting|Stakeholder Management
+Artificial Intelligence / Machine Learning Sr.Leader,Artificial Intelligence / Machine Learning Sr.Manager|AI / ML Sr.Manager|AI / ML Sr.Head|Artificial Intelligence / Machine Learning Sr.Head|AI / ML Sr.Leader,AI Strategy|Machine Learning|Team Management|Project Management|Cloud Computing|Data Science|Deep Learning|Communication|Budgeting|Stakeholder Management|Innovation|Mentoring
+Artificial intelligence Architect,Artificial intelligence Lead|AI Designer|AI Lead|Artificial intelligence Designer|AI Strategist|Artificial intelligence Strategist|AI Architect,AI Architecture|Machine Learning|Cloud Computing|Data Science|Deep Learning|System Design|AWS|Azure|Scalability|Security|Model Deployment
+Artificial Intelligence Researcher,AI Researcher,Machine Learning|Deep Learning|Research Methods|Python|TensorFlow|PyTorch|Data Analysis|Statistical Analysis|Algorithm Design|Scientific Writing
+Big Data Architect,Data Designer|Data Strategist|Big Data Lead|Data Lead|Big Data Strategist|Big Data Designer|Data Architect,Hadoop|Spark|Kafka|MapReduce|NoSQL|Data Warehousing|Cloud Computing|AWS|Azure|Data Lakes|Data Modeling|ETL|Data Governance|Security
+Big Data Engineer,Big Data Developer|Data Engineer|Data Developer|Data Specialist|Data Programmer|Big Data Programmer|Big Data Specialist,Hadoop|Spark|Kafka|SQL|NoSQL|Python|Java|Scala|Data Pipelines|ETL|Data Warehousing|Cloud Computing
+Big Data Specialist,Data Specialist,Hadoop|Spark|Data Analysis|Data Visualization|SQL|NoSQL|Data Modeling|ETL|Cloud Computing|Data Mining|Statistical Analysis
+Build and Release Engineer,Build and Release Programmer|Build and Release Specialist|Build and Release Developer,CI/CD|Jenkins|Git|Maven|Gradle|Docker|Kubernetes|Automation|Scripting|Linux|Build Tools
+Build Engineer,Build Developer|Build Specialist|Build Programmer,Maven|Gradle|Ant|Jenkins|CI/CD|Git|Build Automation|Scripting|Linux|Version Control
+Chef Operations Engineer,Chef Operations Developer|Chef Operations Specialist|Chef Ops Specialist|Chef Ops Engineer|Chef Ops Programmer|Chef Operations Programmer|Chef Ops Developer,Chef|Ruby|Automation|Configuration Management|Linux|Cloud Computing|AWS|Azure|Infrastructure as Code
+Data Analysts,Data Specialists|Data Consultants,SQL|Excel|Data Visualization|Power BI|Python|R|Statistics|Data Mining|Data Cleansing|Tableau|ETL|Data Modeling
+Data Architect,Data Designer|Data Lead|Data Strategist,Data Modeling|Data Warehousing|ETL|SQL|NoSQL|Data Governance|Cloud Computing|AWS|Azure|Data Integration|Data Security
+DevOps Architect,DevOps Lead|DevOps Strategist|DevOps Designer,Cloud Computing|AWS|Azure|Google Cloud|Docker|Kubernetes|Terraform|Ansible|CI/CD|Automation|Security|Networking
+DevOps Engineer,DevOps Specialist|DevOps Programmer|DevOps Developer,Docker|Kubernetes|CI/CD|AWS|Azure|Linux|Terraform|Ansible|Jenkins|Git|Automation|Networking|Python|Scripting|Cloud Computing
+ELK Engineer,ELK Developer|ELK Programmer|ELK Specialist,Elasticsearch|Logstash|Kibana|Data Visualization|Log Management|Linux|AWS|Azure|Networking|Security
+Gerrit Administrator,Gerrit Manager|Gerrit Administratoristrator|Gerrit Manageristrator|Gerrit Ops|Gerrit Admin,Gerrit|Git|Code Review|Linux|Automation|Scripting|Version Control
+Jenkins Engineer,Jenkins Specialist|Jenkins Developer|Jenkins Programmer,Jenkins|CI/CD|Automation|Groovy|Scripting|Linux|Docker|Kubernetes|Build Automation|Version Control
+Jira Administrator,Jira Administratoristrator|Jira Manager|Jira Manageristrator|Jira Ops|Jira Admin,Jira|Atlassian Suite|Agile Methodologies|Workflow Configuration|User Management|Project Management
+Kubernetes Operations Engineer,Kubernetes Ops Programmer|Kubernetes Operations Programmer|Kubernetes Ops Developer|Kubernetes Operations Specialist|Kubernetes Ops Engineer|Kubernetes Ops Specialist|Kubernetes Operations Developer,Kubernetes|Docker|Linux|Cloud Computing|AWS|Azure|Networking|CI/CD|Automation|Security
+Machine learning Architect,Machine learning Strategist|ML Strategist|ML Lead|Machine learning Lead|Machine learning Designer|ML Architect|ML Designer,Machine Learning|Deep Learning|Cloud Computing|Data Science|System Design|AWS|Azure|Scalability|Security|Model Deployment
+Machine Learning Engineer,MLE|ML Developer|ML Specialist|ML Engineer|Machine Learning Developer|Machine Learning Specialist|ML Programmer|Machine Learning Programmer,Python|Machine Learning|TensorFlow|Keras|PyTorch|Data Analysis|Deep Learning|Natural Language Processing|Computer Vision|Data Science|Algorithms
+Operations Engineer,Ops Engineer|Operations Specialist|Operations Programmer|Ops Developer|Ops Specialist|Ops Programmer|Operations Developer,Linux|Windows Server|Networking|Troubleshooting|Scripting|Automation|Cloud Computing|Monitoring|System Administration
+Principle Engineer in Artificial Intelligence,Principle Engineer in AI|Principle Specialist in AI|Principle Specialist in Artificial Intelligence|Principle Developer in AI|Principle Programmer in AI|Principle Developer in Artificial Intelligence|Principle Programmer in Artificial Intelligence,AI Strategy|Machine Learning|Deep Learning|Data Science|Python|TensorFlow|Cloud Computing|System Design|Mentoring|Innovation
+Principle Engineer in Big Data,Principle Developer in Data|Principle Specialist in Big Data|Principle Developer in Big Data|Principle Programmer in Big Data|Principle Programmer in Data|Principle Engineer in Data|Principle Specialist in Data,Big Data Architecture|Hadoop|Spark|Kafka|Data Warehousing|Cloud Computing|Data Governance|Mentoring|Innovation
+Principle Engineer in Data Analysis,Principle Programmer in Data Analysis|Principle Developer in Data Analysis|Principle Specialist in Data Analysis,Data Analysis|Statistics|SQL|Python|Data Visualization|Data Modeling|Mentoring|Innovation
+Principle Engineer in Machine Learning,Principle Engineer in ML|Principle Programmer in Machine Learning|Principle Specialist in ML|Principle Developer in ML|Principle Programmer in ML|Principle Developer in Machine Learning|Principle Specialist in Machine Learning,Machine Learning|Deep Learning|Python|TensorFlow|Cloud Computing|Model Deployment|Mentoring|Innovation
+Production Support Engineer,Production Support Programmer|Production Support Developer|Production Support Specialist,Troubleshooting|Linux|Windows Server|Scripting|Networking|Databases|Monitoring|Automation|ITIL
+Puppet Operations Engineer,Puppet Ops Specialist|Puppet Ops Programmer|Puppet Operations Specialist|Puppet Operations Programmer|Puppet Operations Developer|Puppet Ops Developer|Puppet Ops Engineer,Puppet|Ruby|Automation|Configuration Management|Linux|Cloud Computing|AWS|Azure|Infrastructure as Code
+Senior Build and Release Engineer,Senior Build and Release Specialist|Build and Release Engineer Senior|Senior Build and Release Developer|Sr Build and Release Specialist|Sr Build and Release Developer|Senior Build and Release Programmer|Sr Build and Release Engineer|Sr Build and Release Programmer,CI/CD|Jenkins|Git|Maven|Gradle|Docker|Kubernetes|Automation|Scripting|Linux|Build Tools|Leadership|Mentoring
+Senior Build Engineer,Sr Build Developer|Senior Build Developer|Build Engineer Senior|Sr Build Specialist|Sr Build Engineer|Sr Build Programmer|Senior Build Specialist|Senior Build Programmer,Maven|Gradle|Ant|Jenkins|CI/CD|Git|Build Automation|Scripting|Linux|Version Control|Leadership|Mentoring
+Senior DevOps Engineer,Sr DevOps Developer|Senior DevOps Programmer|Sr DevOps Programmer|DevOps Engineer Senior|Senior DevOps Specialist|Senior DevOps Developer|Sr DevOps Specialist|Sr DevOps Engineer,Docker|Kubernetes|CI/CD|AWS|Azure|Linux|Terraform|Ansible|Jenkins|Git|Automation|Networking|Python|Cloud Computing|Leadership
+Site Reliability Engineer (Kubernetes â Docker),Site Reliability Developer (Kubernetes â Docker)|Site Reliability Programmer (Kubernetes â Docker)|Site Reliability Specialist (Kubernetes â Docker),SRE|Kubernetes|Docker|Linux|Cloud Computing|Monitoring|Automation|CI/CD|Networking|Troubleshooting
+Splunk Engineer,Splunk Programmer|Splunk Developer|Splunk Specialist,Splunk|Data Analysis|Log Management|Security|Dashboards|Alerting|Scripting|Linux|AWS|Azure
+.NET Developer,.NET Coder|.NET Engineer|.NET Programmer,.NET|C#|ASP.NET|SQL Server|Web API|MVC|Entity Framework|LINQ|Git|Cloud Computing
+ACCESSIBILITY SPECIALIST,ACCESSIBILITY SPECIALIST,WCAG|ARIA|Accessibility Testing|Assistive Technologies|HTML|CSS|JavaScript|UI/UX|ADA Compliance
+AGILE PROJECT MANAGER,AGILE PROJECT Head|AGILE PROJECT Leader,Agile Methodologies|Scrum|Kanban|Project Management|Stakeholder Management|Communication|Jira|Confluence
+Android Developer,Android Engineer|Android Coder|Android Programmer,Android SDK|Java|Kotlin|UI/UX Design|REST APIs|SQL|Android Studio|Firebase|Mobile Development
+Ansible Automation Engineer,Ansible Automation Specialist|Ansible Automation Programmer|Ansible Automation Developer,Ansible|Automation|Infrastructure as Code|Cloud Computing|AWS|Azure|Linux|Python|Scripting|Networking
+AppDynamics Engineer,AppDynamics Developer|AppDynamics Specialist|AppDynamics Programmer,AppDynamics|Application Performance Monitoring|Troubleshooting|Java|.NET|Cloud Computing|Metrics|Alerting
+Application Security Engineer,Application Security Developer|Application Security Specialist|Application Security Programmer,Application Security|SAST|DAST|Penetration Testing|Vulnerability Management|OWASP|Secure Coding|Cloud Security
+Artifactory Engineer,Artifactory Programmer|Artifactory Developer|Artifactory Specialist,Artifactory|CI/CD|Jenkins|Maven|Gradle|Docker|Build Automation|Version Control|Git|Cloud Computing|Linux
+AWS DevOps Engineer,AWS DevOps Programmer|AWS DevOps Developer|AWS DevOps Specialist,AWS|DevOps|CI/CD|Terraform|Ansible|CloudFormation|Docker|Kubernetes|Linux|Automation|Scripting
+AWS Solutions Architect,AWS Solutions Strategist|AWS Solutions Designer|AWS Solutions Lead,AWS|Cloud Architecture|AWS Lambda|EC2|S3|CloudFormation|DevOps|Terraform|Security|Cloud Security|Networking
+Azure DevOps Engineer,Azure DevOps Developer|Azure DevOps Programmer|Azure DevOps Specialist,Azure|DevOps|CI/CD|Terraform|Ansible|ARM Templates|Docker|Kubernetes|Linux|Automation|Scripting
+Bamboo Engineer,Bamboo Developer|Bamboo Specialist|Bamboo Programmer,Bamboo|CI/CD|Atlassian Suite|Automation|Scripting|Build Automation|Version Control|Git
+Bitbucket Engineer,Bitbucket Programmer|Bitbucket Developer|Bitbucket Specialist,Bitbucket|Git|Version Control|CI/CD|Atlassian Suite|Branching Strategies|Code Review
+Blockchain Developer,Blockchain Programmer|Blockchain Coder|Blockchain Engineer,Blockchain|Ethereum|Smart Contracts|Solidity|Cryptocurrency|Distributed Ledger|Consensus Algorithms|Web3|JavaScript|Node.js
+BUSINESS SYSTEMS ANALYST,BUSINESS SYSTEMS Consultant|BUSINESS SYSTEMS Specialist,Business Analysis|Requirements Gathering|Process Improvement|Stakeholder Management|SQL|Data Analysis|UML|BPMN
+C# Developer,C# Programmer|C# Engineer|C# Coder,C#|.NET|ASP.NET|SQL Server|Web API|MVC|Entity Framework|LINQ|Git|Cloud Computing
+Chef InSpec Engineer,Chef InSpec Specialist|Chef InSpec Developer|Chef InSpec Programmer,Chef InSpec|Compliance as Code|Automation|Security|Configuration Management|Linux|Cloud Computing
+Cloud administrator,Cloud Manager|Cloud Manageristrator|Cloud Admin|Cloud Ops|Cloud Administratoristrator,Cloud Computing|AWS|Azure|Google Cloud|Linux|Networking|Security|Automation|Scripting|Virtualization
+CLOUD ARCHITECT,CLOUD Designer|CLOUD Lead|CLOUD Strategist,Cloud Architecture|AWS|Azure|Google Cloud|Terraform|Cloud Security|Networking|Microservices|CI/CD|Automation|Docker|Kubernetes
+Cloud automation engineer,Cloud automation Programmer|Cloud automation Developer|Cloud automation Specialist,Cloud Computing|Automation|Terraform|Ansible|Python|Scripting|CI/CD|AWS|Azure|Google Cloud
+Cloud engineer,Cloud Programmer|Cloud Specialist|Cloud Developer,Cloud Computing|AWS|Azure|Google Cloud|Linux|Networking|Security|Automation|Scripting|Virtualization
+Cloud network engineer,Cloud network Developer|Cloud network Specialist|Cloud network Programmer,Cloud Networking|AWS|Azure|Google Cloud|VPC|Subnets|Routing|Security Groups|Firewalls
+Cloud Security Engineer,Cloud Security Developer|Cloud Security Programmer|Cloud Security Specialist,Cloud Security|IAM|Identity and Access Management|Encryption|AWS|Azure|GCP|Vulnerability Management|Compliance
+CNC Programmer,CNC Coder|CNC Developer|CNC Engineer,CNC Programming|G-Code|CAD/CAM|Machining|Manufacturing Processes|Blueprints|Toolpath Optimization
+Coder,Coder,Programming|Algorithms|Data Structures|Problem Solving|Debugging|Software Development
+COMPUTER GRAPHICS ANIMATOR,COMPUTER GRAPHICS ANIMATOR,3D Animation|2D Animation|Motion Graphics|Adobe Creative Suite|Maya|Blender|Storyboarding|Visual Effects
+Computer Hardware Engineer,Computer Hardware Developer|Computer Hardware Programmer|Computer Hardware Specialist,Hardware Design|Circuit Design|Embedded Systems|Microprocessors|PCB Design|Testing|Validation
+Computer Network Architect,Computer Network Lead|Computer Network Strategist|Computer Network Designer,Network Design|Routing|Switching|Security|LAN/WAN|TCP/IP|VPN|Firewalls|Cloud Networking
+Computer Programmer,Computer Developer|Computer Engineer|Computer Coder,Programming|Algorithms|Data Structures|Debugging|Software Development|Python|Java|C++
+Computer Research Scientist,Computer Research Researcher|Computer Research Analyst,Research Methods|Data Analysis|Algorithms|Machine Learning|Publications|Scientific Writing|Programming
+Computer Systems Analyst,Computer Systems Specialist|Computer Systems Consultant,System Analysis|Requirements Gathering|Data Analysis|Process Improvement|UML|SQL|Stakeholder Management
+Confluence Engineer,Confluence Programmer|Confluence Specialist|Confluence Developer,Confluence|Atlassian Suite|Collaboration|Documentation|Workflow Configuration|User Management
+Consul Engineer,Consul Programmer|Consul Developer|Consul Specialist,Consul|Service Discovery|Configuration Management|Networking|Automation|Cloud Computing
+Coverage.py Engineer,Coverage.py Developer|Coverage.py Programmer|Coverage.py Specialist,Coverage.py|Python|Testing|Code Coverage|Quality Assurance|CI/CD
+DATA ANALYST,DATA Consultant|DATA Specialist,SQL|Excel|Data Visualization|Power BI|Python|R|Statistics|Data Mining|Data Cleansing|Tableau|ETL|Data Modeling
+Data Engineer,Data Developer|Data Specialist|Data Programmer,SQL|ETL|Data Warehousing|Python|Spark|Hadoop|Cloud Computing|Data Pipelines|Data Modeling
+DATA MODELER,DATA MODELER,Data Modeling|SQL|Data Warehousing|Database Design|ER Diagrams|Data Governance
+DATA SCIENTIST,DATA Researcher|DATA Analyst,Python|R|Machine Learning|Data Science|Statistics|SQL|Hadoop|Spark|Data Wrangling|Data Visualization|Cloud Computing
+Database Administrator,Database Ops|Database Manageristrator|Database Admin|Database Manager|Database Administratoristrator,SQL|Database Management|MySQL|PostgreSQL|Oracle|Database Design|Performance Tuning|Backup and Recovery
+Datadog Engineer,Datadog Programmer|Datadog Developer|Datadog Specialist,Datadog|Monitoring|Alerting|Metrics|Dashboards|Cloud Computing|Linux|Troubleshooting
+Developer,Engineer|Coder|Programmer,Programming|Algorithms|Data Structures|Debugging|Software Development|Python|Java|C++
+DevOps Architect,DevOps Lead|DevOps Strategist|DevOps Designer,Cloud Computing|AWS|Azure|Google Cloud|Docker|Kubernetes|Terraform|Ansible|CI/CD|Automation|Security|Networking
+DevOps Engineer,DevOps Specialist|DevOps Programmer|DevOps Developer,Docker|Kubernetes|CI/CD|AWS|Azure|Linux|Terraform|Ansible|Jenkins|Git|Automation|Networking|Python|Scripting|Cloud Computing
+DEVOPS MANAGER,DEVOPS Head|DEVOPS Leader,DevOps|Team Management|Project Management|CI/CD|Cloud Computing|Automation|Communication|Leadership|Budgeting
+DevSecOps Architect,DevSecOps Strategist|DevSecOps Designer|DevSecOps Lead,DevSecOps|Cloud Security|Kubernetes|Docker|Terraform|Ansible|CI/CD|Security Automation|Vulnerability Management
+DevSecOps Engineer,DevSecOps Specialist|DevSecOps Developer|DevSecOps Programmer,DevSecOps|Kubernetes|Docker|Cloud Security|Penetration Testing|Continuous Security|CI/CD|AWS|Terraform|Vulnerability Scanning
+Director of Engineering,Director of Developering|Director of Programmering|Director of Specialisting,Team Management|Project Management|Software Development|Agile Methodologies|Budgeting|Communication|Leadership
+Docker Engineer,Docker Programmer|Docker Specialist|Docker Developer,Docker|Containerization|Kubernetes|CI/CD|Linux|Cloud Computing|Automation|Networking
+ELK Engineer,ELK Developer|ELK Programmer|ELK Specialist,Elasticsearch|Logstash|Kibana|Data Visualization|Log Management|Linux|AWS|Azure|Networking|Security
+Embedded Software Engineer,Embedded Software Programmer|Embedded Software Developer|Embedded Software Specialist,Embedded C|RTOS|Microcontrollers|Firmware Development|Hardware Design|Communication Protocols|Testing
+Entry Level Developer,Entry Level Programmer|Entry Level Engineer|Entry Level Coder,JavaScript|Java|Python|Git|SQL|HTML|CSS|Data Structures|Algorithms
+Entry Level Network Engineer,Entry Level Network Specialist|Entry Level Network Developer|Entry Level Network Programmer,Networking|TCP/IP|Routing|Switching|Linux|Windows Server|Troubleshooting
+Entry Level Programmer,Entry Level Developer|Entry Level Engineer|Entry Level Coder,Programming|Algorithms|Data Structures|Python|Java|C++|Debugging
+Entry Level Software Developer,Entry Level Software Coder|Entry Level Software Programmer|Entry Level Software Engineer,JavaScript|Java|Python|Git|SQL|HTML|CSS|Data Structures|Algorithms
+Entry Level Software Engineer,Entry Level Software Developer|Entry Level Software Programmer|Entry Level Software Specialist,JavaScript|Java|Python|Git|SQL|HTML|CSS|Data Structures|Algorithms
+Entry Level Web Developer,Entry Level Web Coder|Entry Level Web Engineer|Entry Level Web Programmer,HTML|CSS|JavaScript|Git|Web Development Fundamentals|UI/UX Basics
+Envoy Engineer,Envoy Developer|Envoy Specialist|Envoy Programmer,Envoy|Service Mesh|Networking|Kubernetes|Docker|Cloud Computing|Traffic Management|Security
+Falco Engineer,Falco Developer|Falco Programmer|Falco Specialist,Falco|Security|Kubernetes|Docker|Cloud Computing|Threat Detection|System Monitoring
+FluentD Engineer,FluentD Specialist|FluentD Developer|FluentD Programmer,FluentD|Log Management|Data Collection|Data Processing|Elasticsearch|Kibana|Cloud Computing
+Fortify Engineer,Fortify Developer|Fortify Specialist|Fortify Programmer,Fortify|Static Code Analysis|Security|Vulnerability Management|Software Development|Java|.NET
+FRAMEWORKS SPECIALIST,FRAMEWORKS SPECIALIST,React|Angular|Vue.js|Spring Framework|Django|Framework Development|JavaScript|Java|Python
+Front End Developer,Front End Coder|Front End Engineer|Front End Programmer,JavaScript|HTML|CSS|React|Angular|Vue.js|Node.js|TypeScript|Sass|UI/UX Design
+Front End Web Developer,Front End Web Engineer|Front End Web Programmer|Front End Web Coder,JavaScript|HTML|CSS|React|Angular|Vue.js|Node.js|TypeScript|Sass|UI/UX Design
+Full Stack Developer,Full Stack Engineer|Full Stack Coder|Full Stack Programmer,JavaScript|HTML|CSS|Node.js|React|Angular|Express.js|MongoDB|SQL|Python|Django|DevOps|CI/CD
+Full Stack JAVA Developer/Programmer/Engineer,Full Stack JAVA Developer/Developer/Engineer|Full Stack JAVA Programmer/Programmer/Engineer|Full Stack JAVA Developer/Programmer/Programmer|Full Stack JAVA Developer/Engineer/Engineer|Full Stack JAVA Developer/Programmer/Specialist|Full Stack JAVA Developer/Coder/Engineer|Full Stack JAVA Engineer/Programmer/Engineer|Full Stack JAVA Coder/Programmer/Engineer|Full Stack JAVA Developer/Programmer/Developer,Java|Spring Framework|Hibernate|J2EE|SQL|REST APIs|JUnit|Maven|Git|Jenkins|Cloud Computing|Microservices|JavaScript|HTML|CSS|React
+Full Stack Python Developer/Programmer/Engineer,Full Stack Python Developer/Programmer/Developer|Full Stack Python Developer/Developer/Engineer|Full Stack Python Developer/Programmer/Programmer|Full Stack Python Programmer/Programmer/Engineer|Full Stack Python Engineer/Programmer/Engineer|Full Stack Python Developer/Programmer/Specialist|Full Stack Python Developer/Coder/Engineer|Full Stack Python Coder/Programmer/Engineer|Full Stack Python Developer/Engineer/Engineer,Python|Django|Flask|REST APIs|SQL|Data Structures|Algorithms|Cloud Computing|Linux|Docker|Git|JavaScript|HTML|CSS|React
+Game Developer,Game Engineer|Game Coder|Game Programmer,Unity|C++|Game Design|Game Engines|C#|VR Development|JavaScript|Unreal Engine
+GCP DevOps Engineer,GCP DevOps Programmer|GCP DevOps Specialist|GCP DevOps Developer,Google Cloud|DevOps|CI/CD|Terraform|Ansible|Docker|Kubernetes|Linux|Automation|Scripting
+Gerrit Engineer,Gerrit Developer|Gerrit Specialist|Gerrit Programmer,Gerrit|Git|Code Review|Linux|Automation|Scripting|Version Control
+Git Engineer,Git Specialist|Git Developer|Git Programmer,Git|Version Control|Branching Strategies|Code Review|CI/CD|Automation|Scripting
+Github Engineer,Github Developer|Github Programmer|Github Specialist,GitHub|Git|Version Control|CI/CD|Automation|Scripting|GitHub Actions
+GitLab Engineer,GitLab Specialist|GitLab Developer|GitLab Programmer,GitLab|Git|Version Control|CI/CD|Automation|Scripting|GitLab CI
+Gradle Engineer,Gradle Specialist|Gradle Programmer|Gradle Developer,Gradle|Build Automation|Java|Groovy|CI/CD|Version Control|Git
+Grafana Engineer,Grafana Programmer|Grafana Developer|Grafana Specialist,Grafana|Data Visualization|Monitoring|Alerting|Metrics|Dashboards|Linux|Cloud Computing
+Groovy Engineer,Groovy Specialist|Groovy Developer|Groovy Programmer,Groovy|Scripting|Jenkins|Automation|Java|Build Automation
+INFORMATION ARCHITECT,INFORMATION Lead|INFORMATION Designer|INFORMATION Strategist,Information Architecture|UI/UX Design|User Research|Wireframing|Prototyping|Content Strategy
+Information Security Analyst,Information Security Specialist|Information Security Consultant,Security|Network Security|Firewalls|IDS/IPS|Vulnerability Management|Penetration Testing|Security Auditing
+INTERACTION DESIGNER,INTERACTION DESIGNER,Interaction Design|UI/UX Design|Prototyping|User Research|Wireframing|Usability Testing
+IOS Developer,IOS Coder|IOS Engineer|IOS Programmer,Swift|Objective-C|iOS SDK|XCode|UI/UX Design|REST APIs|SQL|Mobile Development
+Istio Engineer,Istio Specialist|Istio Developer|Istio Programmer,Istio|Service Mesh|Kubernetes|Docker|Cloud Computing|Networking|Traffic Management|Security
+IT Manager,IT Leader|IT Head,Project Management|Team Leadership|Agile Methodologies|Budgeting|IT Infrastructure|Networking|Cloud Computing|Cybersecurity
+JaCoCO Engineer,JaCoCO Developer|JaCoCO Specialist|JaCoCO Programmer,JaCoCO|Code Coverage|Java|Testing|Quality Assurance|CI/CD
+Java Developer,Java Engineer|Java Coder|Java Programmer,Java|Spring Framework|Hibernate|J2EE|SQL|REST APIs|JUnit|Maven|Git|Jenkins|Cloud Computing|Microservices
+JavaScript Developer,JavaScript Engineer|JavaScript Coder|JavaScript Programmer,JavaScript|HTML|CSS|React|Angular|Vue.js|Node.js|TypeScript|Sass|UI/UX Design
+Jenkins Engineer,Jenkins Specialist|Jenkins Developer|Jenkins Programmer,Jenkins|CI/CD|Automation|Groovy|Scripting|Linux|Docker|Kubernetes|Build Automation|Version Control
+JIRA Engineer,JIRA Developer|JIRA Specialist|JIRA Programmer,Jira|Atlassian Suite|Agile Methodologies|Workflow Configuration|User Management|Project Management
+Jr Developer,Jr Engineer|Developer Jr|Jr Programmer|Jr Coder,JavaScript|Java|Python|Git|SQL|HTML|CSS|Data Structures|Algorithms
+Junior Developer,Jr Developer|Jr Programmer|Junior Coder|Jr Coder|Jr Engineer|Junior Engineer|Developer Junior|Junior Programmer,JavaScript|Java|Python|Git|SQL|HTML|CSS|Data Structures|Algorithms
+Junior Front End Developer,Junior Front End Programmer|Jr Front End Programmer|Front End Developer Junior|Junior Front End Coder|Jr Front End Coder|Junior Front End Engineer|Jr Front End Engineer|Jr Front End Developer,JavaScript|HTML|CSS|React|Vue.js|Git|UI/UX Basics
+Junior IOS Developer,IOS Developer Junior|Jr IOS Developer|Jr IOS Coder|Jr IOS Programmer|Junior IOS Engineer|Junior IOS Coder|Jr IOS Engineer|Junior IOS Programmer,Swift|Objective-C|iOS SDK|XCode|UI/UX Basics|Git
+Junior Software Developer,Junior Software Engineer|Jr Software Engineer|Jr Software Developer|Jr Software Coder|Jr Software Programmer|Software Developer Junior|Junior Software Programmer|Junior Software Coder,JavaScript|Java|Python|Git|SQL|HTML|CSS|Data Structures|Algorithms
+Junior Software Engineer,Junior Software Developer|Junior Software Specialist|Jr Software Engineer|Jr Software Developer|Jr Software Programmer|Software Engineer Junior|Junior Software Programmer|Jr Software Specialist,JavaScript|Java|Python|Git|SQL|HTML|CSS|Data Structures|Algorithms
+Junior Web Developer,Jr Web Coder|Web Developer Junior|Jr Web Programmer|Junior Web Engineer|Junior Web Coder|Jr Web Engineer|Jr Web Developer|Junior Web Programmer,HTML|CSS|JavaScript|Git|Web Development Fundamentals|UI/UX Basics
+JUnit Engineer,JUnit Programmer|JUnit Specialist|JUnit Developer,JUnit|Java|Testing|Unit Testing|Test Automation|CI/CD
+kubernetes Administrator,kubernetes Ops|kubernetes Administratoristrator|kubernetes Manageristrator|kubernetes Manager|kubernetes Admin,Kubernetes|Docker|Linux|Cloud Computing|AWS|Azure|Networking|CI/CD|Automation|Security
+Kubernetes Engineer,Kubernetes Developer|Kubernetes Specialist|Kubernetes Programmer,Kubernetes|Docker|Linux|Cloud Computing|AWS|Azure|Networking|CI/CD|Automation|Security
+Machine Learning Engineer,MLE|ML Developer|ML Specialist|ML Engineer|Machine Learning Developer|Machine Learning Specialist|ML Programmer|Machine Learning Programmer,Python|Machine Learning|TensorFlow|Keras|PyTorch|Data Analysis|Deep Learning|Natural Language Processing|Computer Vision|Data Science|Algorithms
+MAVEN Engineer,MAVEN Specialist|MAVEN Programmer|MAVEN Developer,Maven|Java|Build Automation|Dependency Management|CI/CD|Version Control|Git
+Micro services / API Lead Designer,Micro services / API Lead Designer,Microservices|API Design|REST APIs|SOA|Cloud Computing|Java|Python|Security
+MOBILE APP DEVELOPER,MOBILE APP Engineer|MOBILE APP Coder|MOBILE APP Programmer,Android SDK|Java|Kotlin|iOS|Swift|Objective-C|React Native|Flutter|Mobile Development|UI/UX Design
+Mobile Application Developer,Mobile Application Programmer|Mobile Application Engineer|Mobile Application Coder,Android SDK|Java|Kotlin|iOS|Swift|Objective-C|React Native|Flutter|Mobile Development|UI/UX Design
+Mulesoft Developer,Mulesoft Coder|Mulesoft Programmer|Mulesoft Engineer,MuleSoft|Anypoint Platform|API Development|Integration|Java|REST APIs|SOA
+Nagios Engineer,Nagios Specialist|Nagios Developer|Nagios Programmer,Nagios|Monitoring|Linux|Scripting|Alerting|System Administration|Networking
+Network and Systems Administrator,Network and Systems Manager|Network and Systems Ops|Network and Systems Manageristrator|Network and Systems Administratoristrator|Network and Systems Admin,Networking|Linux|Windows Server|Troubleshooting|Scripting|Automation|System Administration
+Network Engineer,Network Programmer|Network Specialist|Network Developer,TCP/IP|LAN/WAN|Routing|Switching|Firewalls|VPN|Cisco|Security|Networking Protocols
+New Grad Software Engineer,New Grad Software Specialist|New Grad Software Programmer|New Grad Software Developer,JavaScript|Java|Python|Git|SQL|HTML|CSS|Data Structures|Algorithms
+New Relic Engineer,New Relic Specialist|New Relic Developer|New Relic Programmer,New Relic|Application Performance Monitoring|Troubleshooting|Java|.NET|Cloud Computing|Metrics|Alerting
+Nexus Engineer,Nexus Specialist|Nexus Developer|Nexus Programmer,Nexus|Artifact Repository|Maven|Gradle|Docker|CI/CD|Build Automation
+Nomad Engineer,Nomad Developer|Nomad Specialist|Nomad Programmer,Nomad|Container Orchestration|Docker|Linux|Cloud Computing|Automation|Networking
+Notary Engineer,Notary Developer|Notary Specialist|Notary Programmer,Notary|Security|Docker|Container Security|Cryptography|Trust Management
+Octopus Deploy Engineer,Octopus Deploy Developer|Octopus Deploy Specialist|Octopus Deploy Programmer,Octopus Deploy|Deployment Automation|CI/CD|.NET|PowerShell|Scripting|Cloud Computing
+OpenShift Engineer,OpenShift Programmer|OpenShift Developer|OpenShift Specialist,OpenShift|Kubernetes|Docker|Linux|Cloud Computing|CI/CD|Automation|Security
+OpenStack Engineer,OpenStack Programmer|OpenStack Developer|OpenStack Specialist,OpenStack|Cloud Computing|Virtualization|Networking|Linux|Automation|Scripting
+Oracle Developer,Oracle Programmer|Oracle Coder|Oracle Engineer,Oracle|SQL|PL/SQL|Database Design|Performance Tuning|ETL
+Oracle SQL Developer,Oracle SQL Programmer|Oracle SQL Coder|Oracle SQL Engineer,Oracle SQL Developer|SQL|PL/SQL|Database Development|Performance Tuning|ETL
+Packer Engineer,Packer Developer|Packer Programmer|Packer Specialist,Packer|Infrastructure as Code|Cloud Computing|Automation|AWS|Azure|Google Cloud
+PHP Developer,PHP Engineer|PHP Coder|PHP Programmer,PHP|MySQL|Laravel|JavaScript|CSS|HTML|RESTful APIs|Symfony|Git
+Powershell Engineer,Powershell Developer|Powershell Specialist|Powershell Programmer,PowerShell|Scripting|Automation|Windows Server|Cloud Computing|Active Directory
+PRODUCT MANAGER,PRODUCT Head|PRODUCT Leader,Product Management|Agile Methodologies|User Research|Roadmap Planning|Stakeholder Management|Communication
+Programmer,Engineer|Coder|Developer,Programming|Algorithms|Data Structures|Debugging|Software Development|Python|Java|C++
+Programmer Analyst,Coder Analyst|Programmer Consultant|Developer Analyst|Engineer Analyst|Programmer Specialist,Programming|Data Analysis|Requirements Gathering|SQL|Data Modeling|Process Improvement
+Prometheus Engineer,Prometheus Developer|Prometheus Specialist|Prometheus Programmer,Prometheus|Monitoring|Alerting|Metrics|Kubernetes|Docker|Cloud Computing
+Puppet Engineer,Puppet Programmer|Puppet Developer|Puppet Specialist,Puppet|Ruby|Automation|Configuration Management|Linux|Cloud Computing|AWS|Azure|Infrastructure as Code
+PyTest Engineer,PyTest Developer|PyTest Specialist|PyTest Programmer,PyTest|Python|Testing|Unit Testing|Test Automation|CI/CD
+Python Developer,Python Coder|Python Engineer|Python Programmer,Python|Django|Flask|REST APIs|SQL|Data Structures|Algorithms|Cloud Computing|Linux|Docker|Git
+QA Engineer,QA Programmer|QA Specialist|QA Developer,Automation Testing|Selenium|JUnit|TestNG|CI/CD|Python|Git|Jenkins|Test Automation|Agile Testing|Performance Testing
+React Developer,React Coder|React Engineer|React Programmer,JavaScript|React|HTML|CSS|Node.js|Redux|UI/UX Design|Git
+Robotics Engineer,Robotics Programmer|Robotics Developer|Robotics Specialist,Robotics|C++|Python|ROS|Embedded Systems|Control Systems|Sensors|Actuators
+RUBY ON RAILS DEVELOPER,RUBY ON RAILS Coder|RUBY ON RAILS Programmer|RUBY ON RAILS Engineer,Ruby on Rails|Ruby|SQL|HTML|CSS|JavaScript|REST APIs|Git
+Salesforce Developer,Salesforce Coder|Salesforce Engineer|Salesforce Programmer,Salesforce|Apex|Visualforce|Lightning|SOQL|Salesforce Administration|REST APIs
+Search Engine Optimization,Search Engine Optimization,SEO|Keyword Research|On-Page Optimization|Off-Page Optimization|Content Marketing|Analytics
+SECURITY SPECIALIST,SECURITY SPECIALIST,Security|Network Security|Firewalls|IDS/IPS|Vulnerability Management|Penetration Testing|Security Auditing
+Selenium Engineer,Selenium Developer|Selenium Programmer|Selenium Specialist,Selenium|Test Automation|Java|Python|WebDriver|CI/CD|Testing Frameworks
+Senior Ansible Development Engineer,Senior Ansible Development Specialist|Ansible Development Engineer Senior|Sr Ansible Development Engineer|Senior Ansible Development Developer|Sr Ansible Development Programmer|Sr Ansible Development Specialist|Sr Ansible Development Developer|Senior Ansible Development Programmer,Ansible|Automation|Infrastructure as Code|Cloud Computing|AWS|Azure|Linux|Python|Scripting|Networking|Leadership
+Senior Cloud Architect,Sr Cloud Strategist|Senior Cloud Lead|Senior Cloud Strategist|Sr Cloud Lead|Sr Cloud Architect|Cloud Architect Senior|Sr Cloud Designer|Senior Cloud Designer,Cloud Architecture|AWS|Azure|Google Cloud|Microservices|Kubernetes|Docker|Security|Leadership
+Senior DevOps Architect,Sr DevOps Designer|Sr DevOps Architect|Sr DevOps Lead|Sr DevOps Strategist|DevOps Architect Senior|Senior DevOps Lead|Senior DevOps Designer|Senior DevOps Strategist,Cloud Computing|AWS|Azure|Google Cloud|Docker|Kubernetes|Terraform|Ansible|CI/CD|Automation|Security|Networking|Leadership
+Senior DevOps Engineer,Sr DevOps Developer|Senior DevOps Programmer|Sr DevOps Programmer|DevOps Engineer Senior|Senior DevOps Specialist|Senior DevOps Developer|Sr DevOps Specialist|Sr DevOps Engineer,Docker|Kubernetes|CI/CD|AWS|Azure|Linux|Terraform|Ansible|Jenkins|Git|Automation|Networking|Python|Cloud Computing|Leadership
+Senior DevSecOps Architect,Senior DevSecOps Strategist|Sr DevSecOps Designer|Sr DevSecOps Strategist|Sr DevSecOps Architect|DevSecOps Architect Senior|Senior DevSecOps Designer|Senior DevSecOps Lead|Sr DevSecOps Lead,DevSecOps|Cloud Security|Kubernetes|Docker|Terraform|Ansible|CI/CD|Security Automation|Vulnerability Management|Leadership
+Senior SRE Architect,Senior SRE Designer|Senior SRE Lead|SRE Architect Senior|Sr SRE Lead|Senior SRE Strategist|Sr SRE Strategist|Sr SRE Designer|Sr SRE Architect,SRE|Monitoring|Kubernetes|Docker|Cloud Platforms|Linux|Automation|DevOps|CI/CD|Python|Networking|Leadership
+Senior SRE Engineer,Sr SRE Specialist|Senior SRE Developer|Sr SRE Engineer|Senior SRE Specialist|SRE Engineer Senior|Sr SRE Developer|Sr SRE Programmer|Senior SRE Programmer,SRE|Monitoring|Kubernetes|Docker|Cloud Platforms|Linux|Automation|DevOps|CI/CD|Python|Networking|Leadership
+Sharepoint Developer,Sharepoint Programmer|Sharepoint Engineer|Sharepoint Coder,SharePoint|.NET|C#|JavaScript|PowerShell|SharePoint Framework|REST APIs
+Software Developer,Software Programmer|Software Engineer|Software Coder,Programming|Algorithms|Data Structures|Debugging|Software Development|Python|Java|C++
+Software Engineer,Software Developer|Software Programmer|Software Specialist,Java|C++|Python|Algorithms|Data Structures|Software Design|Git|Jenkins|CI/CD|Cloud Computing
+SonarQube Engineer,SonarQube Developer|SonarQube Programmer|SonarQube Specialist,SonarQube|Code Quality|Static Code Analysis|Java|.NET|Security|CI/CD
+Splunk Engineer,Splunk Programmer|Splunk Developer|Splunk Specialist,Splunk|Data Analysis|Log Management|Security|Dashboards|Alerting|Scripting|Linux|AWS|Azure
+Splunk Enterprise Security Engineer,Splunk Enterprise Security Programmer|Splunk Enterprise Security Specialist|Splunk Enterprise Security Developer,Splunk Enterprise Security|Security Information and Event Management (SIEM)|Threat Detection|Incident Response|Security Analysis
+SQL Developer,SQL Coder|SQL Engineer|SQL Programmer,SQL|T-SQL|SQL Server|Database Design|Performance Tuning|ETL|SSRS|SSIS|Data Modeling
+SRE Architect,SRE Strategist|SRE Lead|SRE Designer,SRE|Cloud Architecture|Kubernetes|Docker|Monitoring|Incident Management|Automation|CI/CD|Networking
+SRE Engineer,SRE Programmer|SRE Developer|SRE Specialist,SRE|Monitoring|Kubernetes|Docker|Cloud Platforms|Linux|Automation|DevOps|CI/CD|Python
+SYSTEMS ADMINISTRATOR,SYSTEMS Manager|SYSTEMS Admin|SYSTEMS ManagerISTRATOR|SYSTEMS Ops|SYSTEMS AdministratorISTRATOR,Linux Administration|Windows Server Administration|Networking|Troubleshooting|Scripting|Virtualization
+SYSTEMS ENGINEER,SYSTEMS Developer|SYSTEMS Specialist|SYSTEMS Programmer,Systems Design|Linux Administration|Windows Server Administration|Networking|Cloud Computing
+TeamCity Engineer,TeamCity Specialist|TeamCity Programmer|TeamCity Developer,TeamCity|CI/CD|Build Automation|Version Control|Git
+Tech Sales Engineer,Tech Sales Programmer|Tech Sales Specialist|Tech Sales Developer,Technical Sales|Product Knowledge|Customer Engagement|Networking Technologies
+TECHNICAL ACCOUNT MANAGER,TECHNICAL ACCOUNT Head|TECHNICAL ACCOUNT Leader,Account Management|Technical Support|Customer Relationship Management (CRM)|Project Management
+TECHNICAL LEAD,TECHNICAL LEAD,Team Leadership|Project Management|Software Development Lifecycle (SDLC)|Agile Methodologies
+Terraform Engineer,Terraform Programmer|Terraform Developer|Terraform Specialist,Terraform|Infrastructure as Code (IaC)|AWS|Azure|Google Cloud
+TFS Engineer,TFS Programmer|TFS Specialist|TFS Developer,TFS (Team Foundation Server)|.NET Development Tools|.NET Framework
+UDeploy Engineer,UDeploy Programmer|UDeploy Developer|UDeploy Specialist,UDeploy (UrbanCode Deploy)|CI/CD|Automation|Deployment Strategies|Version Control
+UI DESIGNER,UI DESIGNER,UI Design Principles|Wireframing|Prototyping|Adobe Creative Suite|Figma|User Testing
+UI Developer,UI Programmer|UI Engineer|UI Coder,HTML5|CSS3|JavaScript|jQuery|Responsive Design|AngularJS|ReactJS
+Unity Developer,Unity Engineer|Unity Coder|Unity Programmer,Unity3D Engine|C#|Game Development Principles|3D Modeling|Animation
+UX DESIGNER,UX DESIGNER,User Experience Design Principles|User Research|Wireframing|Prototyping|Usability Testing|Interaction Design
+Vault Engineer,Vault Programmer|Vault Specialist|Vault Developer,HashiCorp Vault|Secrets Management|Encryption|Access Control|Cloud Security
+Web Designer (UI/UX Designer),Web Designer (UI/UX Designer),UI/UX Design|Wireframing|Prototyping|Adobe Creative Suite|Figma
+Web Developer,Web Programmer|Web Engineer|Web Coder,HTML5|CSS3|JavaScript|React|Node.js|AngularJS|PHP
+WordPress Developer,WordPress Programmer|WordPress Engineer|WordPress Coder,WordPress|PHP|MySQL|HTML5|CSS3|JavaScript
+XL Deploy Engineer,XL Deploy Specialist|XL Deploy Programmer|XL Deploy Developer,XL Deploy|Deployment Automation|CI/CD|Version Control
+Zabbix Engineer,Zabbix Specialist|Zabbix Developer|Zabbix Programmer,Zabbix|Monitoring Tools|Alerting Systems|Network Monitoring
+ACCESSIBILITY SPECIALIST,ACCESSIBILITY SPECIALIST,Web Accessibility Guidelines|HTML|CSS|JavaScript|User Experience Design
+ADMIN BIG DATA,Administrator BIG DATA|Manager BIG DATA|Manager Data|BIG DATA ADMIN|ADMIN Data|Administrator Data,Big Data Management|Hadoop|Spark|Data Warehousing|SQL
+AGILE PROJECT MANAGER,AGILE PROJECT Head|AGILE PROJECT Leader,Agile Methodologies|Scrum|Kanban|Project Management Tools|Leadership
+ANDROID DEVELOPER,ANDROID Engineer|ANDROID Coder|ANDROID Programmer,Java|Kotlin|Android SDK|Mobile App Development|UI/UX Design
+ANSIBLE AUTOMATION ENGINEER,ANSIBLE AUTOMATION Developer|ANSIBLE AUTOMATION Programmer|ANSIBLE AUTOMATION Specialist,Ansible|Automation Scripts|Linux|Networking|Cloud Computing
+APPLICATION SECURITY ENGINEER,APPLICATION SECURITY Specialist|APPLICATION SECURITY Developer|APPLICATION SECURITY Programmer,Security Protocols|Penetration Testing|Secure Coding Practices|Compliance
+ARTIFACTORY ADMINISTRATOR,ARTIFACTORY Ops|ARTIFACTORY Admin|ARTIFACTORY Manager|ARTIFACTORY AdministratorISTRATOR|ARTIFACTORY ManagerISTRATOR,Artifactory|Repository Management|DevOps Tools|CI/CD Pipelines
+ARTIFACTORY ENGINEER,ARTIFACTORY Programmer|ARTIFACTORY Developer|ARTIFACTORY Specialist,Artifactory|DevOps Practices|Continuous Integration|Software Packaging
+ARTIFICIAL INTELLIGENCE / MACHINE LEARNING LEADER,AI / ML LEADER|AI / ML Manager|AI / ML Head|ARTIFICIAL INTELLIGENCE / MACHINE LEARNING Head|ARTIFICIAL INTELLIGENCE / MACHINE LEARNING Manager,AI/ML Frameworks|Leadership|Strategic Planning|Data Science
+ARTIFICIAL INTELLIGENCE / MACHINE LEARNING SR.LEADER,AI / ML SR.Manager|ARTIFICIAL INTELLIGENCE / MACHINE LEARNING SR.Head|AI / ML SR.Head|AI / ML SR.LEADER|ARTIFICIAL INTELLIGENCE / MACHINE LEARNING SR.Manager,Advanced AI/ML|Leadership|Strategic Vision|Team Management
+ARTIFICIAL INTELLIGENCE ARCHITECT,AI Designer|ARTIFICIAL INTELLIGENCE Strategist|ARTIFICIAL INTELLIGENCE Designer|AI Lead|AI ARCHITECT|AI Strategist|ARTIFICIAL INTELLIGENCE Lead,AI/ML Frameworks|System Architecture|Cloud Computing|Data Modeling
+ARTIFICIAL INTELLIGENCE RESEARCHER,AI RESEARCHER,Research Methodologies|AI/ML Algorithms|Python|Data Analysis
+AWS DEVOPS ENGINEER,AWS DEVOPS Developer|AWS DEVOPS Programmer|AWS DEVOPS Specialist,AWS Services|DevOps Practices|CI/CD Pipelines|Automation
+AWS SOLUTIONS ARCHITECT,AWS SOLUTIONS Strategist|AWS SOLUTIONS Lead|AWS SOLUTIONS Designer,AWS Services|Cloud Architecture|Solution Design|Cost Optimization
+AZURE DEVOPS ENGINEER,AZURE DEVOPS Developer|AZURE DEVOPS Programmer|AZURE DEVOPS Specialist,Azure Services|DevOps Practices|CI/CD Pipelines|Automation
+BAMBOO ENGINEER,BAMBOO Developer|BAMBOO Specialist|BAMBOO Programmer,Bamboo|CI/CD Pipelines|Build Automation|Software Configuration Management
+BIG DATA ARCHITECT,Data Designer|Data Strategist|BIG DATA Lead|BIG DATA Designer|Data Lead|BIG DATA Strategist|Data ARCHITECT,Big Data Technologies|Hadoop|Spark|Data Warehousing|System Design
+BIG DATA ENGINEER,BIG DATA Developer|Data Developer|BIG DATA Specialist|Data Programmer|Data Specialist|Data ENGINEER|BIG DATA Programmer,Hadoop|Spark|ETL Processes|Data Processing|Database Management
+BIG DATA SPECIALIST,Data SPECIALIST,Big Data Technologies|Data Analysis|SQL|Data Mining
+BITBUCKET ENGINEER,BITBUCKET Developer|BITBUCKET Programmer|BITBUCKET Specialist,Bitbucket|Git|Version Control|CI/CD Integration
+BLOCKCHAIN DEVELOPER,BLOCKCHAIN Engineer|BLOCKCHAIN Coder|BLOCKCHAIN Programmer,Blockchain Technologies|Solidity|Cryptography|Smart Contracts
+BUILD AND RELEASE ENGINEER,BUILD AND RELEASE Developer|BUILD AND RELEASE Specialist|BUILD AND RELEASE Programmer,CI/CD Pipelines|Build Systems|Automation|Configuration Management
+BUILD ENGINEER,BUILD Specialist|BUILD Programmer|BUILD Developer,Build Systems|Scripting|Automation|Software Configuration Management
+BUSINESS SYSTEMS ANALYST,BUSINESS SYSTEMS Consultant|BUSINESS SYSTEMS Specialist,Requirements Gathering|Process Analysis|System Design|Documentation
+C# DEVELOPER,C# Programmer|C# Engineer|C# Coder,C#|.NET Framework|ASP.NET|Software Development|Object-Oriented Programming
+CHEF INSPEC ENGINEER,CHEF INSPEC Specialist|CHEF INSPEC Programmer|CHEF INSPEC Developer,Chef Inspec|Compliance Automation|Infrastructure Testing|Ruby
+CHEF OPERATIONS ENGINEER,CHEF OPERATIONS Specialist|CHEF Ops Developer|CHEF OPERATIONS Programmer|CHEF Ops Programmer|CHEF OPERATIONS Developer|CHEF Ops Specialist|CHEF Ops ENGINEER,Chef|Automation|Infrastructure Management|Ruby
+CLOUD ADMINISTRATOR,CLOUD Manager|CLOUD ManagerISTRATOR|CLOUD Ops|CLOUD AdministratorISTRATOR|CLOUD Admin,Cloud Platforms|System Administration|Virtualization|Networking
+CLOUD ARCHITECT,CLOUD Designer|CLOUD Lead|CLOUD Strategist,Cloud Platforms|System Architecture|Cloud Security|DevOps
+CLOUD AUTOMATION ENGINEER,CLOUD AUTOMATION Specialist|CLOUD AUTOMATION Developer|CLOUD AUTOMATION Programmer,Cloud Automation Tools|Scripting|Configuration Management|DevOps
+CLOUD NETWORK ENGINEER,CLOUD NETWORK Developer|CLOUD NETWORK Programmer|CLOUD NETWORK Specialist,Cloud Networking|Virtual Networks|Network Security|Cloud Platforms
+CLOUD SECURITY ENGINEER,CLOUD SECURITY Developer|CLOUD SECURITY Programmer|CLOUD SECURITY Specialist,Cloud Security|Security Protocols|Compliance|Cloud Platforms
+CNC PROGRAMMER,CNC Coder|CNC Developer|CNC Engineer,CNC Machines|CAD/CAM Software|G-Code|Manufacturing Processes
+CODER,CODER,Programming Languages|Scripting|Problem Solving|Software Development
+COMPUTER GRAPHICS ANIMATOR,COMPUTER GRAPHICS ANIMATOR,Animation Software|3D Modeling|Visual Effects|Graphic Design
+COMPUTER HARDWARE ENGINEER,COMPUTER HARDWARE Specialist|COMPUTER HARDWARE Developer|COMPUTER HARDWARE Programmer,Hardware Design|Circuit Design|Embedded Systems|Testing
+COMPUTER NETWORK ARCHITECT,COMPUTER NETWORK Lead|COMPUTER NETWORK Designer|COMPUTER NETWORK Strategist,Network Design|Network Protocols|Security|System Architecture
+COMPUTER PROGRAMMER,COMPUTER Developer|COMPUTER Engineer|COMPUTER Coder,Programming Languages|Algorithms|Software Development|Debugging
+COMPUTER RESEARCH SCIENTIST,COMPUTER RESEARCH Analyst|COMPUTER RESEARCH Researcher,Research Methodologies|Data Analysis|Programming|Scientific Writing
+COMPUTER SYSTEMS ANALYST,COMPUTER SYSTEMS Specialist|COMPUTER SYSTEMS Consultant,Systems Analysis|Requirements Gathering|Process Improvement|IT Consulting
+CONFLUENCE ENGINEER,CONFLUENCE Programmer|CONFLUENCE Developer|CONFLUENCE Specialist,Confluence|Atlassian Suite|Documentation|Collaboration Tools
+CONSUL ENGINEER,CONSUL Developer|CONSUL Programmer|CONSUL Specialist,Consul|Service Discovery|Infrastructure Automation|Networking
+COVERAGE.PY ENGINEER,COVERAGE.PY Specialist|COVERAGE.PY Developer|COVERAGE.PY Programmer,Coverage.py|Python Testing|Test Coverage Analysis|Software Quality
+DATA ANALYST,DATA Consultant|DATA Specialist,Data Analysis|SQL|Data Visualization|Statistical Analysis
+DATA ARCHITECT,DATA Designer|DATA Strategist|DATA Lead,Data Modeling|Database Design|ETL Processes|Data Warehousing
+DATA ENGINEER,DATA Programmer|DATA Developer|DATA Specialist,ETL Processes|Data Warehousing|Big Data Technologies|Database Management
+DATA MODELER,DATA MODELER,Data Modeling Techniques|Database Design|Data Governance|Data Analysis
+DATA SCIENTIST,DATA Researcher|DATA Analyst,Machine Learning|Statistical Analysis|Data Mining|Programming
+DATABASE ADMINISTRATOR,DATABASE Admin|DATABASE Manager|DATABASE Ops|DATABASE ManagerISTRATOR|DATABASE AdministratorISTRATOR,Database Management|SQL|Performance Tuning|Backup and Recovery
+DATADOG ENGINEER,DATADOG Programmer|DATADOG Developer|DATADOG Specialist,Datadog|Monitoring|System Performance|Cloud Infrastructure
+DEVOPS ARCHITECT,DEVOPS Lead|DEVOPS Designer|DEVOPS Strategist,DevOps Practices|Cloud Computing|Automation|System Architecture
+DEVOPS ENGINEER,DEVOPS Programmer|DEVOPS Specialist|DEVOPS Developer,Automation|CI/CD|Cloud Computing|Scripting
+DEVOPS MANAGER,DEVOPS Head|DEVOPS Leader,DevOps Practices|Team Leadership|Project Management|Automation
+DEVSECOPS ARCHITECT,DEVSECOPS Strategist|DEVSECOPS Lead|DEVSECOPS Designer,DevSecOps Practices|Security Automation|Cloud Security|System Architecture
+DEVSECOPS ENGINEER,DEVSECOPS Programmer|DEVSECOPS Developer|DEVSECOPS Specialist,Security Automation|CI/CD|Cloud Security|Scripting
+DIRECTOR OF ENGINEERING,DIRECTOR OF DeveloperING|DIRECTOR OF ProgrammerING|DIRECTOR OF SpecialistING,Leadership|Software Development|Project Management|Team Management
+DOCKER ENGINEER,DOCKER Specialist|DOCKER Developer|DOCKER Programmer,Docker|Containerization|Orchestration|DevOps
+ELK ENGINEER,ELK Developer|ELK Programmer|ELK Specialist,ELK Stack|Log Management|Data Analysis|System Monitoring
+EMBEDDED SOFTWARE ENGINEER,EMBEDDED SOFTWARE Developer|EMBEDDED SOFTWARE Programmer|EMBEDDED SOFTWARE Specialist,Embedded Systems|C/C++|Firmware Development|Hardware Interfaces
+ENTRY LEVEL DEVELOPER,ENTRY LEVEL Engineer|ENTRY LEVEL Coder|ENTRY LEVEL Programmer,Programming Basics|Software Development|Problem Solving|Learning Agility
+ENTRY LEVEL NETWORK ENGINEER,ENTRY LEVEL NETWORK Developer|ENTRY LEVEL NETWORK Specialist|ENTRY LEVEL NETWORK Programmer,Networking Basics|Troubleshooting|System Administration|Learning Agility
+ENTRY LEVEL PROGRAMMER,ENTRY LEVEL Developer|ENTRY LEVEL Engineer|ENTRY LEVEL Coder,Programming Basics|Software Development|Problem Solving|Learning Agility
+ENTRY LEVEL WEB DEVELOPER,ENTRY LEVEL WEB Engineer|ENTRY LEVEL WEB Coder|ENTRY LEVEL WEB Programmer,HTML|CSS|JavaScript|Basic Web Development|Learning Agility
+ENVOY ENGINEER,ENVOY Programmer|ENVOY Developer|ENVOY Specialist,Envoy Proxy|Service Mesh|Load Balancing|Networking
+FALCO ENGINEER,FALCO Programmer|FALCO Developer|FALCO Specialist,Falco|Kubernetes Security|Cloud Security|System Monitoring
+FLUENTD ENGINEER,FLUENTD Programmer|FLUENTD Specialist|FLUENTD Developer,Fluentd|Log Aggregation|Data Collection|System Monitoring
+FORTIFY ENGINEER,FORTIFY Developer|FORTIFY Specialist|FORTIFY Programmer,Fortify|Static Code Analysis|Application Security|Secure Coding
+FRAMEWORKS SPECIALIST,FRAMEWORKS SPECIALIST,Software Frameworks|Programming Languages|Problem Solving|System Design
+FRONT END DEVELOPER,FRONT END Engineer|FRONT END Coder|FRONT END Programmer,HTML|CSS|JavaScript|UI/UX Design|Responsive Design
+FULL STACK DEVELOPER,FULL STACK Coder|FULL STACK Engineer|FULL STACK Programmer,HTML|CSS|JavaScript|Back-End Technologies|Database Management
+FULL STACK JAVA DEVELOPER/PROGRAMMER/ENGINEER,FULL STACK JAVA DEVELOPER/PROGRAMMER/Specialist|FULL STACK JAVA Coder/PROGRAMMER/ENGINEER|FULL STACK JAVA Programmer/PROGRAMMER/ENGINEER|FULL STACK JAVA DEVELOPER/Developer/ENGINEER|FULL STACK JAVA DEVELOPER/Coder/ENGINEER|FULL STACK JAVA DEVELOPER/Engineer/ENGINEER|FULL STACK JAVA DEVELOPER/PROGRAMMER/Programmer|FULL STACK JAVA Engineer/PROGRAMMER/ENGINEER|FULL STACK JAVA DEVELOPER/PROGRAMMER/Developer,Java|Spring|Hibernate|HTML|CSS|JavaScript
+FULL STACK PYTHON DEVELOPER/PROGRAMMER/ENGINEER,FULL STACK PYTHON DEVELOPER/PROGRAMMER/Programmer|FULL STACK PYTHON Coder/PROGRAMMER/ENGINEER|FULL STACK PYTHON DEVELOPER/PROGRAMMER/Specialist|FULL STACK PYTHON DEVELOPER/Developer/ENGINEER|FULL STACK PYTHON Engineer/PROGRAMMER/ENGINEER|FULL STACK PYTHON Programmer/PROGRAMMER/ENGINEER|FULL STACK PYTHON DEVELOPER/Engineer/ENGINEER|FULL STACK PYTHON DEVELOPER/PROGRAMMER/Developer|FULL STACK PYTHON DEVELOPER/Coder/ENGINEER,Python|Django|Flask|HTML|CSS|JavaScript
+GAME DEVELOPER,GAME Engineer|GAME Coder|GAME Programmer,C++|C#|Game Engines|3D Modeling|Game Design
+GCP DEVOPS ENGINEER,GCP DEVOPS Programmer|GCP DEVOPS Specialist|GCP DEVOPS Developer,Google Cloud Platform|DevOps Practices|CI/CD Pipelines|Automation
+GERRIT ADMINISTRATOR,GERRIT AdministratorISTRATOR|GERRIT Admin|GERRIT Manager|GERRIT ManagerISTRATOR|GERRIT Ops,Gerrit|Code Review|Git|Version Control
+GIT ENGINEER,GIT Specialist|GIT Developer|GIT Programmer,Git|Version Control|Branching Strategies|Collaboration
+GITHUB ENGINEER,GITHUB Programmer|GITHUB Developer|GITHUB Specialist,GitHub|Git|Collaboration Tools|CI/CD Integration
+GITLAB ENGINEER,GITLAB Developer|GITLAB Specialist|GITLAB Programmer,GitLab|Git|CI/CD Pipelines|DevOps Practices
+GRADLE ENGINEER,GRADLE Specialist|GRADLE Developer|GRADLE Programmer,Gradle|Build Automation|Java|Software Configuration Management
+GRAFANA ENGINEER,GRAFANA Programmer|GRAFANA Developer|GRAFANA Specialist,Grafana|Data Visualization|Monitoring|System Performance
+GROOVY ENGINEER,GROOVY Specialist|GROOVY Developer|GROOVY Programmer,Groovy|Scripting|Automation|Software Development
+INFORMATION ARCHITECT,INFORMATION Lead|INFORMATION Designer|INFORMATION Strategist,Information Architecture|User Experience Design|Content Strategy|Taxonomy
+INFORMATION SECURITY ANALYST,INFORMATION SECURITY Specialist|INFORMATION SECURITY Consultant,Security Protocols|Threat Analysis|Compliance|Incident Response
+INTERACTION DESIGNER,INTERACTION DESIGNER,Interaction Design|User Research|Prototyping|Usability Testing
+IOS DEVELOPER,IOS Coder|IOS Engineer|IOS Programmer,Swift|Objective-C|iOS SDK|Mobile App Development|UI/UX Design
+ISTIO ENGINEER,ISTIO Developer|ISTIO Specialist|ISTIO Programmer,Istio|Service Mesh|Traffic Management|Security
+IT MANAGER,IT Leader|IT Head,IT Management|Team Leadership|Project Management|Budgeting
+JACOCO ENGINEER,JACOCO Programmer|JACOCO Specialist|JACOCO Developer,JaCoCo|Code Coverage|Java Testing|Software Quality
+JAVA DEVELOPER,JAVA Coder|JAVA Engineer|JAVA Programmer,Java|Spring|Hibernate|Software Development|Object-Oriented Programming
+JENKINS ENGINEER,JENKINS Specialist|JENKINS Programmer|JENKINS Developer,Jenkins|CI/CD Pipelines|Build Automation|DevOps Practices
+JIRA ADMINISTRATOR,JIRA Manager|JIRA Ops|JIRA AdministratorISTRATOR|JIRA ManagerISTRATOR|JIRA Admin,Jira|Atlassian Suite|Workflow Configuration|Project Management
+JUNIOR FRONT END DEVELOPER,Jr FRONT END Coder|FRONT END DEVELOPER JUNIOR|JUNIOR FRONT END Engineer|Jr FRONT END Engineer|JUNIOR FRONT END Coder|JUNIOR FRONT END Programmer|Jr FRONT END DEVELOPER|Jr FRONT END Programmer,HTML|CSS|JavaScript|Basic Web Development|Learning Agility
+JUNIOR IOS DEVELOPER,IOS DEVELOPER JUNIOR|JUNIOR IOS Programmer|Jr IOS Coder|Jr IOS Programmer|JUNIOR IOS Engineer|Jr IOS Engineer|Jr IOS DEVELOPER|JUNIOR IOS Coder,Swift|Objective-C|iOS SDK|Basic Mobile App Development|Learning Agility
+JUNIT ENGINEER,JUNIT Programmer|JUNIT Specialist|JUNIT Developer,JUnit|Java Testing|Test Automation|Software Quality
+KUBERNETES OPERATIONS ENGINEER,KUBERNETES Ops ENGINEER|KUBERNETES Ops Developer|KUBERNETES OPERATIONS Developer|KUBERNETES OPERATIONS Programmer|KUBERNETES Ops Specialist|KUBERNETES Ops Programmer|KUBERNETES OPERATIONS Specialist,Kubernetes|Container Orchestration|Cloud Computing|DevOps Practices
+MACHINE LEARNING ARCHITECT,MACHINE LEARNING Lead|ML Strategist|MACHINE LEARNING Strategist|ML ARCHITECT|ML Lead|MACHINE LEARNING Designer|ML Designer,Machine Learning Algorithms|System Architecture|Cloud Computing|Data Modeling
+MACHINE LEARNING ENGINEER,MLE|MACHINE LEARNING Developer|ML Developer|ML Specialist|ML Engineer|MACHINE LEARNING Programmer|ML ENGINEER|ML Programmer|MACHINE LEARNING Specialist,Machine Learning Algorithms|Python|Data Analysis|Model Deployment
+MAVEN ENGINEER,MAVEN Specialist|MAVEN Programmer|MAVEN Developer,Maven|Build Automation|Java|Software Configuration Management
+MOBILE APP DEVELOPER,MOBILE APP Engineer|MOBILE APP Coder|MOBILE APP Programmer,Mobile App Development|iOS/Android SDKs|UI/UX Design|Programming Languages
+MULESOFT DEVELOPER,MULESOFT Coder|MULESOFT Programmer|MULESOFT Engineer,MuleSoft Anypoint Platform|API Integration|Java|Integration Patterns
+NAGIOS ENGINEER,NAGIOS Developer|NAGIOS Specialist|NAGIOS Programmer,Nagios|System Monitoring|Linux|Networking
+NETWORK AND SYSTEMS ADMINISTRATOR,NETWORK AND SYSTEMS Admin|NETWORK AND SYSTEMS Manager|NETWORK AND SYSTEMS ManagerISTRATOR|NETWORK AND SYSTEMS Ops|NETWORK AND SYSTEMS AdministratorISTRATOR,Networking|System Administration|Linux/Windows Servers|Troubleshooting
+NETWORK ENGINEER,NETWORK Programmer|NETWORK Developer|NETWORK Specialist,Networking Protocols|Cisco/Juniper Devices|Network Security|Troubleshooting
+NEW RELIC ENGINEER,NEW RELIC Developer|NEW RELIC Programmer|NEW RELIC Specialist,New Relic|Application Performance Monitoring|Troubleshooting|Cloud Computing
+NEXUS ENGINEER,NEXUS Developer|NEXUS Specialist|NEXUS Programmer,Nexus Repository Manager|Artifact Management|DevOps Practices
+NOMAD ENGINEER,NOMAD Developer|NOMAD Specialist|NOMAD Programmer,Nomad|Container Orchestration|HashiCorp Tools|Infrastructure Automation
+NOTARY ENGINEER,NOTARY Specialist|NOTARY Programmer|NOTARY Developer,Notary|Container Security|Docker|Cryptography
+OCTOPUS DEPLOY ENGINEER,OCTOPUS DEPLOY Programmer|OCTOPUS DEPLOY Specialist|OCTOPUS DEPLOY Developer,Octopus Deploy|Deployment Automation|.NET|PowerShell
+OPENSHIFT ENGINEER,OPENSHIFT Developer|OPENSHIFT Specialist|OPENSHIFT Programmer,OpenShift|Kubernetes|Containerization|DevOps Practices
+OPENSTACK ENGINEER,OPENSTACK Specialist|OPENSTACK Programmer|OPENSTACK Developer,OpenStack|Cloud Computing|Virtualization|System Administration
+OPERATIONS ENGINEER,OPERATIONS Programmer|OPERATIONS Specialist|OPERATIONS Developer|Ops Developer|Ops Specialist|Ops Programmer|Ops ENGINEER,System Administration|Linux/Windows Servers|Troubleshooting|Scripting
+ORACLE DEVELOPER,ORACLE Programmer|ORACLE Engineer|ORACLE Coder,Oracle Database|SQL|PL/SQL|Database Development
+ORACLE SQL DEVELOPER,ORACLE SQL Engineer|ORACLE SQL Coder|ORACLE SQL Programmer,Oracle SQL|PL/SQL|Data Modeling|Database Design
+PACKER ENGINEER,PACKER Specialist|PACKER Programmer|PACKER Developer,Packer|Infrastructure as Code|Cloud Computing|Automation
+PHP DEVELOPER,PHP Engineer|PHP Coder|PHP Programmer,PHP|MySQL|Web Development|Frameworks (Laravel|Symfony)
+POWERSHELL ENGINEER,POWERSHELL Programmer|POWERSHELL Developer|POWERSHELL Specialist,PowerShell|Automation|Windows Server Administration|Scripting
+PRINCIPLE ENGINEER IN ARTIFICIAL INTELLIGENCE,PRINCIPLE Specialist IN ARTIFICIAL INTELLIGENCE|PRINCIPLE Specialist IN AI|PRINCIPLE Developer IN AI|PRINCIPLE Programmer IN AI|PRINCIPLE Programmer IN ARTIFICIAL INTELLIGENCE|PRINCIPLE Developer IN ARTIFICIAL INTELLIGENCE|PRINCIPLE ENGINEER IN AI,AI/ML Architecture|Leadership|Strategic Planning|Deep Learning
+PRINCIPLE ENGINEER IN BIG DATA,PRINCIPLE Specialist IN BIG DATA|PRINCIPLE ENGINEER IN Data|PRINCIPLE Developer IN BIG DATA|PRINCIPLE Programmer IN BIG DATA|PRINCIPLE Programmer IN Data|PRINCIPLE Developer IN Data|PRINCIPLE Specialist IN Data,Big Data Architecture|Hadoop|Spark|Data Warehousing
+PRINCIPLE ENGINEER IN DATA ANALYSIS,PRINCIPLE Programmer IN DATA ANALYSIS|PRINCIPLE Developer IN DATA ANALYSIS|PRINCIPLE Specialist IN DATA ANALYSIS,Data Analysis|Statistical Modeling|Data Visualization|Leadership
+PRINCIPLE ENGINEER IN MACHINE LEARNING,PRINCIPLE ENGINEER IN ML|PRINCIPLE Specialist IN MACHINE LEARNING|PRINCIPLE Developer IN ML|PRINCIPLE Specialist IN ML|PRINCIPLE Programmer IN ML|PRINCIPLE Developer IN MACHINE LEARNING|PRINCIPLE Programmer IN MACHINE LEARNING,Machine Learning Algorithms|Model Development|Deployment|Leadership
+PRODUCT MANAGER,PRODUCT Head|PRODUCT Leader,Product Strategy|Market Analysis|Requirements Gathering|Product Roadmap
+PRODUCTION SUPPORT ENGINEER,PRODUCTION SUPPORT Programmer|PRODUCTION SUPPORT Developer|PRODUCTION SUPPORT Specialist,Troubleshooting|Incident Management|System Monitoring|Technical Support
+PUPPET OPERATIONS ENGINEER,PUPPET Ops Specialist|PUPPET OPERATIONS Developer|PUPPET Ops Developer|PUPPET Ops ENGINEER|PUPPET OPERATIONS Programmer|PUPPET Ops Programmer|PUPPET OPERATIONS Specialist,Puppet|Configuration Management|Automation|Infrastructure as Code
+SENIOR BUILD AND RELEASE ENGINEER,Sr BUILD AND RELEASE ENGINEER|SENIOR BUILD AND RELEASE Programmer|BUILD AND RELEASE ENGINEER SENIOR|Sr BUILD AND RELEASE Specialist|Sr BUILD AND RELEASE Programmer|SENIOR BUILD AND RELEASE Developer|SENIOR BUILD AND RELEASE Specialist|Sr BUILD AND RELEASE Developer,CI/CD Pipelines|Build Systems|Automation|Configuration Management
+SENIOR BUILD ENGINEER,SENIOR BUILD Programmer|Sr BUILD Developer|SENIOR BUILD Developer|Sr BUILD Programmer|BUILD ENGINEER SENIOR|Sr BUILD Specialist|SENIOR BUILD Specialist|Sr BUILD ENGINEER,Build Systems|Scripting|Automation|Software Configuration Management
+SENIOR DEVOPS ENGINEER,Sr DEVOPS Developer|Sr DEVOPS Specialist|Sr DEVOPS Programmer|Sr DEVOPS ENGINEER|DEVOPS ENGINEER SENIOR|SENIOR DEVOPS Programmer|SENIOR DEVOPS Specialist|SENIOR DEVOPS Developer,DevOps Practices|Cloud Computing|Automation|System Architecture
+SITE RELIABILITY ENGINEER (KUBERNETES Ãâ¬Ã¯Â¿Â½ DOCKER),SITE RELIABILITY Programmer (KUBERNETES Ãâ¬Ã¯Â¿Â½ DOCKER)|SITE RELIABILITY Specialist (KUBERNETES Ãâ¬Ã¯Â¿Â½ DOCKER)|SITE RELIABILITY Developer (KUBERNETES Ãâ¬Ã¯Â¿Â½ DOCKER),Kubernetes|Docker|System Reliability|Automation|Monitoring
+SPLUNK ENGINEER,SPLUNK Developer|SPLUNK Specialist|SPLUNK Programmer,Splunk|Log Management|Data Analysis|System Monitoring
+XL DEPLOY ENGINEER,XL DEPLOY Developer|XL DEPLOY Specialist|XL DEPLOY Programmer,XL Deploy|Deployment Automation|DevOps Practices|Configuration Management
+ZABBIX ENGINEER,ZABBIX Developer|ZABBIX Specialist|ZABBIX Programmer,Zabbix|System Monitoring|Network Monitoring|Alerting
+API DEVELOPER,API Programmer|API Engineer|API Coder,API Design|RESTful Services|Programming Languages|Security
+AUTOMATION SPECIALIST,AUTOMATION SPECIALIST,Automation Tools|Scripting|Process Improvement|Testing
+BUSINESS INTELLIGENCE ANALYST,BI Specialist|BUSINESS INTELLIGENCE Consultant|BI ANALYST|BUSINESS INTELLIGENCE Specialist|BI Consultant,Data Analysis|SQL|Data Visualization|Business Acumen
+CLOUD MIGRATION SPECIALIST,CLOUD MIGRATION SPECIALIST,Cloud Platforms|Migration Tools|System Migration|Project Management
+CYBERSECURITY ANALYST,CYBERSECURITY Consultant|CYBERSECURITY Specialist,Security Protocols|Threat Analysis|Compliance|Incident Response
+DATA QUALITY ENGINEER,DATA QUALITY Programmer|DATA QUALITY Specialist|DATA QUALITY Developer,Data Quality Tools|Data Profiling|SQL|Data Governance
+DIGITAL TRANSFORMATION CONSULTANT,DIGITAL TRANSFORMATION CONSULTANT,Digital Strategy|Technology Consulting|Business Process Improvement|Change Management
+E-COMMERCE DEVELOPER,E-COMMERCE Programmer|E-COMMERCE Engineer|E-COMMERCE Coder,E-Commerce Platforms|Web Development|Payment Gateways|Security
+EMBEDDED SYSTEMS ENGINEER,EMBEDDED SYSTEMS Developer|EMBEDDED SYSTEMS Programmer|EMBEDDED SYSTEMS Specialist,Embedded Systems|C/C++|Firmware Development|Hardware Interfaces
+ERP CONSULTANT,ERP CONSULTANT,ERP Systems|Business Process Analysis|Implementation|Training
+GEOGRAPHIC INFORMATION SYSTEMS (GIS) ANALYST,GEOGRAPHIC INFORMATION SYSTEMS (GIS) Consultant|GEOGRAPHIC INFORMATION SYSTEMS (GIS) Specialist,GIS Software|Spatial Analysis|Cartography|Data Visualization
+HELP DESK TECHNICIAN,HELP DESK TECHNICIAN,Technical Support|Troubleshooting|Customer Service|Hardware/Software
+IDENTITY AND ACCESS MANAGEMENT SPECIALIST,IDENTITY AND ACCESS MANAGEMENT SPECIALIST,IAM Systems|Security Protocols|Authentication|Authorization
+INFRASTRUCTURE ARCHITECT,INFRASTRUCTURE Lead|INFRASTRUCTURE Strategist|INFRASTRUCTURE Designer,System Architecture|Cloud Computing|Networking|Security
+INTERNET OF THINGS (IoT) DEVELOPER,INTERNET OF THINGS (IoT) Coder|INTERNET OF THINGS (IoT) Programmer|INTERNET OF THINGS (IoT) Engineer,IoT Platforms|Embedded Systems|Sensor Technology|Programming Languages
+IT AUDITOR,IT AUDITOR,IT Auditing|Compliance|Risk Management|Security
+JAVA ARCHITECT,JAVA Strategist|JAVA Designer|JAVA Lead,Java|System Architecture|Design Patterns|Cloud Computing
+LINUX ADMINISTRATOR,LINUX ManagerISTRATOR|LINUX Ops|LINUX Manager|LINUX Admin|LINUX AdministratorISTRATOR,Linux Servers|System Administration|Scripting|Troubleshooting
+MAINFRAME DEVELOPER,MAINFRAME Coder|MAINFRAME Engineer|MAINFRAME Programmer,Mainframe Systems|COBOL|JCL|VSAM
+MICROSOFT DYNAMICS DEVELOPER,MICROSOFT DYNAMICS Coder|MICROSOFT DYNAMICS Engineer|MICROSOFT DYNAMICS Programmer,Microsoft Dynamics|CRM|.NET|Development
+MOBILE SECURITY SPECIALIST,MOBILE SECURITY SPECIALIST,Mobile Security|Penetration Testing|Security Protocols|Risk Management
+NATURAL LANGUAGE PROCESSING ENGINEER,NATURAL LANGUAGE PROCESSING Programmer|NATURAL LANGUAGE PROCESSING Specialist|NATURAL LANGUAGE PROCESSING Developer,NLP Algorithms|Python|Machine Learning|Text Analysis
+NETWORK ARCHITECT,NETWORK Designer|NETWORK Lead|NETWORK Strategist,Network Design|Network Protocols|Security|System Architecture
+PENETRATION TESTER,PENETRATION TESTER,Penetration Testing|Security Audits|Ethical Hacking|Vulnerability Assessment
+PYTHON ARCHITECT,PYTHON Designer|PYTHON Lead|PYTHON Strategist,Python|System Architecture|Design Patterns|Cloud Computing
+QUALITY ASSURANCE MANAGER,QUALITY ASSURANCE Head|QA Head|QUALITY ASSURANCE Leader|QA MANAGER|QA Leader,QA Processes|Test Automation|Test Planning|Team Leadership
+RELEASE MANAGER,RELEASE Leader|RELEASE Head,Release Management|CI/CD Pipelines|Coordination|Communication
+SAP CONSULTANT,SAP CONSULTANT,SAP Modules|Business Process Analysis|Implementation|Customization
+UX/UI DESIGNER,UX/UI DESIGNER,UX/UI Design|User Research|Prototyping|Usability Testing
+WEB DEVELOPER,WEB Engineer|WEB Programmer|WEB Coder,HTML|CSS|JavaScript|Web Development|Frameworks
+BACK END DEVELOPER,BACK END Engineer|BACK END Coder|BACK END Programmer,Server-Side Programming|Databases|API Development|Frameworks
+WEB DESIGNER,WEB DESIGNER,Web Design|Graphic Design|UI/UX Principles|Wireframing
+WEB ENGINEER,WEB Developer|WEB Programmer|WEB Specialist,Web Technologies|System Architecture|Performance Optimization|Security
+WEB PRODUCER,WEB PRODUCER,Web Content Management|Project Management|Content Strategy|Collaboration
+WEB PROJECT MANAGER,WEB PROJECT Leader|WEB PROJECT Head,Project Management|Web Development|Communication|Budgeting
+WEB CONTENT MANAGER,WEB CONTENT Leader|WEB CONTENT Head,Content Creation|Content Strategy|CMS|SEO
+MULTIMEDIA ARCHITECT,MULTIMEDIA Lead|MULTIMEDIA Designer|MULTIMEDIA Strategist,Multimedia Design|Video Production|Audio Production|Graphic Design
+WEB ANALYTICS DEVELOPER,WEB ANALYTICS Engineer|WEB ANALYTICS Coder|WEB ANALYTICS Programmer,Web Analytics Tools|Data Analysis|Reporting|A/B Testing
+SEO CONSULTANT,SEO CONSULTANT,Search Engine Optimization|Keyword Research|Content Optimization|Link Building
+SEO MANAGER,SEO Leader|SEO Head,SEO Strategy|Team Leadership|Performance Monitoring|Reporting
+INTERNET ENGINEER,INTERNET Developer|INTERNET Programmer|INTERNET Specialist,Networking Protocols|Internet Technologies|System Administration|Security
+FRONT-END DESIGNER,FRONT-END DESIGNER,HTML|CSS|JavaScript|UI/UX Design|Responsive Design
+MOBILE DEVELOPER,MOBILE Engineer|MOBILE Coder|MOBILE Programmer,Mobile App Development|iOS/Android SDKs|UI/UX Design|Programming Languages
+PYTHON DEVELOPER,PYTHON Programmer|PYTHON Engineer|PYTHON Coder,Python|Web Frameworks (Django|Flask)|Data Analysis|Scripting
+POWER BI DEVELOPER,POWER BI Coder|POWER BI Programmer|POWER BI Engineer,Power BI|Data Modeling|DAX|Data Visualization
+POWER BI ANALYST,POWER BI Consultant|POWER BI Specialist,Power BI|Data Analysis|SQL|Business Intelligence
+CLOUD COMPUTING SPECIALIST,CLOUD COMPUTING SPECIALIST,Cloud Platforms|Virtualization|System Administration|Security
+CYBERSECURITY SPECIALIST,CYBERSECURITY SPECIALIST,Security Protocols|Threat Analysis|Compliance|Incident Response
+DATA SCIENCE SPECIALIST,DATA SCIENCE SPECIALIST,Data Analysis|Machine Learning|Statistical Modeling|Data Visualization
+ARTIFICIAL INTELLIGENCE ENGINEER,ARTIFICIAL INTELLIGENCE Specialist|AI Developer|AI Programmer|AI Specialist|AI ENGINEER|ARTIFICIAL INTELLIGENCE Programmer|ARTIFICIAL INTELLIGENCE Developer|AI Engineer,AI/ML Algorithms|Python|Deep Learning|Neural Networks
+DATABASE ARCHITECT,DATABASE Strategist|DATABASE Designer|DATABASE Lead,Database Design|Data Modeling|SQL|Performance Tuning
+SOFTWARE ARCHITECT,SOFTWARE Strategist|SOFTWARE Lead|SOFTWARE Designer,System Architecture|Design Patterns|Programming Languages|Cloud Computing
+CYBERSECURITY ENGINEER,CYBERSECURITY Specialist|CYBERSECURITY Developer|CYBERSECURITY Programmer,Security Protocols|Threat Analysis|Risk Management|Incident Response
+INFOSEC ANALYST/CYBERSECURITY ANALYST,INFOSEC Specialist/CYBERSECURITY Specialist|INFOSEC Consultant/CYBERSECURITY Consultant,Security Protocols|Threat Analysis|Compliance|Incident Response
+COMPUTER FORENSIC ANALYST,COMPUTER FORENSIC Consultant|COMPUTER FORENSIC Specialist,Digital Forensics|Incident Response|Data Recovery|Legal Compliance
+IT SECURITY SPECIALIST,IT SECURITY SPECIALIST,Security Protocols|Threat Analysis|Compliance|Risk Management
+SECURITY MANAGER,SECURITY Head|SECURITY Leader,Security Management|Risk Assessment|Compliance|Team Leadership
+SECURITY ENGINEER,SECURITY Specialist|SECURITY Programmer|SECURITY Developer,Security Protocols|Threat Analysis|Risk Management|Incident Response
+SECURITY CONSULTANT,SECURITY CONSULTANT,Security Consulting|Risk Assessment|Compliance|Security Solutions
+DIRECTOR OF SECURITY,DIRECTOR OF SECURITY,Security Leadership|Risk Management|Compliance|Incident Response
+SECURITY ADMINISTRATOR,SECURITY Manager|SECURITY Admin|SECURITY Ops|SECURITY ManagerISTRATOR|SECURITY AdministratorISTRATOR,Security Tools|System Administration|User Management|Security Policies
+SECURITY SPECIALIST,SECURITY SPECIALIST,Security Protocols|Threat Analysis|Compliance|Risk Management
+CHIEF INFORMATION OFFICER,CHIEF INFORMATION OFFICER,IT Strategy|Leadership|Budgeting|Project Management
+NETWORK SECURITY ENGINEER,NETWORK SECURITY Programmer|NETWORK SECURITY Developer|NETWORK SECURITY Specialist,Networking Protocols|Security Protocols|Firewall Management|Intrusion Detection
+MACHINE LEARNING ENGINEER FOR CYBERSECURITY,MACHINE LEARNING Developer FOR CYBERSECURITY|MACHINE LEARNING Programmer FOR CYBERSECURITY|MLE FOR CYBERSECURITY|ML Developer FOR CYBERSECURITY|ML Programmer FOR CYBERSECURITY|MACHINE LEARNING Specialist FOR CYBERSECURITY|ML Specialist FOR CYBERSECURITY|ML Engineer FOR CYBERSECURITY|ML ENGINEER FOR CYBERSECURITY,Machine Learning Algorithms|Cybersecurity|Data Analysis|Threat Detection
+NETWORK ANALYST,NETWORK Specialist|NETWORK Consultant,Network Monitoring|Troubleshooting|Performance Analysis|Reporting
+NETWORK OPERATIONS ENGINEER,NETWORK OPERATIONS Programmer|NETWORK Ops Programmer|NETWORK Ops Developer|NETWORK OPERATIONS Specialist|NETWORK Ops Specialist|NETWORK Ops ENGINEER|NETWORK OPERATIONS Developer,Network Operations|Troubleshooting|Monitoring|Incident Response
+NETWORK RELIABILITY ENGINEER,NETWORK RELIABILITY Developer|NETWORK RELIABILITY Programmer|NETWORK RELIABILITY Specialist,Network Reliability|Automation|Monitoring|Incident Response
+NETWORK INFRASTRUCTURE SPECIALIST,NETWORK INFRASTRUCTURE SPECIALIST,Networking Hardware|Cabling|Network Design|Implementation
+COMPUTER SUPPORT SPECIALIST,COMPUTER SUPPORT SPECIALIST,Technical Support|Troubleshooting|Customer Service|Hardware/Software
+INFORMATION TECHNOLOGY ANALYST,INFORMATION TECHNOLOGY Specialist|INFORMATION TECHNOLOGY Consultant|IT Consultant|IT Specialist|IT ANALYST,IT Analysis|Requirements Gathering|Process Improvement|IT Consulting
+TECHNOLOGY SALES CONSULTANT,TECHNOLOGY SALES CONSULTANT,Sales|Technology Solutions|Customer Relationship Management|Technical Expertise
+DATABASE DEVELOPER,DATABASE Engineer|DATABASE Programmer|DATABASE Coder,Database Development|SQL|PL/SQL|Data Modeling
+DATABASE ANALYST,DATABASE Consultant|DATABASE Specialist,Data Analysis|SQL|Data Modeling|Reporting
+DATA WAREHOUSE MANAGER,DATA WAREHOUSE Leader|DATA WAREHOUSE Head,Data Warehousing|ETL Processes|Data Modeling|Team Leadership
+DATA WAREHOUSE PROGRAMMING SPECIALIST,DATA WAREHOUSE PROGRAMMING SPECIALIST,ETL Processes|SQL|Data Modeling|Data Warehousing
+INTELLIGENCE SPECIALIST,INTELLIGENCE SPECIALIST,Data Analysis|Intelligence Gathering|Reporting|Security
+CLOUD/SOFTWARE ARCHITECT,CLOUD/SOFTWARE Strategist|CLOUD/SOFTWARE Designer|CLOUD/SOFTWARE Lead,Cloud Platforms|System Architecture|Cloud Security|DevOps
+CLOUD/SOFTWARE DEVELOPER,CLOUD/SOFTWARE Coder|CLOUD/SOFTWARE Engineer|CLOUD/SOFTWARE Programmer,Cloud Platforms|Programming Languages|Software Development|Cloud Services
+CLOUD/SOFTWARE APPLICATIONS ENGINEER,CLOUD/SOFTWARE APPLICATIONS Programmer|CLOUD/SOFTWARE APPLICATIONS Developer|CLOUD/SOFTWARE APPLICATIONS Specialist,Cloud Platforms|Application Development|Cloud Services|DevOps
+CLOUD SYSTEM ADMINISTRATOR,CLOUD SYSTEM AdministratorISTRATOR|CLOUD SYSTEM ManagerISTRATOR|CLOUD SYSTEM Manager|CLOUD SYSTEM Admin|CLOUD SYSTEM Ops,Cloud Platforms|System Administration|Virtualization|Networking
+CLOUD SYSTEM ENGINEER,CLOUD SYSTEM Specialist|CLOUD SYSTEM Developer|CLOUD SYSTEM Programmer,Cloud Platforms|System Engineering|Automation|Scripting
+PLATFORM ENGINEER,PLATFORM Programmer|PLATFORM Developer|PLATFORM Specialist,Platform Engineering|Cloud Computing|Automation|DevOps Practices
+SOFTWARE QUALITY ASSURANCE ANALYST,SOFTWARE QUALITY ASSURANCE Specialist|SOFTWARE QA Specialist|SOFTWARE QA ANALYST|SOFTWARE QUALITY ASSURANCE Consultant|SOFTWARE QA Consultant,QA Processes|Test Planning|Test Execution|Reporting
+UI (USER INTERFACE) DESIGNER,UI (UI) DESIGNER,UI Design|User Research|Prototyping|Usability Testing
+TECHNICAL ACCOUNT MANAGER,TECHNICAL ACCOUNT Head|TECHNICAL ACCOUNT Leader,Customer Relationship Management|Technical Support|Account Management|Sales
+IT SALES EXECUTIVE,IT SALES EXECUTIVE,Sales|Technology Solutions|Customer Relationship Management|Sales Strategy
+IT SALES DIRECTOR,IT SALES DIRECTOR,Sales Leadership|Sales Strategy|Customer Relationship Management|Team Management
+TECHNOLOGY MANAGER,TECHNOLOGY Leader|TECHNOLOGY Head,IT Management|Team Leadership|Project Management|Budgeting
+TECHNOLOGY ASSISTANT,TECHNOLOGY ASSISTANT,Technical Support|Administrative Support|Hardware/Software|Troubleshooting
+TECHNOLOGY SPECIALIST,TECHNOLOGY SPECIALIST,Technical Expertise|Problem Solving|Troubleshooting|IT Support
+DIRECTOR ORACLE,DIRECTOR ORACLE,Oracle Database|Team Leadership|Project Management|Budgeting
+KNOWLEDGE MANAGER,KNOWLEDGE Leader|KNOWLEDGE Head,Knowledge Management|Information Architecture|Collaboration|Documentation
+MANAGER HARDWARE,Leader HARDWARE|Head HARDWARE,Hardware Management|Team Leadership|Budgeting|Inventory Management
+SHAREPOINT MANAGER,SHAREPOINT Head|SHAREPOINT Leader,SharePoint|Team Leadership|Project Management|Collaboration
+REQUIREMENTS MANAGER,REQUIREMENTS Head|REQUIREMENTS Leader,Requirements Gathering|Analysis|Documentation|Communication
+IMPLEMENTATION DIRECTOR,IMPLEMENTATION DIRECTOR,Implementation Management|Project Management|Team Leadership|Communication
+TECHNOLOGY OFFICER,TECHNOLOGY OFFICER,IT Strategy|Leadership|Innovation|Project Management
+DIRECTOR BUSINESS SYSTEMS,DIRECTOR BUSINESS SYSTEMS,Business Systems|Team Leadership|Project Management|Process Improvement
+MANAGER NET,Head NET|Leader NET,NET Development|Team Leadership|Project Management|.NET Framework
+SYSTEMS INTEGRATION MANAGER,SYSTEMS INTEGRATION Head|SYSTEMS INTEGRATION Leader,Systems Integration|Project Management|Team Leadership|Communication
+DIGITAL PROGRAM MANAGER,DIGITAL PROGRAM Leader|DIGITAL PROGRAM Head,Digital Strategy|Program Management|Team Leadership|Communication
+INTEGRATION DIRECTOR,INTEGRATION DIRECTOR,Integration Management|Project Management|Team Leadership|Communication
+DIRECTOR HARDWARE,DIRECTOR HARDWARE,Hardware Management|Team Leadership|Budgeting|Strategic Planning
+MANAGER LINUX,Leader LINUX|Head LINUX,Linux Administration|Team Leadership|Project Management|Troubleshooting
+MANAGER PHP,Head PHP|Leader PHP,PHP Development|Team Leadership|Project Management|Web Development
+FIRMWARE MANAGER,FIRMWARE Head|FIRMWARE Leader,Firmware Development|Team Leadership|Project Management|Embedded Systems
+IT PROGRAM ENGAGEMENT DIRECTOR,IT PROGRAM ENGAGEMENT DIRECTOR,IT Program Management|Customer Relationship Management|Stakeholder Management|Team Leadership
+MANAGER UNIX,Leader UNIX|Head UNIX,UNIX Administration|Team Leadership|Project Management|Troubleshooting
+TECHNOLOGY ADOPTION MANAGER,TECHNOLOGY ADOPTION Leader|TECHNOLOGY ADOPTION Head,Technology Adoption|Training|Communication|Change Management
+IT SUPPORT SPECIALIST,IT SUPPORT SPECIALIST,Technical Support|Troubleshooting|Customer Service|Hardware/Software
+CUSTOMER SERVICE REPRESENTATIVE,CUSTOMER SERVICE REPRESENTATIVE,Customer Service|Communication|Problem Solving|Technical Support
+TECHNICAL PRODUCT MANAGER,TECHNICAL PRODUCT Leader|TECHNICAL PRODUCT Head,Product Management|Technical Expertise|Market Analysis|Requirements Gathering
+PROJECT MANAGER,PROJECT Head|PROJECT Leader,Project Management|Planning|Execution|Communication
+PROGRAM MANAGER,PROGRAM Leader|PROGRAM Head,Program Management|Planning|Execution|Communication
+PORTFOLIO MANAGER,PORTFOLIO Head|PORTFOLIO Leader,Portfolio Management|Investment Management|Risk Management|Financial Analysis
+CHIEF INFORMATION OFFICER (CIO),CHIEF INFORMATION OFFICER (CIO),IT Strategy|Leadership|Budgeting|Project Management
+CHIEF TECHNOLOGY OFFICER (CTO),CHIEF TECHNOLOGY OFFICER (CTO),Technology Strategy|Innovation|Research and Development|Team Leadership
+IT DIRECTOR,IT DIRECTOR,IT Management|Team Leadership|Budgeting|Project Management
+TECHNICAL OPERATIONS OFFICER,TECHNICAL Ops OFFICER,Technical Operations|Infrastructure Management|System Administration|Incident Response
+INFORMATION MANAGEMENT SYSTEMS DIRECTOR,INFORMATION MANAGEMENT SYSTEMS DIRECTOR,Information Management|Systems Administration|Data Management|Compliance
+SENIOR IT CONSULTANT,IT CONSULTANT SENIOR|Sr IT CONSULTANT,IT Consulting|Project Management|Technical Expertise|Client Management
+TECHNICAL LEAD,TECHNICAL LEAD,Technical Leadership|Software Development|Team Leadership|Mentoring
+IT APPRENTICE,IT APPRENTICE,Technical Support|Troubleshooting|Learning Agility|Customer Service
+IT TECHNICIAN,IT TECHNICIAN,Technical Support|Troubleshooting|Hardware/Software|Networking
+IT SYSTEMS ADMINISTRATOR,IT SYSTEMS Admin|IT SYSTEMS Manager|IT SYSTEMS ManagerISTRATOR|IT SYSTEMS AdministratorISTRATOR|IT SYSTEMS Ops,System Administration|Linux/Windows Servers|Troubleshooting|Scripting
+IT ENGINEER,IT Programmer|IT Specialist|IT Developer,System Engineering|Networking|Cloud Computing|Security
+COMPUTER NETWORK SPECIALIST,COMPUTER NETWORK SPECIALIST,Networking|Troubleshooting|System Administration|Security
+COMPUTER AND INFORMATION RESEARCH SCIENTIST,COMPUTER AND INFORMATION RESEARCH Researcher|COMPUTER AND INFORMATION RESEARCH Analyst,Research Methodologies|Data Analysis|Programming|Scientific Writing
+COMPUTER AND INFORMATION RESEARCH MANAGER,COMPUTER AND INFORMATION RESEARCH Leader|COMPUTER AND INFORMATION RESEARCH Head,Research Management|Team Leadership|Budgeting|Project Management
+SOFTWARE DEVELOPMENT MANAGER,SOFTWARE DEVELOPMENT Leader|SOFTWARE DEVELOPMENT Head,Software Development|Team Leadership|Project Management|Software Architecture
+SOFTWARE DEVELOPMENT ENGINEER,SOFTWARE DEVELOPMENT Specialist|SOFTWARE DEVELOPMENT Programmer|SOFTWARE DEVELOPMENT Developer,Software Development|Programming Languages|Algorithm Design|Problem Solving
+APPLICATION DESIGNER,APPLICATION DESIGNER,Application Design|UI/UX Principles|Programming Languages|Software Architecture
+APPLICATION ENGINEER,APPLICATION Specialist|APPLICATION Programmer|APPLICATION Developer,Application Development|Programming Languages|Troubleshooting|System Administration
+LEAD PROGRAMMER,LEAD Developer|PROGRAMMER LEAD|LEAD Engineer|LEAD Coder,Programming Languages|Software Development|Team Leadership|Mentoring
+ITERATION MANAGER,ITERATION Leader|ITERATION Head,Agile Methodologies|Scrum|Kanban|Team Facilitation
+WEBMASTER,WEBMASTER,Web Development|Web Design|System Administration|Content Management
+UX/UI RESEARCHER,UX/UI RESEARCHER,User Research|Usability Testing|Data Analysis|Reporting
+UX/UI SPECIALIST,UX/UI SPECIALIST,UX/UI Design|User Research|Prototyping|Usability Testing
+ANIMATOR,ANIMATOR,Animation Software|2D/3D Animation|Storyboarding|Visual Effects
+MOTION GRAPHICS ARTIST,MOTION GRAPHICS ARTIST,Motion Graphics|Animation Software|Visual Effects|Graphic Design
+2D ARTIST/ANIMATOR,2D ARTIST/ANIMATOR,2D Animation|Drawing|Illustration|Animation Software
+3D ARTIST/ANIMATOR,3D ARTIST/ANIMATOR,3D Animation|Modeling|Texturing|Rigging
+CHARACTER DESIGNER,CHARACTER DESIGNER,Character Design|Illustration|Drawing|Animation
+STORYBOARD ARTIST,STORYBOARD ARTIST,Storyboarding|Drawing|Visual Communication|Film/Animation
+VFX ARTIST,VFX ARTIST,Visual Effects|Compositing|3D Modeling|Simulation
+RIGGING ARTIST,RIGGING ARTIST,Rigging|Animation|3D Modeling|Character Setup
+TECHNICAL ANIMATOR,TECHNICAL ANIMATOR,Technical Animation|Scripting|Programming|Animation Software
+ART DIRECTOR,ART DIRECTOR,Art Direction|Visual Design|Team Leadership|Project Management
+ANIMATION DIRECTOR,ANIMATION DIRECTOR,Animation Direction|Storytelling|Team Leadership|Project Management
+VISUAL EFFECTS ANIMATOR,VISUAL EFFECTS ANIMATOR,Visual Effects|Animation|Compositing|3D Modeling
+GRAPHIC EFFECTS SUPERVISOR,GRAPHIC EFFECTS SUPERVISOR,Visual Effects Supervision|Team Leadership|Technical Expertise|Project Management
+FORENSIC ANIMATOR,FORENSIC ANIMATOR,Forensic Animation|3D Modeling|Legal Expertise|Visual Communication
+COMPOSITOR,COMPOSITOR,Compositing|Visual Effects|Color Correction|Image Manipulation
+EFFECTS TECHNICAL DIRECTOR (FX TD),EFFECTS TECHNICAL DIRECTOR (FX TD),Visual Effects|Technical Expertise|Scripting|Problem Solving
+LAYOUT ARTIST,LAYOUT ARTIST,Layout|Cinematography|3D Modeling|Visual Storytelling
+AI RESEARCHER,AI RESEARCHER,AI/ML Algorithms|Python|Research Methodologies|Data Analysis
+AI SOFTWARE ARCHITECT,AI SOFTWARE Designer|AI SOFTWARE Strategist|AI SOFTWARE Lead,AI/ML Architecture|Software Design|Cloud Computing|Data Modeling
+BUSINESS INTELLIGENCE DEVELOPER,BI Programmer|BI Engineer|BUSINESS INTELLIGENCE Programmer|BUSINESS INTELLIGENCE Engineer|BI DEVELOPER|BI Coder|BUSINESS INTELLIGENCE Coder,Business Intelligence Tools|Data Modeling|SQL|ETL Processes

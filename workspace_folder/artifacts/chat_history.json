@@ -1,0 +1,9 @@
+{
+  "summary": "The user inquired about the Data Analyst role and received a detailed explanation of its responsibilities, including data collection, cleaning, analysis, visualization, reporting, and tool usage (SQL, Excel, Python/R, Tableau/Power BI). The user then requested job postings for Data Analysts, but the AI was unable to retrieve any due to a problem connecting to its job databases (LinkedIn and Naukri).",
+  "recent_turns": [
+    {
+      "user": "give me some in that",
+      "ai": "I apologize, but I couldn't retrieve any job postings at the moment. It seems there was an issue connecting to both LinkedIn and Naukri databases.\n\nPlease try again in a little while, or perhaps provide a more specific query if you're looking for something particular!"
+    }
+  ]
+}

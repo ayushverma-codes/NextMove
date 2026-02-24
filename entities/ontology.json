@@ -1,0 +1,20 @@
+{
+  "terms": [
+    "Data Analyst",
+    "DSA",
+    "System Design",
+    "Fresher Engineer",
+    "Java",
+    "React.js",
+    "MERN Stack Developer",
+    "Quant",
+    "Bank PO",
+    "SDE-1"
+  ],
+  "graph_neighbors": {},
+  "synonyms": {
+    "AI": "Artificial Intelligence",
+    "ML": "Machine Learning",
+    "JS": "JavaScript"
+  }
+}
