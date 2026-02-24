@@ -1,14 +1,153 @@
 Company,Synonyms,Industry
-Tata Consultancy Services,TCS|Tata|TCS Limited,IT Services
-Infosys,Infy|Infosys Limited,IT Services
-Google,Google India|Alphabet,Technology
-Amazon,AWS|Amazon Development Centre|Amazon India,Technology
-Microsoft,MS|Microsoft India|MSFT,Technology
-Flipkart,Flipkart Internet|Walmart India,E-commerce
-Swiggy,Bundl Technologies|Swiggy India,Food Tech
-Zomato,Zomato Ltd,Food Tech
-Wipro,Wipro Limited|Wipro Technologies,IT Services
-HCLTech,HCL|HCL Technologies,IT Services
-Accenture,Accenture India,Consulting
-Reliance Jio,Jio|Jio Platforms,Telecom
-Paytm,One97 Communications,Fintech
+Tata Consultancy Services,TCS|Tata|TCS Limited|Tata Consultancy|TCS India,IT Services
+Infosys,Infy|Infosys Limited|Infosys Technologies|INFY|Infosys Ltd,IT Services
+Wipro,Wipro Limited|Wipro Technologies|Wipro India|WIPRO,IT Services
+HCLTech,HCL|HCL Technologies|HCLTech Limited|HCLT|HCL Infosystems,IT Services
+Tech Mahindra,TechM|Tech Mahindra Limited|Mahindra Satyam|TechM India,IT Services
+Cognizant,CTS|Cognizant Technology Solutions|Cognizant India|COG,IT Services
+Capgemini,Capgemini India|Capgemini Technology Services|Capgemini Engineering,IT Services
+Accenture,Accenture India|Accenture Solutions|Accenture Consulting|ACN,Consulting
+IBM,IBM India|IBM Global Services|IBMer|Big Blue|IBM GBS,Technology
+Mindtree,Mindtree Limited|Mindtree India|LTIMindtree,IT Services
+LTI,Larsen & Toubro Infotech|L&T Infotech|LTIM|LTIMindtree,IT Services
+LTIMindtree,LTI Mindtree|LTIM|Mindtree LTI|LTIMindtree Limited,IT Services
+Google,Google India|Google LLC|Alphabet|Goog|Google Cloud,Technology
+Microsoft,Microsoft India|MS|MSFT|Microsoft Corporation|MS India,Technology
+Amazon,AWS|Amazon India|Amazon Development Centre|Amazon Web Services|AMZN,Technology
+Meta,Meta India|Facebook India|Facebook|Instagram|FB|Meta Platforms,Technology
+Apple,Apple India|Apple Inc|AAPL|Apple Services,Technology
+Netflix,Netflix India|Netflix Technology|Netflix Services,Technology
+Adobe,Adobe India|Adobe Systems|ADBE|Adobe Experience Cloud,Technology
+Salesforce,Salesforce India|Salesforce.com|CRM|SFDC|Salesforce Cloud,Technology
+Oracle,Oracle India|Oracle Financial Services|OFSS|Oracle Cloud|OCI,Technology
+SAP,SAP Labs India|SAP India|SAP SE|SAP Concur,Technology
+Intel,Intel India|Intel Technology|INTC|Intel Foundry,Technology
+NVIDIA,NVIDIA India|NVDA|Nvidia GeForce,Technology
+AMD,AMD India|Advanced Micro Devices|Radeon,Technology
+Cisco,Cisco India|Cisco Systems|CSCO|Webex|Meraki,Technology
+Dell,Dell India|Dell Technologies|DELL|Dell EMC,Technology
+HP,HP India|Hewlett Packard|HPE|Hewlett Packard Enterprise,Technology
+Lenovo,Lenovo India|Motorola|ThinkPad,Technology
+Samsung,Samsung India|Samsung R&D|Samsung Electronics,Technology
+Qualcomm,Qualcomm India|QCOM|Snapdragon,Technology
+Broadcom,Broadcom India|VMware|Symantec,Technology
+Texas Instruments,TI India|Texas Instruments India,Semiconductors
+Flipkart,Flipkart India|Walmart India|Flipkart Internet|Flipkart Group,E-commerce
+Myntra,Myntra Designs|Myntra India|Myntra Jabong,E-commerce
+Swiggy,Bundl Technologies|Swiggy India|Swiggy Instamart,Food Tech
+Zomato,Zomato Limited|Zomato India|ZOMATO|Blinkit,Food Tech
+Blinkit,Blink Commerce|Blinkit India|Grofers|Zomato Blinkit,Food Tech
+Zepto,KiranaKart|Zepto India|10-minute delivery,Food Tech
+Paytm,One97 Communications|Paytm Mall|Paytm Payments Bank|Paytm Labs,Fintech
+PhonePe,PhonePe India|PhonePe Private Limited|PhonePe UPI,Fintech
+Razorpay,Razorpay Software|RazorpayX|Razorpay Capital,Fintech
+CRED,Dreamplug Technologies|CRED India|CRED Rewards,Fintech
+BharatPe,BharatPe India|BharatPe Merchant,Fintech
+CredAvenue,Yubi|CredAvenue India|VIVRITI,Fintech
+Reliance Jio,Jio|Jio Platforms|Reliance Jio Infocomm|JioFiber,Telecom
+Airtel,Bharti Airtel|Airtel India|Bharti|Airtel Payments Bank,Telecom
+Vodafone Idea,Vi|Vodafone Idea Limited|Idea|Vodafone India,Telecom
+Ola,ANI Technologies|Ola Cabs|Ola Electric|Ola Foods,Mobility
+Uber,Uber India|Uber Technologies|Uber Eats,Mobility
+Rapido,Rapido Bike|Rapido Auto|Rapido Captain,Mobility
+Byju's,Byju's The Learning App|Think and Learn|BYJU'S|WhiteHat Jr,Edtech
+Unacademy,Unacademy India|Sorting Hat Technologies|Unacademy Plus,Edtech
+PhysicsWallah,Physics Wallah|PW|Alakh Pandey,Edtech
+UpGrad,upGrad Education|upGrad India,Edtech
+Eruditus,Eruditus Executive Education|Emeritus,Edtech
+Upstox,RKSV Securities|Upstox India|Upstox Pro,Fintech
+Zerodha,Zerodha Broking|Nithin Kamath|Zerodha Rainmatter,Fintech
+Groww,Groww India|BillionBrains Garage Ventures|Groww Invest,Fintech
+Angel One,Angel Broking|Angel One Limited,Fintech
+Dhan,Dhan India|Moneylicious Securities,Fintech
+Meesho,Meesho India|Fashnear Technologies|Meesho Supplier,E-commerce
+Udaan,Udaan India|Hiveloop Capital|Udaan B2B,B2B E-commerce
+Tata 1mg,1mg|Tata 1mg Technologies|1mg Labs|Tata Health,Healthtech
+PharmEasy,PharmEasy India|API Holdings|Pharmeasy,Healthtech
+Practo,Practo Technologies|Practo India|Practo Pro,Healthtech
+MFine,MFine India|MFine Health,Healthtech
+HealthifyMe,HealthifyMe India|Healthify,Healthtech
+Policybazaar,PB Fintech|Policybazaar India|Paisabazaar,Insurtech
+Acko,Acko Technology|Acko General Insurance|Acko Health,Insurtech
+Digit Insurance,Go Digit|Digit Insurance|GoDigit,Insurtech
+Atlassian,Atlassian India|Jira|Confluence|Trello|Bitbucket,Technology
+ServiceNow,ServiceNow India|SVCNOW|Now Platform,Technology
+VMware,VMware India|Broadcom|Tanzu,Technology
+Red Hat,Red Hat India|IBM Red Hat|OpenShift,Technology
+Snowflake,Snowflake India|SNOW|Snowflake Data Cloud,Technology
+Databricks,Databricks India|Databricks Lakehouse,Technology
+MongoDB,MongoDB India|MDB|MongoDB Atlas,Technology
+Elastic,Elastic India|Elasticsearch|ELK Stack,Technology
+Confluent,Confluent India|Kafka|Confluent Cloud,Technology
+Twilio,Twilio India|TWLO|Twilio SendGrid,Technology
+Zoom,Zoom Video|Zoom India|ZM|Zoom Phone,Technology
+Slack,Slack India|Salesforce Slack|Slack Technologies,Technology
+Notion,Notion Labs|Notion India|Notion AI,Technology
+Figma,Figma India|Figma Design,Technology
+Canva,Canva India|Canva Design,Technology
+Miro,Miro India|RealtimeBoard,Technology
+Airtable,Airtable India|Airtable Base,Technology
+Postman,Postman India|Postman API|Postman Collection,Technology
+Docker,Docker India|Docker Hub,Technology
+Kubernetes,K8s|Google Kubernetes Engine|GKE,Technology
+GitLab,GitLab India|GitLab CI,Technology
+GitHub,GitHub India|Microsoft GitHub,Technology
+Intuit,Intuit India|QuickBooks|TurboTax|Mailchimp,Technology
+PayPal,PayPal India|PayPal Holdings|Venmo,Fintech
+Stripe,Stripe India|Stripe Payments|Stripe Billing,Fintech
+Square,Square India|Block|Cash App,Fintech
+Robinhood,Robinhood India|HOOD,Fintech
+Coinbase,Coinbase India|Coinbase Exchange,Fintech
+Ripple,Ripple Labs|XRP|RippleNet,Fintech
+UiPath,UiPath India|RPA|UiPath Robot,Technology
+Automation Anywhere,Automation Anywhere India|RPA,Technology
+Blue Prism,Blue Prism India|SS&C Blue Prism,Technology
+Pega,Pegasystems|Pega India|Pega Platform,Technology
+Appian,Appian India|Low Code,Technology
+ThoughtWorks,ThoughtWorks India|Thoughtworks|Martin Fowler,IT Services
+EPAM,EPAM Systems|EPAM India|EPAM Anywhere,IT Services
+Globant,Globant India|Globant Studios,IT Services
+Endava,Endava India|Endava plc,IT Services
+Luxoft,Luxoft India|DXC Luxoft,IT Services
+Nagarro,Nagarro India|Nagarro SE,IT Services
+Virtusa,Virtusa India|Virtusa Consulting,IT Services
+Syntel,Atos Syntel|Syntel India,IT Services
+Sonata Software,Sonata Information Technology|Sonata India,IT Services
+Hexaware,Hexaware Technologies|HT Global|Hexaware India,IT Services
+Persistent Systems,Persistent|Persistent Systems Limited|Persistent Cloud,IT Services
+Birlasoft,Birlasoft India|CK Birla Group|Birlasoft Limited,IT Services
+Cyient,Cyient Limited|Infotech Enterprises|Cyient DLM,IT Services
+Zensar,Zensar Technologies|RPG Group|Zensar The Vinci,IT Services
+Mastek,Mastek India|Mastek Limited|Majesco,IT Services
+NIIT Technologies,Coforge|Coforge India|Coforge Limited,IT Services
+Coforge,NIIT Tech|Coforge India|Coforge BPA,IT Services
+Genpact,Genpact India|GE Capital|Genpact Analytics,BPO
+WNS,WNS Global Services|WNS India|WNS Analytics,BPO
+EXL,EXL Service|EXL Analytics|EXL Health,BPO
+eClerx,eClerx Services|eClerx India|eClerx Markets,BPO
+Firstsource,Firstsource Solutions|RP-Sanjiv Goenka Group,BPO
+Sutherland,Sutherland Global|Sutherland India|Sutherland Anywhere,BPO
+Concentrix,Concentrix India|CNXC|Concentrix Catalyst,BPO
+Teleperformance,Teleperformance India|TP India|TP Cloud,BPO
+TaskUs,TaskUs India|Ridiculously Good,BPO
+Foundever,Foundever India|Sitel|Sitel Group,BPO
+Freshworks,Freshworks India|Freshdesk|Freshsales|Freshchat,Technology
+Zoho,Zoho Corporation|Zoho India|Zoho One|ManageEngine,Technology
+Drishtisoft,Drishti|Drishti Soft|Ameyo,Technology
+Ameyo,Drishti Ameyo|Ameyo Contact Center,Technology
+Tally Solutions,Tally|TallyPrime|Tally ERP,Technology
+Wings,Wings ERP|Wings India,Technology
+Delhivery,Delhivery India|Delhivery Logistics,Logistics
+Ecom Express,Ecom Express India,Logistics
+Shadowfax,Shadowfax Technologies|Shadowfax Delivery,Logistics
+Dunzo,Dunzo Digital|Dunzo Daily,Hyperlocal
+Porter,Porter Logistics|Resfeber Labs,Logistics
+BlackBuck,BlackBuck India|Zinka Logistics,Logistics
+Rivigo,Rivigo India|Rivigo Relay,Logistics
+ShareChat,ShareChat India|Mohalla Tech|Moj,Social Media
+Dailyhunt,Dailyhunt India|VerSe Innovation|Josh App,Social Media
+InMobi,InMobi India|InMobi Glance|Glance Lock Screen,Adtech
+Mu Sigma,Mu Sigma India|MuSigma Analytics,Analytics
+Fractal Analytics,Fractal|Fractal Analytics India,Analytics
+Tiger Analytics,Tiger Analytics India|Tiger AI,Analytics
+LatentView,LatentView Analytics|LatentView India,Analytics

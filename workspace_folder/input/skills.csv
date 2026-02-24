@@ -1,8 +1,330 @@
 Skill,Synonyms
-Machine Learning,ML|AI|Predictive Modeling
-Artificial Intelligence,AI
+Machine Learning,ML|Predictive Modeling|Predictive Analytics
+Artificial Intelligence,AI|GenAI|Generative AI
+Deep Learning,DL|Neural Networks|NN
+Natural Language Processing,NLP|Text Analytics
+Computer Vision,CV|Image Recognition
+Large Language Models,LLM|Foundation Models
+Python,Py|Python3|Python 3
 JavaScript,JS|ECMAScript
-React,React.js|ReactJS
-Kubernetes,K8s
-System Design,LLD|HLD|Architecture
-Data Structures and Algorithms,DSA|Algo
+TypeScript,TS
+Java,J2EE|Java EE
+C++,CPP|CXX|C++11|C++17|C++20
+C#,CSharp|CS
+Go,Golang|Go Lang
+Rust,Rs
+Kotlin,Kt
+Swift,Swift5
+PHP,PHP7|PHP8
+Ruby,Rails|RoR
+Scala,Scala3
+R,R Lang|RStudio
+SQL,Structured Query Language|T-SQL|PL/SQL
+NoSQL,Non-relational DB
+HTML,HTML5
+CSS,CSS3
+React,React.js|ReactJS|React Native
+React Native,RN
+Next.js,Nextjs|Next
+Vue.js,VueJS|Vue
+Angular,AngularJS|Ng
+Node.js,NodeJS|Node
+Express.js,ExpressJS|Express
+Django,Django Framework
+Flask,Flask Framework
+Spring Boot,SpringBoot|Spring
+.NET,DotNet|.Net Core|.NET Core
+ASP.NET,ASP.Net
+GraphQL,GQL
+REST API,RESTful API|REST
+gRPC,gRPC
+Docker,Docker Container
+Kubernetes,K8s|Kube|K8
+Terraform,Terraform IaC|TF
+Ansible,Ansible Playbook
+Jenkins,CI/CD|Continuous Integration|Continuous Deployment
+GitLab CI,GitLab CI/CD
+GitHub Actions,GHA|GitHub Workflow
+CircleCI,CI/CD Pipeline
+ArgoCD,Argo
+Helm,Helm Charts
+AWS,Amazon Web Services
+Azure,Microsoft Azure|Az
+Google Cloud Platform,GCP|Google Cloud
+CloudFormation,CFN
+Serverless,Serverless Architecture
+Lambda,AWS Lambda
+Firebase,Firebase SDK
+Vercel,Vercel Deploy
+Netlify,Netlify Deploy
+Heroku,Heroku Dyno
+DigitalOcean,DO
+Linux,Unix|Ubuntu|CentOS|RHEL
+Bash,Shell Scripting|Shell|SH
+PowerShell,PS|PS1
+Nginx,NGINX Web Server
+Apache,Apache HTTP Server|httpd
+MongoDB,Mongo|Mongoose
+PostgreSQL,Postgres|PG|PostgresSQL
+MySQL,MySQL DB
+Redis,Redis Cache
+Elasticsearch,Elastic|ES|Elastic Stack
+Kafka,Apache Kafka|Confluent Kafka
+RabbitMQ,RMQ
+Spark,Apache Spark|Spark SQL
+Hadoop,HDFS|MapReduce
+Databricks,Databricks Lakehouse
+Snowflake,Snowflake DW
+BigQuery,BQ
+Airflow,Apache Airflow|MWAA
+dbt,data build tool|dbt Cloud
+Tableau,Tableau Desktop|Tableau Server
+Power BI,PBI|PowerBI
+Looker,Looker Studio|Google Looker
+QlikView,QlikSense|Qlik
+Excel,Microsoft Excel|XLS|XLSX|VBA
+Google Sheets,Sheets|GSheets
+Pandas,pd
+NumPy,Numpy|np
+Scikit-learn,sklearn|scikit
+TensorFlow,TF|TensorFlow.js
+PyTorch,Torch
+Keras,Keras API
+LangChain,Langchain
+LlamaIndex,Llama Index
+Hugging Face,HuggingFace|Transformers
+OpenAI API,OpenAI|ChatGPT API|GPT-4|GPT-4o
+Anthropic API,Claude API|Claude 3
+Cohere,Cohere API
+Mistral,Mistral AI
+Groq,GroqCloud
+Figma,Figma Design
+Adobe XD,XD
+Photoshop,PS|Adobe Photoshop
+Illustrator,AI|Adobe Illustrator
+Premiere Pro,Pr
+After Effects,AE
+UI Design,User Interface Design|UI/UX
+UX Design,User Experience Design
+Product Management,PM|Product Manager
+Agile,Scrum|Kanban|Sprint
+JIRA,Jira|Atlassian Jira
+Confluence,Confluence Wiki
+Trello,Trello Boards
+Asana,Asana Tasks
+Notion,Notion Workspace
+Slack,Slack App
+Microsoft Teams,Teams
+Salesforce,SFDC|Salesforce CRM
+HubSpot,HubSpot CRM
+SAP,SAP ERP
+Oracle,Oracle DB|Oracle ERP
+Selenium,Selenium WebDriver
+Cypress,Cypress.io
+Playwright,PW
+Appium,Mobile Testing
+Postman,Postman API
+JMeter,Performance Testing|Load Testing
+DevSecOps,DevOps Security
+Penetration Testing,Pentest|Ethical Hacking|Red Team
+Burp Suite,Burp
+Metasploit,MSF
+Wireshark,Packet Analysis
+Nmap,Network Scanning
+OWASP,OWASP Top 10
+IAM,Identity and Access Management
+SSO,Single Sign-On
+OAuth,OAuth2|OAuth 2.0
+SAML,SAML2|SAML 2.0
+GDPR,General Data Protection Regulation
+CCPA,California Consumer Privacy Act
+HIPAA,Health Insurance Portability
+SOC 2,SOC2|SOC II
+Blockchain,Distributed Ledger
+Ethereum,Eth|ETH
+Solidity,Sol
+Web3,Web 3.0|Web3.js
+Smart Contracts,Smart Contract
+Bitcoin,BTC
+Hyperledger,Hyperledger Fabric
+Solana,Sol
+Polkadot,DOT
+Chainlink,Chainlink Oracle
+Unity,Unity3D|Unity Engine
+Unreal Engine,UE4|UE5|Unreal
+Game Development,Gamedev|Game Dev
+Blender,Blender3D
+Maya,Autodesk Maya
+AR,Augmented Reality
+VR,Virtual Reality
+IoT,Internet of Things
+Embedded Systems,Embedded C
+Arduino,Arduino IDE
+Raspberry Pi,RPi|Pi
+C Programming,C Lang
+Assembly,ASM|Assembly Language
+FPGA,Field Programmable Gate Array
+Verilog,SystemVerilog
+VHDL,VHSIC Hardware Description Language
+Robotics,Robot Programming
+ROS,Robot Operating System
+MATLAB,Matlab|Simulink
+AutoCAD,AutoCAD Design
+SolidWorks,Solid Works
+ANSYS,Ansys Simulation
+Finite Element Analysis,FEA|FEM
+PLC,Programmable Logic Controller
+SCADA,Supervisory Control and Data Acquisition
+CAD,Computer-Aided Design
+BIM,Building Information Modeling
+GIS,Geographic Information System
+ArcGIS,Esri ArcGIS
+SEO,Search Engine Optimization
+SEM,Search Engine Marketing|PPC
+Google Analytics,GA|GA4
+Google Ads,AdWords|Google AdWords
+Facebook Ads,Meta Ads|Meta Ads
+SaaS,Software as a Service
+B2B,Business to Business
+B2C,Business to Consumer
+CRM,Customer Relationship Management
+OKR,Objectives and Key Results
+KPI,Key Performance Indicators
+Data Structures and Algorithms,DSA|Algo|Coding
+System Design,LLD|HLD|Low Level Design|High Level Design|Architecture
+Dynamic Programming,DP
+Bit Manipulation,Bit Manip
+Depth First Search,DFS
+Breadth First Search,BFS
+Binary Search,BSearch
+Two Pointers,2 Pointers
+Sliding Window,Sliding Window Technique
+Heap,Priority Queue|PQ
+Trie,Prefix Tree
+Segment Tree,SegTree
+Union Find,Disjoint Set|DSU
+Topological Sort,Topo Sort
+Dijkstra,Dijkstra Algorithm
+Kruskal,Kruskal Algorithm
+Big O Notation,Time Complexity|Space Complexity|O(1)|O(n)|O(log n)
+LeetCode,LC
+HackerRank,HR
+RAG,Retrieval Augmented Generation
+Fine-tuning,Finetuning|Fine-tune
+LoRA,Low-Rank Adaptation
+QLoRA,Quantized LoRA
+PEFT,Parameter-Efficient Fine-Tuning
+Vector Database,Vector DB|VectorDB
+Pinecone,Pinecone DB
+Weaviate,Weaviate DB
+Chroma,Chroma DB
+Qdrant,Qdrant DB
+FAISS,Facebook AI Similarity Search
+BERT,Bidirectional Encoder Representations
+GPT,Generative Pre-trained Transformer|GPT-3|GPT-4
+Llama,Llama2|Llama3|Meta Llama
+Stable Diffusion,SD|SDXL
+Midjourney,MJ
+DALL-E,DALL E|DALL·E 3
+FastAPI,Fast API
+NestJS,Nest
+Svelte,SvelteKit
+Remix,Remix Run
+Nuxt.js,Nuxt|Nuxt3
+Flutter,Flutter Framework
+Maven,Maven Build
+Gradle,Gradle Build
+Webpack,WP
+Vite,Vite.js
+Babel,Babel.js
+ESLint,ES Lint
+Prettier,Code Formatter
+VS Code,Visual Studio Code|VSC|VSCodium
+IntelliJ IDEA,IntelliJ|IDEA
+PyCharm,PyCharm IDE
+Android Studio,AS
+PostgresML,PostgreSQL ML
+TimescaleDB,Timescale
+Cassandra,Apache Cassandra
+DynamoDB,AWS DynamoDB
+Neo4j,Graph DB
+Supabase,Supabase.io
+PlanetScale,PS
+CockroachDB,Cockroach
+Prisma,Prisma ORM
+TypeORM,Type ORM
+Sequelize,Seq
+SQLAlchemy,SQL Alchemy
+JWT,Json Web Token|JsonWebToken
+Auth0,Auth Zero
+Okta,Okta Identity
+Cognito,AWS Cognito
+Keycloak,Key cloak
+Firebase Auth,Firebase Authentication
+NextAuth,NextAuth.js
+WebSockets,WS|Socket.io
+Hasura,Hasura GraphQL
+Apollo Server,Apollo GraphQL
+tRPC,tRPC
+TanStack Query,React Query|RQ
+Zustand,Zustand Store
+Redux,Redux Toolkit|RTK
+MobX,MobX Store
+SWR,Stale While Revalidate
+React Hook Form,RHF
+Zod,Zod Schema
+Yup,Yup Validation
+React Router,RR|React-Router-DOM
+OAuth 2.0,OAuth2
+OpenID Connect,OIDC
+CSRF,Cross-Site Request Forgery|XSRF
+XSS,Cross-Site Scripting
+CORS,Cross-Origin Resource Sharing
+Rate Limiting,Rate Limit
+Helmet.js,Helmet Security
+CSP,Content Security Policy
+WAF,Web Application Firewall
+Cloudflare,CF
+Fastly,Fastly CDN
+CDN,Content Delivery Network
+Jamstack,Jam stack
+Static Site Generation,SSG
+Server-Side Rendering,SSR
+Progressive Web App,PWA
+Microservices,Micro Services
+Event-Driven Architecture,EDA
+CQRS,Command Query Responsibility Segregation
+Domain-Driven Design,DDD
+SOLID Principles,SOLID
+Prometheus,Prom
+Grafana,Grafana Dashboard
+Datadog,DD
+New Relic,NR
+Sentry,Sentry.io
+ELK Stack,Elastic Stack|Logstash|Kibana
+OpenTelemetry,OTel|Opentelemetry
+SRE,Site Reliability Engineering
+Chaos Engineering,Chaos Monkey
+Load Balancing,LB
+Reverse Proxy,Rev Proxy
+Istio,Istio Service Mesh
+Linkerd,Linkerd Mesh
+Service Mesh,Envoy Proxy
+Git Flow,GitFlow
+Trunk Based Development,TBD
+Feature Flags,Feature Toggles
+Canary Deployment,Canary Release
+Blue-Green Deployment,Blue Green
+AIOps,AI for IT Operations
+Sharding,Database Sharding
+Partitioning,Table Partitioning
+Indexing,DB Indexing
+Query Optimization,SQL Optimization
+Normalization,DB Normalization
+Denormalization,Denormalized
+ACID,Atomicity Consistency Isolation Durability
+CAP Theorem,Consistency Availability Partition
+Eventual Consistency,Eventually Consistent
+Distributed Systems,Distributed Computing
+Raft,Raft Consensus
+Paxos,Paxos Algorithm

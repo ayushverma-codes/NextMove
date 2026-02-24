@@ -49,19 +49,23 @@ def prepare_federated_queries(
     # Translate and validate per source
     structured_queries = {}
     
+    # 
     for source in GAV_MAPPINGS.keys():
         db_type = SOURCE_TO_DB_Type.get(source, "MySQL")
         dialect = "mysql" if db_type.lower() == "mysql" else "postgres"
         
         # Fetch correct target table name from config
         target_table_name = SOURCE_TO_TABLE.get(source)
+        
+        # [Fix] Added debug print to confirm table selection
+        print(f"[DEBUG] Source: {source} -> Target Table: {target_table_name}")
+
         if not target_table_name:
             print(f"[WARN] No table mapping found for source {source}. Defaulting to 'jobs'.")
             target_table_name = "jobs"
 
-        # --- FIX: DO NOT PASS global_table_names MANUALLY ---
-        # Letting it default to None allows the Translator to use its internal comprehensive list
-        # (which includes 'jobs', 'job_listings', etc.)
+        # 
+        # Initialize translator with the correct target table
         translator = SQLTranslator(
             source=source,
             target_table_name=target_table_name, 

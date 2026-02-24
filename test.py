@@ -26,12 +26,13 @@ def test_mysql_connection(host, user, password, database=None):
                     print("   -", db[0])
             else:
                 # Check if table exists
-                cursor.execute(f"SHOW TABLES LIKE 'job_listings';")
+                cursor.execute(f"SELECT `Job Title`, Company, location, skills, `Salary Range`, `Work Type` FROM `job_listings` WHERE location LIKE '%Remote%' AND `Job Title` LIKE '%data science%' AND `Salary Range` >= 120000 AND `Job Description` LIKE '%stock options%' AND `Job Description` LIKE '%flexible hours%' LIMIT 10")
                 table_exists = cursor.fetchone()
                 if table_exists:
                     print("📋 Table 'job_listings' exists in the database.")
                 else:
-                    print("ℹ Table 'job_listings' does NOT exist in the database.")
+                    # print("ℹ Table 'job_listings' does NOT exist in the database.")
+                    pass
 
                 # Execute a test query: get first 5 rows
                 cursor.execute("SELECT * FROM job_listings LIMIT 5;")

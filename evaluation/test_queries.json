@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "type": "Exact_Match",
+    "query": "Senior Java Developer in Bangalore",
+    "description": "Baseline test for SQL generation and location filtering."
+  },
+  {
+    "id": 2,
+    "type": "Hybrid_Matching_Typos",
+    "query": "Sftware Enginer jobs in Hydrabad",
+    "description": "Tests Week 5 Fuzzy Matching (Levenshtein) against 'Software Engineer' and 'Hyderabad'."
+  },
+  {
+    "id": 3,
+    "type": "Graph_Augmented_Implicit",
+    "query": "Jobs for React developers",
+    "description": "Tests Week 2 Ontology. Should find jobs listing 'JavaScript', 'Frontend', or 'Web Development' even if 'React' isn't explicitly in the description."
+  },
+  {
+    "id": 4,
+    "type": "Context_SCORE_Ranking",
+    "query": "Architect jobs at Google",
+    "description": "Tests Week 11 SCORE. Should rank 'Software Architect' higher than a job having 'architect' in the footer text."
+  },
+  {
+    "id": 5,
+    "type": "Rule_Based_Entity",
+    "query": "Fresher jobs in Mumbai",
+    "description": "Tests Week 8 Rule-Down-Rules. 'Fresher' should translate to 'Experience: 0-1 years' in SQL."
+  },
+  {
+    "id": 6,
+    "type": "Federated_Complex",
+    "query": "Data Scientist with Python skills and salary above 20 lakhs",
+    "description": "Tests Week 3 GAV. Needs to map 'salary' to both 'normalized_salary' (Source A) and 'Salary Range' (Source B)."
+  },
+  {
+    "id": 7,
+    "type": "Ambiguous_Intent",
+    "query": "Openings for lead roles",
+    "description": "Tests LLM intent resolution. Should look for 'Team Lead', 'Tech Lead', 'Manager'."
+  },
+  {
+    "id": 8,
+    "type": "Company_Blocking",
+    "query": "SDE 2 at Tata Consultancy Services",
+    "description": "Tests Week 5 Blocking. Should normalize 'TCS' and 'Tata Consultancy Services' to the same entity."
+  },
+  {
+    "id": 9,
+    "type": "Unstructured_Fallback",
+    "query": "How do I prepare for a data science interview?",
+    "description": "Tests system routing. Should BYPASS the SQL database and go straight to LLM."
+  },
+  {
+    "id": 10,
+    "type": "Negative_Test",
+    "query": "asdf jkl",
+    "description": "Tests robustness. Should handle garbage input gracefully without crashing."
+  }
+]

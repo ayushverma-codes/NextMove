@@ -1,6 +1,7 @@
 # D:\Projects\NextMove\pipelines\run_pipeline.py
 
 import json
+import copy # <--- ADDED IMPORT
 from typing import Dict, Any
 from components.analyzer_and_decomposer.query_analyzer import query_analyze
 from pipelines.query_decomposer_test_pipeline import decompose_single_query
@@ -95,6 +96,11 @@ def run_pipeline(
             structured_queries.get("Naukri_source"), "Naukri"
         )
 
+        # --- CAPTURE RAW DATA FOR DEBUGGING ---
+        # Make a deep copy before Integration overwrites it
+        raw_db_debug = copy.deepcopy(db_results)
+        # --------------------------------------
+
         # --- STEP 3.5: Integration & Ranking (Updated for Robustness) ---
         print("[INFO] Integrating and Ranking results...")
         try:
@@ -117,15 +123,18 @@ def run_pipeline(
                 top_k_jobs = []
 
             # 4. ROBUST OUTPUT CONSTRUCTION
-            # If we found jobs, we ONLY send the jobs to the LLM. 
+            # If we found jobs, we ONLY send the jobs to the LLM.
             # We suppress errors from specific sources so the LLM focuses on the data we found.
             if top_k_jobs:
                 print(f"[INFO] Success: Found {len(top_k_jobs)} jobs. Suppressing partial errors.")
                 db_results = {"Top_Ranked_Jobs": top_k_jobs}
             else:
-                # If NO jobs found, check if it was due to errors.
-                # Collect errors to pass to LLM so it can apologize correctly.
+                # [FIX] Keep BOTH errors and empty lists so we can see Naukri's status
+                print("[WARN] No jobs found. Some sources failed, others returned 0.") 
                 errors = {k: v for k, v in db_results.items() if isinstance(v, dict) and "error" in v}
+                empty_successes = {k: v for k, v in db_results.items() if isinstance(v, list) and not v}
+                
+                db_results = {**errors, **empty_successes}
                 
                 if errors:
                     print("[WARN] No jobs found due to DB errors.")
@@ -137,6 +146,7 @@ def run_pipeline(
         except Exception as e:
             print(f"[WARN] Integration/Ranking failed: {e}. Using raw results.")
             # In a catastrophic integration fail, we fall back to whatever db_results we had
+    
         # ------------------------------------------------
 
         # --- PHASE 2: ACTIVE LEARNING ---
@@ -153,6 +163,7 @@ def run_pipeline(
         print("\n[INFO] No SQL query detected. Bypassing Steps 2 & 3.")
         federated_queries = {"info": "Bypassed: General knowledge query."}
         db_results = {"info": "Bypassed: No SQL executed."}
+        raw_db_debug = {"info": "No SQL executed"} # Default for debug
 
     # --- Step 4: Synthesize ---
     print("[STEP 4] Synthesizing final answer...")
@@ -184,7 +195,10 @@ def run_pipeline(
                 "0_history_context": chat_context,
                 "1_query_analysis": analyzed_result,
                 "2_query_decomposition": federated_queries,
-                "3_database_results": db_results,
+                # --- NEW: Added RAW vs INTEGRATED Results ---
+                "3a_RAW_db_results": raw_db_debug if 'raw_db_debug' in locals() else "No SQL",
+                "3b_INTEGRATED_results": db_results,
+                # --------------------------------------------
                 "4_final_llm_prompts": final_llm_prompts
             }
         }

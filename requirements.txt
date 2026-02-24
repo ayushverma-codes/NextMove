@@ -23,5 +23,7 @@
 # networkx
 # torch
 # scikit-learn
-faiss-cpu
-keybert 
+# faiss-cpu
+# keybert 
+# tqdm
+matplotlib

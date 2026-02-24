@@ -1,11 +1,113 @@
 Location,Synonyms,Country
-Bengaluru,Bangalore|Blr|Bengaluru Urban|Silicon Valley of India,India
-Gurugram,Gurgaon|NCR|Delhi NCR|Gurugram Haryana,India
-Mumbai,Bombay|Navi Mumbai|Thane|Mumbai City,India
-Hyderabad,Hyd|Cyberabad|Secunderabad|Telangana,India
-Pune,Poona|Pimpri-Chinchwad|Pune City,India
-Noida,New Okhla|Gautam Buddh Nagar|NCR,India
-Chennai,Madras|Chennai City,India
-Delhi,New Delhi|NCR|Delhi NCR,India
-Kolkata,Calcutta|Kol,India
-Remote,Work from Home|WFH|Anywhere|Pan India,Global
+Bengaluru,Bangalore|Blr|Bangaluru|Bengaluru Urban|Silicon Valley of India|Garden City,India
+Gurugram,Gurgaon|Gurugaon|Delhi NCR|NCR|Millennium City,India
+Mumbai,Bombay|Bombaim|Navi Mumbai|Thane|Mumbai Metropolitan Region|MMR|Maximum City,India
+Hyderabad,Hyd|Cyberabad|Secunderabad|Hitech City|HITEC City|Pearl City,India
+Pune,Poona|Pimpri-Chinchwad|Oxford of the East|Queen of Deccan,India
+Noida,New Okhla|Gautam Buddh Nagar|NCR|Greater Noida,India
+Chennai,Madras|Detroit of India|Singara Chennai,India
+Delhi,New Delhi|Dilli|NCR|Delhi NCR|DLF|National Capital Territory,India
+Kolkata,Calcutta|Kol|City of Joy|Cultural Capital of India,India
+Ahmedabad,Amdavad|Manchester of India|Amd|Amd,India
+Jaipur,Pink City|Jai,India
+Coimbatore,Kovai|Manchester of South India|Covai,India
+Indore,Mini Mumbai|Cleanest City,India
+Chandigarh,City Beautiful|Tricity|Chd|Chandigarh City,India
+Thiruvananthapuram,Trivandrum|TVM|Evergreen City of India,India
+Kochi,Cochin|Ernakulam|Queen of Arabian Sea,India
+Visakhapatnam,Vizag|Waltair|City of Destiny|Vishakhapatnam,India
+Lucknow,Lko|City of Nawabs,India
+Nagpur,Orange City,India
+Vadodara,Baroda|Sayaji Nagari,India
+Surat,Diamond City|Silk City,India
+Remote,Work from Home|WFH|Anywhere|Pan India|Fully Remote|Distributed|Worldwide,Global
+San Francisco,SF|Bay Area|San Fran|Silicon Valley|SFO,United States
+New York City,NYC|New York|NY|The Big Apple|Manhattan|Brooklyn,United States
+Seattle,Sea|Emerald City|Rain City,United States
+Austin,ATX|Silicon Hills,United States
+Boston,Beantown|Greater Boston,United States
+Los Angeles,LA|City of Angels|LAX,United States
+Chicago,Chi-town|Windy City,United States
+Atlanta,ATL|Hotlanta,United States
+Denver,Mile High City,United States
+Portland,PDX|Rose City|Stumptown,United States
+Raleigh,Research Triangle|RTP|Triangle,United States
+Dallas,DFW|Big D,United States
+Houston,Htown|Space City,United States
+Miami,MIA|Magic City,United States
+Toronto,Toronto City|YYZ|The 6ix|GTA|Greater Toronto Area,Canada
+Vancouver,YVR|Raincouver|Hollywood North,Canada
+Montreal,YUL|MTL,Canada
+London,LHR|LDN|The Big Smoke|Greater London,United Kingdom
+Manchester,Manc|MADchester,United Kingdom
+Birmingham,Brum|Second City,United Kingdom
+Edinburgh,Edin|Edina|Auld Reekie,United Kingdom
+Glasgow,Glesga|Dear Green Place,United Kingdom
+Berlin,BE|Berlin City,Germany
+Munich,München|MUC,Germany
+Hamburg,HH|Freie Hansestadt,Germany
+Frankfurt,FRA|Mainhattan|Bankfurt,Germany
+Amsterdam,020|Dam|A'dam,Netherlands
+Rotterdam,Roffa|010,Netherlands
+Utrecht,030,Netherlands
+Paris,PAR|City of Light|Paname,France
+Lyon,LYS,France
+Marseille,MRS,France
+Barcelona,BCN|Barna,Spain
+Madrid,MAD,Spain
+Valencia,VLC,Spain
+Dublin,DUB|The Pale|Fair City,Ireland
+Stockholm,STO|Venice of the North,Sweden
+Gothenburg,GBG,Sweden
+Helsinki,HEL|Helsingfors,Finland
+Copenhagen,CPH|CPH Airport,Denmark
+Oslo,OSL,Norway
+Zurich,ZRH|Züri,Switzerland
+Geneva,GVA|Genève,Switzerland
+Singapore,SG|SIN|Lion City|Garden City,Singapore
+Tokyo,Tyo|TYO|Greater Tokyo|Kanto,Japan
+Osaka,KIX|Kansai,Japan
+Seoul,SEL|ICN,South Korea
+Shanghai,SHA|Hu|Magic City,China
+Beijing,PEK|Běijīng,China
+Shenzhen,SZX|Silicon Valley of China,China
+Hong Kong,HKG|HK|Fragrant Harbour,Hong Kong
+Sydney,SYD|Harbour City,Australia
+Melbourne,MEL|Melb,Australia
+Brisbane,BNE,Australia
+Perth,PER,Australia
+Auckland,AKL,New Zealand
+Tel Aviv,TLV|Startup Nation|White City,Israel
+Dubai,DXB|City of Gold,United Arab Emirates
+Abu Dhabi,AUH,United Arab Emirates
+Doha,DOH,Qatar
+Riyadh,RUH,Saudi Arabia
+Warsaw,WAW,Poland
+Kraków,KRK,Poland
+Prague,PRG|City of Hundred Spires,Czech Republic
+Budapest,BUD,Hungary
+Vienna,VIE|Wien,Austria
+Lisbon,LIS|City of Seven Hills,Portugal
+Porto,OPO,Portugal
+Milan,MXP|Milano,Italy
+Rome,FCO|The Eternal City,Italy
+Bucharest,OTP,Romania
+Sofia,SOF,Bulgaria
+Athens,ATH,Greece
+Istanbul,IST|Constantinople,Turkey
+Kyiv,KBP|Kiev,Ukraine
+Moscow,SVO|Moskva,Russia
+São Paulo,GRU|Sampa,Brazil
+Rio de Janeiro,GIG|Rio|Cidade Maravilhosa,Brazil
+Buenos Aires,EZE|BA|Paris of South America,Argentina
+Mexico City,MEX|CDMX|Ciudad de México,Mexico
+Santiago,SCL,Chile
+Bogotá,BOG,Colombia
+Lima,LIM,Peru
+Bangkok,BKK|Krung Thep|City of Angels,Thailand
+Jakarta,CGK|JKT,Indonesia
+Kuala Lumpur,KUL|KL,Malaysia
+Ho Chi Minh City,SGN|Saigon|HCMC,Vietnam
+Hanoi,HAN,Vietnam
+Manila,MNL|Metro Manila,Philippines
+Taipei,TPE|Taipeh,Taiwan

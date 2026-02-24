@@ -1,5 +1,3 @@
-# D:\Projects\NextMove\components\synthesizer\integration.py
-
 import difflib
 import re
 import random
@@ -54,13 +52,15 @@ class ResultIntegrator:
         """
         Final cleanup: 
         - Removes keys with None/Empty values (Optimization).
-        - Removes internal scoring keys (Noise reduction).
+        - [MODIFIED] KEEPS internal scoring keys for debugging.
         """
         pruned = {}
         for k, v in job.items():
-            # Remove internal ranking details
-            if k.startswith("_relevance"):
-                continue
+            # --- DEBUG MODIFICATION START ---
+            # We comment this out so we can see the ranking score in the UI
+            # if k.startswith("_relevance"):
+            #    continue
+            # --- DEBUG MODIFICATION END ---
             
             # Remove empty data
             if v is None or v == "" or str(v).lower() == "null":
@@ -123,7 +123,7 @@ class ResultIntegrator:
         for field in fields:
             val_exist = str(existing_job.get(field, '') or '')
             val_new = str(new_job.get(field, '') or '')
-            
+
             if (not val_exist or val_exist.lower() == 'none') and (val_new and val_new.lower() != 'none'):
                 merged[field] = new_job[field]
             elif len(val_new) > len(val_exist):

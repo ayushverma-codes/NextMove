@@ -1,0 +1,11 @@
+ID,Type,Query,Latency(s),SQL_Gen,Jobs_Found,NDCG@5,Avg_Relevance
+1,Exact_Match,Senior Java Developer in Bangalore,20.34,True,0,0.0,0.0
+2,Hybrid_Matching_Typos,Sftware Enginer jobs in Hydrabad,15.2,True,0,0.0,0.0
+3,Graph_Augmented_Implicit,Jobs for React developers,14.95,True,0,0.0,0.0
+4,Context_SCORE_Ranking,Architect jobs at Google,19.19,True,0,0.0,0.0
+5,Rule_Based_Entity,Fresher jobs in Mumbai,22.87,True,0,0.0,0.0
+6,Federated_Complex,Data Scientist with Python skills and salary above 20 lakhs,17.79,True,0,0.0,0.0
+7,Ambiguous_Intent,Openings for lead roles,31.21,True,2,1.0,5.0
+8,Company_Blocking,SDE 2 at Tata Consultancy Services,17.02,True,0,0.0,0.0
+9,Unstructured_Fallback,How do I prepare for a data science interview?,7.84,False,0,0.0,0.0
+10,Negative_Test,asdf jkl,4.15,False,0,0.0,0.0

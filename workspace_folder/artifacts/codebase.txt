@@ -1,0 +1,1771 @@
+// D:\Projects\NextMove\app.py
+from fastapi import FastAPI, Response
+from pydantic import BaseModel
+from typing import Optional, Dict, Any
+import json
+import uvicorn
+
+# --- Import Pipelines ---
+from pipelines.query_analyzer_test_pipeline import run_single_query
+from pipelines.query_decomposer_test_pipeline import decompose_single_query
+from pipelines.run_pipeline import run_pipeline
+
+app = FastAPI(title="NextMove Query Processing API")
+
+# ---------------------
+# 📦 Request Model
+# ---------------------
+class QueryRequest(BaseModel):
+    query: str
+    debug_mode: Optional[bool] = False 
+    use_history: Optional[bool] = False
+    session_id: Optional[str] = "default_session" # <--- Added Session ID
+
+# ---------------------
+# 📦 Response Models
+# ---------------------
+class AnalyzeResponse(BaseModel):
+    analyzed_result: Dict[str, Any]
+
+class DecomposeResponse(BaseModel):
+    analyzed_result: Dict[str, Any]
+    decomposed_result: Dict[str, Any]
+
+class RunResponse(BaseModel):
+    final_answer: str
+    debug_info: Optional[Dict[str, Any]] = None
+
+class ErrorResponse(BaseModel):
+    error: str
+
+# ---------------------
+# 🔍 Analyze Endpoint (Test)
+# ---------------------
+@app.post("/analyze", response_model=AnalyzeResponse, responses={500: {"model": ErrorResponse}})
+def analyze_query(request: QueryRequest):
+    # Note: Simple test endpoint, does not use history context
+    result = run_single_query(request.query)
+    if result is None:
+        return Response(content=json.dumps({"error": "Failed to analyze the query"}), status_code=500, media_type="application/json")
+    return {"analyzed_result": result}
+
+# ---------------------
+# 🔨 Decompose Endpoint (Test)
+# ---------------------
+@app.post("/decompose", response_model=DecomposeResponse, responses={500: {"model": ErrorResponse}})
+def decompose_query(request: QueryRequest):
+    analyzed_result = run_single_query(request.query)
+    if analyzed_result is None:
+        return Response(content=json.dumps({"error": "Failed to analyze the query"}), status_code=500, media_type="application/json")
+
+    analyzed_result["original_query"] = request.query
+    try:
+        decomposed_result = decompose_single_query(analyzed_result)
+        return {
+            "analyzed_result": analyzed_result,
+            "decomposed_result": decomposed_result
+        }
+    except Exception as e:
+        return Response(content=json.dumps({
+            "analyzed_result": analyzed_result,
+            "error": f"Failed to decompose: {str(e)}"
+        }), status_code=500, media_type="application/json")
+
+# ---------------------
+# 🔁 Full Pipeline Endpoint (Main)
+# ---------------------
+@app.post("/run", response_model=RunResponse, responses={500: {"model": ErrorResponse}})
+def run_full_pipeline_endpoint(request: QueryRequest):
+    try:
+        # Pass all parameters including session_id to the pipeline
+        pipeline_response = run_pipeline(
+            natural_language_query=request.query,
+            debug_mode=request.debug_mode,
+            use_history=request.use_history,
+            session_id=request.session_id 
+        )
+
+        if pipeline_response is None:
+            return Response(content=json.dumps({"error": "Pipeline execution returned None"}), status_code=500, media_type="application/json")
+        
+        return pipeline_response
+
+    except Exception as e:
+        return Response(content=json.dumps({"error": f"Internal Server Error: {str(e)}"}), status_code=500, media_type="application/json")
+
+# ---------------------
+# 🌐 Root Endpoint
+# ---------------------
+@app.get("/")
+def root():
+    return {
+        "message": "Welcome to NextMove API. Use /run for the full pipeline."
+    }
+
+# ---------------------
+# 🚀 Run with Uvicorn
+# ---------------------
+if __name__ == "__main__":
+    uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
+
+// D:\Projects\NextMove\chatbot_app.py
+import streamlit as st
+import requests
+import json
+import time
+import uuid
+
+# --- Page Configuration ---
+st.set_page_config(
+    page_title="NextMove Job Chatbot",
+    page_icon="🤖",
+    layout="wide"
+)
+
+# --- 1. INITIALIZATION (Must be at the top) ---
+# Initialize Session ID if missing
+if "session_id" not in st.session_state:
+    st.session_state.session_id = str(uuid.uuid4())
+
+# Initialize Chat Messages if missing
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# --- API Endpoint ---
+FASTAPI_ENDPOINT = "http://127.0.0.1:8000/run"
+
+# --- Page Title ---
+st.title("🤖 NextMove Job Chatbot")
+
+# --- Sidebar & Settings ---
+with st.sidebar:
+    st.header("Settings")
+    
+    debug_mode = st.checkbox("🛠️ Debug Mode", value=False, help="Show intermediate steps (SQL, JSON, etc.)")
+    use_history = st.checkbox("🧠 History Aware", value=True, help="Enable persistent memory.")
+    
+    st.caption(f"Session ID: {st.session_state.session_id[:8]}...") 
+    
+    st.divider()
+    
+    if st.button("🗑️ Clear Chat & Reset Session"):
+        # Clear local UI history
+        st.session_state.messages = []
+        # Generate new session ID (simulate fresh start)
+        st.session_state.session_id = str(uuid.uuid4())
+        # Rerun immediately to reflect empty state
+        st.rerun()
+
+# --- Display Past Messages ---
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+        if "debug_info" in message:
+            with st.expander("Show Debug Info"):
+                st.json(message["debug_info"])
+
+# --- Handle User Input ---
+if prompt := st.chat_input("Ask about job postings..."):
+    # 1. Append user message to state
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    
+    # 2. Display user message immediately
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    # 3. Call Backend
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty()
+        message_placeholder.markdown("Thinking... ⏳")
+        start_time = time.time()
+        
+        try:
+            # Prepare payload
+            payload = {
+                "query": prompt, 
+                "debug_mode": debug_mode,
+                "use_history": use_history,
+                "session_id": st.session_state.session_id
+            }
+            
+            # Send Request
+            response = requests.post(FASTAPI_ENDPOINT, json=payload, timeout=300)
+            response.raise_for_status()
+            
+            # Parse Response
+            data = response.json()
+            final_answer = data.get("final_answer", "Sorry, I received an invalid response.")
+            debug_info = data.get("debug_info")
+            
+            # Display Answer
+            message_placeholder.markdown(final_answer)
+
+            # Store Assistant Response
+            assistant_message = {"role": "assistant", "content": final_answer}
+            
+            if debug_mode and debug_info:
+                assistant_message["debug_info"] = debug_info
+                with st.expander("Show Debug Info"):
+                    st.json(debug_info)
+            
+            st.session_state.messages.append(assistant_message)
+
+        except requests.exceptions.ConnectionError:
+            message_placeholder.error("Connection Error: Is the FastAPI server running?")
+        except Exception as e:
+            message_placeholder.error(f"An error occurred: {e}")
+
+// D:\Projects\NextMove\pipelines\run_pipeline.py
+# D:\Projects\NextMove\pipelines\run_pipeline.py
+
+import json
+import copy # <--- ADDED IMPORT
+from typing import Dict, Any
+from components.analyzer_and_decomposer.query_analyzer import query_analyze
+from pipelines.query_decomposer_test_pipeline import decompose_single_query
+from components.connectors.mysql_connector import MySQLConnector
+from components.synthesizer.result_synthesizer import synthesize_results
+from components.history_manager.history_handler import HistoryHandler
+from components.learner.graph_learner import GraphLearner 
+from components.synthesizer.integration import ResultIntegrator 
+
+from entities.config import (
+    LINKEDIN_DB_HOST, LINKEDIN_DB_USER, LINKEDIN_DB_PASSWORD, LINKEDIN_DB_NAME,
+    NAUKRI_DB_HOST, NAUKRI_DB_USER, NAUKRI_DB_PASSWORD, NAUKRI_DB_NAME
+)
+
+DB_CONNECTION_TIMEOUT = 3
+
+def run_pipeline(
+    natural_language_query: str, 
+    debug_mode: bool = False,
+    use_history: bool = False,
+    session_id: str = "default_session"
+) -> Dict[str, Any]:
+    """
+    Executes the full NextMove pipeline with Integration, Ranking, and Active Learning.
+    """
+    print(f"=== NextMove Pipeline Started (Session: {session_id}) ===\n")
+
+    # --- 0. Context Management ---
+    chat_context = ""
+    history_handler = None
+
+    if use_history:
+        print("[INFO] History Aware Mode: ON. Loading context...")
+        try:
+            history_handler = HistoryHandler(session_id=session_id)
+            chat_context = history_handler.get_context_string()
+        except Exception as e:
+            print(f"[WARN] Failed to load history: {e}. Proceeding without context.")
+    else:
+        print("[INFO] History Aware Mode: OFF.")
+
+    # --- Step 1: Analyze Query ---
+    print("[STEP 1] Analyzing query...")
+    analyzed_result = query_analyze(natural_language_query, chat_history_context=chat_context)
+    
+    if analyzed_result is None:
+        return {
+            "final_answer": "I'm sorry, I wasn't able to understand your query.",
+            "debug_info": {"error": "Query analysis failed"}
+        }
+
+    user_intent = analyzed_result.get("user_intent", natural_language_query)
+    unstructured_query = analyzed_result.get("unstructured_query", "")
+    global_sql = analyzed_result.get("sql_query")
+
+    print(f"   > Resolved Intent: {user_intent}")
+
+    federated_queries = {}
+    db_results = {}
+    
+    # --- Step 2 & 3: Decompose & Execute ---
+    if global_sql:
+        print("\n[INFO] SQL query found. Running decomposition and execution...")
+        
+        # Step 2: Decomposition
+        print("\n[STEP 2] Decomposing analyzed query...")
+        federated_queries = decompose_single_query(analyzed_result)
+        structured_queries = federated_queries.get("structured", {})
+
+        # Step 3: Execution
+        print("\n[STEP 3] Executing structured queries on data sources...\n")
+
+        def run_mysql(host, user, pwd, db, sql, source):
+            if not sql: return "No query generated."
+            try:
+                conn = MySQLConnector(host, user, pwd, db, timeout=DB_CONNECTION_TIMEOUT)
+                conn.connect()
+                rows = conn.execute_query_as_dict(sql)
+                conn.disconnect()
+                return rows
+            except Exception as e:
+                # We return a dict with 'error' key to track failures per source
+                return {"error": f"Failed: {e}"}
+
+        db_results["Linkedin_source"] = run_mysql(
+            LINKEDIN_DB_HOST, LINKEDIN_DB_USER, LINKEDIN_DB_PASSWORD, LINKEDIN_DB_NAME,
+            structured_queries.get("Linkedin_source"), "Linkedin"
+        )
+        
+        db_results["Naukri_source"] = run_mysql(
+            NAUKRI_DB_HOST, NAUKRI_DB_USER, NAUKRI_DB_PASSWORD, NAUKRI_DB_NAME,
+            structured_queries.get("Naukri_source"), "Naukri"
+        )
+
+        # --- CAPTURE RAW DATA FOR DEBUGGING ---
+        # Make a deep copy before Integration overwrites it
+        raw_db_debug = copy.deepcopy(db_results)
+        # --------------------------------------
+
+        # --- STEP 3.5: Integration & Ranking (Updated for Robustness) ---
+        print("[INFO] Integrating and Ranking results...")
+        try:
+            integrator = ResultIntegrator()
+            
+            # 1. Isolate valid job lists (ignore errors for calculation)
+            valid_job_lists = {k: v for k, v in db_results.items() if isinstance(v, list)}
+            
+            # 2. Determine Limit
+            limit = analyzed_result.get("limit", 10)
+            
+            # 3. Run Integration Logic
+            if valid_job_lists:
+                top_k_jobs = integrator.integrate_and_rank(
+                    results_dict=valid_job_lists,
+                    user_intent=user_intent,
+                    limit=limit
+                )
+            else:
+                top_k_jobs = []
+
+            # 4. ROBUST OUTPUT CONSTRUCTION
+            # If we found jobs, we ONLY send the jobs to the LLM.
+            # We suppress errors from specific sources so the LLM focuses on the data we found.
+            if top_k_jobs:
+                print(f"[INFO] Success: Found {len(top_k_jobs)} jobs. Suppressing partial errors.")
+                db_results = {"Top_Ranked_Jobs": top_k_jobs}
+            else:
+                # [FIX] Keep BOTH errors and empty lists so we can see Naukri's status
+                print("[WARN] No jobs found. Some sources failed, others returned 0.") 
+                errors = {k: v for k, v in db_results.items() if isinstance(v, dict) and "error" in v}
+                empty_successes = {k: v for k, v in db_results.items() if isinstance(v, list) and not v}
+                
+                db_results = {**errors, **empty_successes}
+                
+                if errors:
+                    print("[WARN] No jobs found due to DB errors.")
+                    db_results = errors # Pass errors to LLM
+                else:
+                    print("[INFO] Query ran successfully but returned 0 results.")
+                    db_results = {"Top_Ranked_Jobs": []} # Empty list implies valid search, just no matches
+
+        except Exception as e:
+            print(f"[WARN] Integration/Ranking failed: {e}. Using raw results.")
+            # In a catastrophic integration fail, we fall back to whatever db_results we had
+    
+        # ------------------------------------------------
+
+        # --- PHASE 2: ACTIVE LEARNING ---
+        try:
+            # Fire the learner to update the graph based on what we found
+            learner = GraphLearner()
+            # We pass the raw db_results or integrated ones; learner handles format check
+            learner.learn_from_results(user_intent, db_results)
+        except Exception as e:
+            print(f"[WARN] Learning step skipped: {e}")
+        # --------------------------------------
+
+    else:
+        print("\n[INFO] No SQL query detected. Bypassing Steps 2 & 3.")
+        federated_queries = {"info": "Bypassed: General knowledge query."}
+        db_results = {"info": "Bypassed: No SQL executed."}
+        raw_db_debug = {"info": "No SQL executed"} # Default for debug
+
+    # --- Step 4: Synthesize ---
+    print("[STEP 4] Synthesizing final answer...")
+    synthesis_response = synthesize_results(
+        natural_language_query=natural_language_query,
+        unstructured_query=unstructured_query,
+        database_results=db_results,
+        user_intent=user_intent
+    )
+    
+    final_answer = synthesis_response["final_answer"]
+    final_llm_prompts = synthesis_response["prompts_used"]
+
+    # --- Step 5: History Update ---
+    if use_history and history_handler:
+        try:
+            history_handler.add_interaction(natural_language_query, final_answer)
+        except Exception as e:
+            print(f"[ERROR] Failed to save history: {e}")
+
+    print("\n=== Pipeline Completed ===")
+    
+    # Return Final Answer & Debug Info
+    if debug_mode:
+        return {
+            "final_answer": final_answer,
+            "debug_info": {
+                "session_id": session_id,
+                "0_history_context": chat_context,
+                "1_query_analysis": analyzed_result,
+                "2_query_decomposition": federated_queries,
+                # --- NEW: Added RAW vs INTEGRATED Results ---
+                "3a_RAW_db_results": raw_db_debug if 'raw_db_debug' in locals() else "No SQL",
+                "3b_INTEGRATED_results": db_results,
+                # --------------------------------------------
+                "4_final_llm_prompts": final_llm_prompts
+            }
+        }
+    else:
+        return {
+            "final_answer": final_answer,
+            "debug_info": None
+        }
+
+// D:\Projects\NextMove\pipelines\query_analyzer_test_pipeline.py
+import os
+import json
+from constants import QUERY_INPUT_FILE_PATH, QUERY_ANALYZE_OUTPUT_FILE_PATH
+from components.analyzer_and_decomposer.query_analyzer import query_analyze
+
+
+def analyze_all_queries():
+    """
+    Reads all queries from a file, analyzes them using the query analyzer,
+    saves results to a .jsonl file, and prints output per query.
+    """
+    if not os.path.exists(QUERY_INPUT_FILE_PATH):
+        print(f"[ERROR] Query file not found: {QUERY_INPUT_FILE_PATH}")
+        return
+
+    with open(QUERY_INPUT_FILE_PATH, "r", encoding="utf-8") as file:
+        queries = [line.strip() for line in file if line.strip()]
+
+    print(f"\nFound {len(queries)} queries in file.\n")
+
+    os.makedirs(os.path.dirname(QUERY_ANALYZE_OUTPUT_FILE_PATH), exist_ok=True)
+    with open(QUERY_ANALYZE_OUTPUT_FILE_PATH, "w", encoding="utf-8") as outfile:
+        for i, query in enumerate(queries, start=1):
+            print(f"\n--- Query {i} ---")
+            print(f"Input: {query}")
+            try:
+                result = query_analyze(query)
+                print("Output:")
+                print(json.dumps(result, indent=2))
+
+                # Save to output file
+                record = {
+                    "query": query,
+                    "result": result
+                }
+                outfile.write(json.dumps(record) + "\n")
+
+            except Exception as e:
+                print(f"Error analyzing query: {e}")
+                error_record = {
+                    "query": query,
+                    "error": str(e)
+                }
+                outfile.write(json.dumps(error_record) + "\n")
+            print("-" * 50)
+
+    print(f"\nResults saved to: {QUERY_ANALYZE_OUTPUT_FILE_PATH}")
+
+
+def run_single_query(query: str):
+    """
+    Runs a single query through the analyzer and returns the result.
+    """
+    print(f"\nAnalyzing single query:\n{query}")
+    try:
+        result = query_analyze(query)
+        return result
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+
+// D:\Projects\NextMove\pipelines\query_decomposer_test_pipeline.py
+import os
+import json
+from typing import Dict
+from constants import (
+    QUERY_ANALYZE_OUTPUT_FILE_PATH,
+    QUERY_DECOMPOSE_OUTPUT_FILE_PATH
+)
+from components.analyzer_and_decomposer.query_decomposer import prepare_federated_queries
+
+# -----------------------------
+# 🔹 Decompose a single query
+# -----------------------------
+def decompose_single_query(analyzer_result: Dict) -> Dict:
+    """
+    Takes analyzer output (dict containing sql_query + unstructured_query),
+    runs decomposition, translation, validation, and optional LLM retry.
+    """
+    return prepare_federated_queries(
+        analyzed_result=analyzer_result,
+        use_llm_retry=True,
+    )
+
+
+# -----------------------------
+# 🔹 Batch Decomposition from JSONL
+# -----------------------------
+def decompose_all_queries():
+    """
+    Reads the query_analyzer output .jsonl file, applies decomposition,
+    and saves federated queries to another .jsonl file.
+    """
+    if not os.path.exists(QUERY_ANALYZE_OUTPUT_FILE_PATH):
+        raise FileNotFoundError(f"Input file not found: {QUERY_ANALYZE_OUTPUT_FILE_PATH}")
+
+    os.makedirs(os.path.dirname(QUERY_DECOMPOSE_OUTPUT_FILE_PATH), exist_ok=True)
+
+    with open(QUERY_ANALYZE_OUTPUT_FILE_PATH, "r", encoding="utf-8") as infile, \
+         open(QUERY_DECOMPOSE_OUTPUT_FILE_PATH, "w", encoding="utf-8") as outfile:
+
+        for line_count, line in enumerate(infile, start=1):
+            try:
+                record = json.loads(line)
+                query = record.get("query")
+                result = record.get("result")
+
+                if not result or not isinstance(result, dict):
+                    raise ValueError("Missing or invalid 'result' in record.")
+
+                # Attach original query for retry context
+                result["original_query"] = query
+
+                federated = decompose_single_query(result)
+
+                output_record = {
+                    "query": query,
+                    "federated_query": federated
+                }
+
+                outfile.write(json.dumps(output_record) + "\n")
+
+            except Exception as e:
+                # Only essential error message
+                print(f"❌ Failed to process line {line_count}: {e}")
+
+
+
+// D:\Projects\NextMove\entities\config.py
+import os
+from dotenv import load_dotenv
+
+# Use absolute path to .env file
+dotenv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.env'))
+load_dotenv(dotenv_path=dotenv_path)
+
+# ---------------------------
+# Database 1 Credentials (Linkedin_source)
+# ---------------------------
+LINKEDIN_DB_HOST = os.getenv("LINKEDIN_DB_HOST")
+LINKEDIN_DB_USER = os.getenv("LINKEDIN_DB_USER")
+LINKEDIN_DB_PASSWORD = os.getenv("LINKEDIN_DB_PASSWORD")
+LINKEDIN_DB_NAME = os.getenv("LINKEDIN_DB_NAME")
+
+
+# ---------------------------
+# Database 2 Credentials (Naukri_source)
+# ---------------------------
+NAUKRI_DB_HOST = os.getenv("NAUKRI_DB_HOST")
+NAUKRI_DB_USER = os.getenv("NAUKRI_DB_USER")
+NAUKRI_DB_PASSWORD = os.getenv("NAUKRI_DB_PASSWORD")
+NAUKRI_DB_NAME = os.getenv("NAUKRI_DB_NAME")
+
+
+# ---------------------------
+# Global Schema: UnifiedJobPosting
+# ---------------------------
+GLOBAL_SCHEMA = {
+    "job_id": "TEXT",
+    "title": "TEXT",
+    "company_name": "TEXT",
+    "description": "TEXT",
+    "skills": "TEXT",
+    "experience_required": "TEXT",
+    "qualifications": "TEXT",
+    "location": "TEXT",
+    "country": "TEXT",
+    "work_type": "TEXT",
+    "salary_range": "TEXT",
+    "currency": "TEXT",
+    "job_posting_date": "DATETIME",
+    "role_category": "TEXT"
+}
+
+# ---------------------------
+# GAV Mappings (Global-As-View)
+# Map each global attribute to source-specific columns
+# ---------------------------
+GAV_MAPPINGS = {
+    "Linkedin_source": {
+        "job_id": "job_id",
+        "title": "title",
+        "company_name": "company_name",
+        "description": "description",
+        "skills": "skills_desc",
+        "experience_required": "formatted_experience_level",
+        "qualifications": None,  # Not available in source 1
+        "location": "location",
+        "country": None,  # Not available in source 1
+        "work_type": "formatted_work_type",
+        "salary_range": "normalized_salary",
+        "currency": "currency",
+        "job_posting_date": "listed_time",
+        "role_category": None
+    },
+    "Naukri_source": {
+        "job_id": "Job Id",
+        "title": "Job Title",
+        "company_name": "Company",
+        "description": "Job Description",
+        "skills": "skills",
+        "experience_required": "Experience",
+        "qualifications": "Qualifications",
+        "location": "location",
+        "country": "Country",
+        "work_type": "Work Type",
+        "salary_range": "Salary Range",
+        "currency": None,
+        "job_posting_date": "Job Posting Date",
+        "role_category": "Role"
+    }
+}
+
+# ---------------------------
+# Map source to actual DB table name
+# ---------------------------
+SOURCE_TO_TABLE = {
+    "Linkedin_source": "jobs",               
+    "Naukri_source": "job_listings"        
+}
+
+# ---------------------------
+# Map source to actual DB platform
+# ---------------------------
+SOURCE_TO_DB_Type = {
+    "GLOBAL_SCHEMA": "MySQL", 
+    "Linkedin_source": "MySQL",               
+    "Naukri_source": "MySQL"     
+}
+
+// D:\Projects\NextMove\constants\__init__.py
+import os
+
+# =========================================
+# 1. FILE PATHS & SYSTEM CONFIG
+# =========================================
+
+QUERY_INPUT_FILE_PATH = r"D:\Projects\NextMove\workspace_folder\input\natural_queries.txt"
+QUERY_ANALYZE_OUTPUT_FILE_PATH = r"D:\Projects\NextMove\workspace_folder\artifacts\query_analysis.jsonl"
+QUERY_DECOMPOSE_OUTPUT_FILE_PATH = r"D:\Projects\NextMove\workspace_folder\artifacts\query_decompose.jsonl"
+
+# --- HISTORY CONFIGURATION (Use Directory, not single file) ---
+HISTORY_DIR_PATH = r"D:\Projects\NextMove\workspace_folder\artifacts\history"
+HISTORY_LIMIT_K = 3  # Summarize context after every 3 turns
+
+DEFAULT_LIMIT = 10
+
+# =========================================
+# 2. GLOBAL SCHEMA
+# =========================================
+GLOBAL_SCHEMA = {
+    "title": "Job title (e.g. Software Engineer, Marketing Manager)",
+    "company_name": "Name of the hiring company",
+    "location": "City, State, Country, or 'Remote'",
+    "skills": "List of required technical or soft skills (e.g. Python, SQL)",
+    "salary_range": "Numeric salary or text range",
+    "work_type": "Employment type (e.g. Full-time, Contract, Remote)"
+}
+
+# =========================================
+# 3. LLM CONFIGURATION
+# =========================================
+LLM_GEMINI = "gemini"
+LLM_GROQ = "groq"
+
+CURRENT_LLM = LLM_GEMINI 
+# =========================================
+
+# =========================================
+# 4. GEMINI SPECIFIC PROMPTS
+# =========================================
+
+GEMINI_QUERY_ANALYZER_SYSTEM_PROMPT = """
+You are the Query Analyzer for the NextMove job search system.
+
+INPUT:
+- Context: Previous conversation summary
+- Query: Latest user message
+- Semantic Hints: Synonyms or related skills derived from a Knowledge Graph.
+
+TASKS:
+
+1. RESOLVE INTENT
+   - Merge Context + Query to form a standalone “user_intent” that preserves the user’s tone, purpose, and specifics. Put more weightage on current query.
+   - Replace pronouns (“there”, “that role”, “this city”) with explicit entities from Context.
+
+2. CLASSIFY & GENERATE
+   - If the intent (fully or partially) can be answered using the database (job listings, filters, salary, companies, locations):
+       → Generate structured_query and full SQL using the GLOBAL_SCHEMA.
+   - If any part of the intent cannot be answered from the database but is still job-related:
+       → Put that part into unstructured_query only if it is job or job search related otherwise NULL.
+   - If both conditions apply → generate both.
+   - Set `limit` from the user request if stated; otherwise use DEFAULT_LIMIT.
+   - Use the Semantic Hints to expand the search.
+   - **CRITICAL RULE**: If the Semantic Hints suggest a synonym (e.g., AI -> Artificial Intelligence), or an implicit skill (Data Scientist -> Python), you MUST include them in the SQL using `OR` logic and `LIKE` operators.
+   - Example: If user says "AI jobs" and hint says "AI implies Artificial Intelligence", generate:
+     `WHERE (title LIKE '%AI%' OR title LIKE '%Artificial Intelligence%')`
+   - ALWAYS use `LIKE '%term%'` for text columns (`title`, `company_name`, `location`, `skills`, `description`).
+   - NEVER use `=` for text columns unless searching for an exact ID or Code.
+
+3. **OUTPUT JSON:**
+   - `user_intent`: The fully resolved, standalone user request.
+   - `limit`: Integer (Default: {DEFAULT_LIMIT}).
+   - `structured_query`: {{ "select_clause": [...], "where_clause": {{...}} }}
+   - `sql_query`: Full Standard SQL string using Global Schema ({schema}). Use `LIMIT`.
+   - `unstructured_query`: Text question for the LLM job related only(or null).
+
+Global Schema Attributes: {schema}
+"""
+
+GEMINI_RESULT_SYNTHESIZER_SYSTEM_PROMPT = """
+You are a helpful assistant for the NextMove job search platform.
+
+Input JSON contains:
+- User Intent (main request)
+- Unstructured Query (optional general question)
+- Database Results (job listings, bypassed, or error)
+
+Rules:
+
+1. If Unstructured Query exists AND Database Results are empty or "Bypassed":
+   → Answer the question using your own general knowledge.
+
+2. If Database Results contain an error:
+   → Give a brief, polite apology for the technical issue only if the user wanted job listings otherwise only answer the unstructured query.
+
+3. If job listings are provided and relevant:
+   → Present them cleanly in this flexible format:
+
+      • Job Title
+        Company: <company name>
+        Location: <location>
+        Type: <full-time/part-time/remote> (optional)
+        Salary: <salary info> (optional)
+        Experience: <experience info> (optional)
+
+      (Only show fields that exist.)
+
+4. Always respond in a clear, helpful, conversational tone.
+5. Do NOT output JSON—only the final user-facing answer.
+6. If there is not no relevant information, respond politely that you couldn't find anything.
+7. if user is asking any irrelevant question to job search domain, politely refuse to answer.
+"""
+
+GEMINI_RETRY_SYSTEM_PROMPT = """
+System: SQL Fixer.
+Output: JSON {{ "corrected_sql": "SELECT ..." }}
+"""
+
+GEMINI_TRANSLATE_RETRY_SYSTEM_PROMPT = """
+System: SQL Translator Fixer.
+Output: JSON {{ "corrected_sql": "SELECT ..." }}
+"""
+
+GEMINI_SUMMARIZER_PROMPT = """
+You are a Conversation Summarizer. 
+Your goal is to condense the conversation history into a concise context summary.
+Input format: Current Summary + Recent Interaction.
+Output: Return ONLY the new updated summary text.
+"""
+
+# =========================================
+# 5. GROQ SPECIFIC PROMPTS
+# =========================================
+
+GROQ_QUERY_ANALYZER_SYSTEM_PROMPT = """
+You are the Query Analyzer for the NextMove job search system.
+
+INPUT:
+- Context: Previous conversation summary
+- Query: Latest user message
+
+TASKS:
+
+1. RESOLVE INTENT
+   - Merge Context + Query to form a standalone “user_intent” that preserves the user’s tone, purpose, and specifics. Put more weightage on current query.
+   - Replace pronouns (“there”, “that role”, “this city”) with explicit entities from Context.
+
+2. CLASSIFY & GENERATE
+   - If the intent (fully or partially) can be answered using the database (job listings, filters, salary, companies, locations):
+       → Generate structured_query and full SQL using the GLOBAL_SCHEMA.
+   - If any part of the intent cannot be answered from the database but is still job-related:
+       → Put that part into unstructured_query only if it is job or job search related otherwise NULL.
+   - If both conditions apply → generate both.
+   - Set `limit` from the user request if stated; otherwise use DEFAULT_LIMIT.
+   - ALWAYS use `LIKE '%term%'` for text columns (`title`, `company_name`, `location`, `skills`, `description`).
+   - NEVER use `=` for text columns unless searching for an exact ID or Code.
+
+3. **OUTPUT JSON:**
+   - `user_intent`: The fully resolved, standalone user request.
+   - `limit`: Integer (Default: {DEFAULT_LIMIT}).
+   - `structured_query`: {{ "select_clause": [...], "where_clause": {{...}} }}
+   - `sql_query`: Full Standard SQL string using Global Schema ({schema}). Use `LIMIT`.
+   - `unstructured_query`: Text question for the LLM job related only(or null).
+
+Global Schema Attributes: {schema}
+"""
+
+GROQ_RESULT_SYNTHESIZER_SYSTEM_PROMPT = """
+You are a helpful assistant for the NextMove job search platform.
+
+Input JSON contains:
+- User Intent (main request)
+- Unstructured Query (optional general question)
+- Database Results (job listings, bypassed, or error)
+
+Rules:
+
+1. If Unstructured Query exists AND Database Results are empty or "Bypassed":
+   → Answer the question using your own general knowledge.
+
+2. If Database Results contain an error:
+   → if the user wanted job listings Give a short, polite apology for the technical issue, otherwise only answer the unstructured query.
+
+3. If job listings are provided and relevant:
+   → Present them cleanly in this flexible format:
+
+      • Job Title
+        Company: <company name>
+        Location: <location>
+        Type: <full-time/part-time/remote> (optional)
+        Salary: <salary info> (optional)
+        Experience: <experience info> (optional)
+
+      (Only show fields that exist.)
+
+4. Always respond in a clear, helpful, conversational tone.
+5. Do NOT output JSON—only the final user-facing answer.
+6. If there is not no relevant information, respond politely that you couldn't find anything.
+7. if user is asking any irrelevant question to job search domain, politely refuse to answer.
+"""
+
+GROQ_RETRY_SYSTEM_PROMPT = """
+System: SQL Correction Mode.
+Task: Fix the invalid SQL query based on the error message.
+Output: JSON ONLY. Format: {{ "corrected_sql": "SELECT ..." }}
+"""
+
+GROQ_TRANSLATE_RETRY_SYSTEM_PROMPT = """
+System: SQL Translation Correction.
+Task: Adapt the Global SQL to the Local Schema based on the validation error.
+Output: JSON ONLY. Format: {{ "corrected_sql": "SELECT ..." }}
+"""
+
+GROQ_SUMMARIZER_PROMPT = """
+You are a Conversation Summarizer. 
+Your goal is to condense the conversation history into a concise context summary.
+Input format: Current Summary + Recent Interaction.
+Output: Return ONLY the new updated summary text.
+"""
+
+# =========================================
+# 6. PROMPT REGISTRY
+# =========================================
+
+# =========================================
+# 6. PROMPT REGISTRY
+# =========================================
+
+PROMPT_REGISTRY = {
+    LLM_GEMINI: {
+        "analyzer_system": GEMINI_QUERY_ANALYZER_SYSTEM_PROMPT,
+        "synthesizer_system": GEMINI_RESULT_SYNTHESIZER_SYSTEM_PROMPT,
+        "retry_global": GEMINI_RETRY_SYSTEM_PROMPT,
+        "retry_translation": GEMINI_TRANSLATE_RETRY_SYSTEM_PROMPT,
+        "summarizer": GEMINI_SUMMARIZER_PROMPT 
+    },
+    LLM_GROQ: {
+        "analyzer_system": GROQ_QUERY_ANALYZER_SYSTEM_PROMPT,
+        "synthesizer_system": GROQ_RESULT_SYNTHESIZER_SYSTEM_PROMPT,
+        "retry_global": GROQ_RETRY_SYSTEM_PROMPT,
+        "retry_translation": GROQ_TRANSLATE_RETRY_SYSTEM_PROMPT,
+        "summarizer": GROQ_SUMMARIZER_PROMPT 
+    }
+}
+
+def get_current_prompts():
+    if CURRENT_LLM not in PROMPT_REGISTRY:
+        # Fallback for safety
+        return PROMPT_REGISTRY[LLM_GEMINI]
+    return PROMPT_REGISTRY[CURRENT_LLM]
+
+CURRENT_PROMPTS = get_current_prompts()
+
+# Shared Human Prompts
+QUERY_ANALYZER_HUMAN_PROMPT = """Input: {user_query}\nOutput:"""
+RESULT_SYNTHESIZER_HUMAN_PROMPT = """Resolved Intent: {user_intent}\nUnstructured Query: {unstructured_query}\nDatabase Results:\n{database_results_json}\nAnswer:"""
+
+// D:\Projects\NextMove\components\LLM\llm_loader.py
+import os
+from dotenv import load_dotenv
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq 
+
+def load_llm(llm_name: str, temperature: float = 0.0):
+    """
+    Load and return a LangChain LLM instance (Gemini or Ollama/Groq)
+    based on the provided llm_name.
+    """
+
+    # Load .env from project root
+    root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
+    env_path = os.path.join(root_dir, ".env")
+    load_dotenv(env_path)
+
+    llm_name = llm_name.lower()
+
+    if "gemini" in llm_name:
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY not found in .env")
+
+        return ChatGoogleGenerativeAI(
+            model="gemini-2.5-flash",
+            temperature=temperature,
+            max_retries=2,
+            google_api_key=api_key,
+        )
+
+    elif "groq" in llm_name:
+        api_key = os.getenv("GROQ_API_KEY")
+        if not api_key:
+            raise ValueError("GROQ_API_KEY not found in .env")
+            
+        # UPDATED: Switched to Llama 3.3 70B (Versatile) as the previous model is decommissioned
+        return ChatGroq(
+            model="llama-3.3-70b-versatile", 
+            temperature=temperature,
+            max_retries=2,
+            api_key=api_key
+        )
+
+    else:
+        raise ValueError(f"Unsupported LLM name: {llm_name}")
+
+// D:\Projects\NextMove\components\history_manager\history_handler.py
+import json
+import os
+from langchain_core.messages import SystemMessage, HumanMessage
+from components.LLM.llm_loader import load_llm
+from constants import (
+    HISTORY_DIR_PATH, 
+    HISTORY_LIMIT_K, 
+    CURRENT_LLM, 
+    CURRENT_PROMPTS
+)
+
+# --- SAFETY LIMITS ---
+MAX_STORED_RESPONSE_LEN = 1500  # Max chars to save per AI response (prevents bloat)
+MAX_CONTEXT_CHARS = 6000        # Max characters allowed before forcing a summary (approx 1.5k tokens)
+
+class HistoryHandler:
+    def __init__(self, session_id: str = "default"):
+        self.session_id = session_id
+        self.file_path = os.path.join(HISTORY_DIR_PATH, f"chat_history_{session_id}.json")
+        self.limit = HISTORY_LIMIT_K
+        self.llm = load_llm(CURRENT_LLM, temperature=0.0)
+        self._load_history()
+
+    def _load_history(self):
+        """Loads history from JSON or initializes empty structure."""
+        if os.path.exists(self.file_path):
+            try:
+                with open(self.file_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    self.summary = data.get("summary", "")
+                    self.recent_turns = data.get("recent_turns", [])
+            except json.JSONDecodeError:
+                self._init_empty_history()
+        else:
+            self._init_empty_history()
+
+    def _init_empty_history(self):
+        self.summary = ""
+        self.recent_turns = []
+        self._save_history()
+
+    def _save_history(self):
+        """Persists current state to disk."""
+        os.makedirs(os.path.dirname(self.file_path), exist_ok=True)
+        data = {
+            "summary": self.summary,
+            "recent_turns": self.recent_turns
+        }
+        with open(self.file_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2)
+
+    def get_context_string(self) -> str:
+        """
+        Returns the formatted context.
+        **LOGIC CHECK (ii):** If context > MAX_CONTEXT_CHARS, force summary immediately.
+        """
+        # 1. Construct the raw context string
+        context_str = ""
+        if self.summary:
+            context_str += f"PREVIOUS SUMMARY: {self.summary}\n\n"
+        
+        if self.recent_turns:
+            turns_text = "\n".join([f"User: {t['user']}\nAI: {t['ai']}\n" for t in self.recent_turns])
+            context_str += f"RECENT INTERACTION LOG:\n{turns_text}"
+
+        # 2. CHECK LENGTH
+        if len(context_str) > MAX_CONTEXT_CHARS:
+            print(f"[History] Context length ({len(context_str)}) exceeds limit ({MAX_CONTEXT_CHARS}). Forcing summarization...")
+            self._summarize_and_prune() # <--- Consolidates history
+            
+            # Re-construct the string (It will now contain only the new Summary)
+            context_str = f"PREVIOUS SUMMARY: {self.summary}\n\n"
+        
+        return context_str
+
+    def add_interaction(self, user_query: str, ai_response: str):
+        """
+        Adds a turn and checks if K limit is reached.
+        """
+        # Safety: Truncate massive responses before storing
+        clean_response = ai_response
+        if len(ai_response) > MAX_STORED_RESPONSE_LEN:
+            keep = MAX_STORED_RESPONSE_LEN // 2
+            clean_response = ai_response[:keep] + "\n... [TRUNCATED] ...\n" + ai_response[-keep:]
+
+        self.recent_turns.append({
+            "user": user_query,
+            "ai": clean_response
+        })
+        
+        # **LOGIC CHECK (i):** Check Turn Count Limit
+        if len(self.recent_turns) >= self.limit:
+            print(f"[History] Turn limit {self.limit} reached. Summarizing...")
+            self._summarize_and_prune()
+        
+        self._save_history()
+
+    def _summarize_and_prune(self):
+        """
+        Uses LLM to merge (Summary + Recent Turns) -> (New Summary).
+        Clears Recent Turns.
+        """
+        system_prompt = CURRENT_PROMPTS["summarizer"]
+        
+        recent_text = "\n".join([f"User: {t['user']}\nAI: {t['ai']}" for t in self.recent_turns])
+        
+        human_input = (
+            f"Current Summary: {self.summary if self.summary else 'None'}\n\n"
+            f"Recent Interactions to merge:\n{recent_text}"
+        )
+
+        messages = [
+            SystemMessage(content=system_prompt),
+            HumanMessage(content=human_input)
+        ]
+
+        try:
+            response = self.llm.invoke(messages)
+            new_summary = response.content.strip()
+            
+            # Update State
+            self.summary = new_summary
+            self.recent_turns = [] # Clear buffer
+            
+            print(f"[History] Summary updated successfully.")
+            self._save_history() # Save immediately
+            
+        except Exception as e:
+            print(f"[Error] Failed to summarize history: {e}")
+
+// D:\Projects\NextMove\components\connectors\mysql_connector.py
+# D:\Projects\NextMove\components\connectors\mysql_connector.py
+
+import mysql.connector
+from mysql.connector import Error
+from typing import List, Dict, Any
+
+class MySQLConnector:
+    """
+    A MySQL connector class that supports connecting to
+    specific databases with provided credentials and a timeout.
+    """
+    def __init__(self, host, user, password, database, timeout=5):
+        self.host = host
+        self.user = user
+        self.password = password
+        self.database = database
+        self.port = 3306
+        self.timeout = timeout  # Connection timeout
+        self.connection = None
+        self.cursor = None
+
+    def connect(self):
+        """Establishes the database connection with a timeout."""
+        try:
+            self.connection = mysql.connector.connect(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                database=self.database,
+                port=self.port,
+                connection_timeout=self.timeout # Fail fast if DB is down
+            )
+            if self.connection.is_connected():
+                self.cursor = self.connection.cursor()
+        except Error as e:
+            print(f"[ERROR] Could not connect to {self.database}: {e}")
+            raise e
+
+    def disconnect(self):
+        """Closes the database connection."""
+        if self.connection and self.connection.is_connected():
+            self.cursor.close()
+            self.connection.close()
+
+    def execute_query_as_dict(self, query: str) -> List[Dict[str, Any]]:
+        """
+        Executes a query and returns the results as a list of dictionaries.
+        This is essential for JSON serialization and for the LLM.
+        """
+        if not self.connection or not self.cursor:
+            print("[ERROR] Not connected. Call connect() first.")
+            return []
+            
+        try:
+            self.cursor.execute(query)
+            rows = self.cursor.fetchall()
+            # Get column names from cursor description
+            columns = [col[0] for col in self.cursor.description]
+            
+            # Convert list of tuples to list of dicts
+            result_list = [dict(zip(columns, row)) for row in rows]
+            return result_list
+            
+        except Error as e:
+            print(f"[ERROR] Query failed: {e}\nQuery: {query}")
+            # Raise the exception so the pipeline can catch it
+            raise e
+
+    def execute_query(self, query: str):
+        """Executes a query and returns raw tuples."""
+        if not self.connection or not self.cursor:
+            print("[ERROR] Not connected. Call connect() first.")
+            return []
+        
+        try:
+            self.cursor.execute(query)
+            rows = self.cursor.fetchall()
+            return rows
+        except Error as e:
+            print(f"[ERROR] Query failed: {e}\nQuery: {query}")
+            raise e
+
+// D:\Projects\NextMove\components\analyzer_and_decomposer\query_analyzer.py
+# components/analyzer_and_decomposer/query_analyzer.py
+from langchain_core.prompts import ChatPromptTemplate
+from ..LLM.llm_loader import load_llm
+from constants import CURRENT_LLM, CURRENT_PROMPTS, DEFAULT_LIMIT, GLOBAL_SCHEMA
+# --- NEW IMPORT ---
+from components.matcher.term_normalizer import TermNormalizer 
+import json
+
+# Load current LLM
+llm = load_llm(CURRENT_LLM)
+# Initialize Normalizer
+normalizer = TermNormalizer()
+
+def parse_llm_json_response(llm_response: str) -> dict:
+    # ... (Keep existing logic unchanged) ...
+    raw_content = llm_response.content.strip() if hasattr(llm_response, 'content') else str(llm_response).strip()
+    if raw_content.startswith("```") and raw_content.endswith("```"):
+        lines = raw_content.splitlines()
+        if lines[0].startswith("```"): lines = lines[1:]
+        if lines[-1].startswith("```"): lines = lines[:-1]
+        raw_content = "\n".join(lines).strip()
+    try:
+        result_json = json.loads(raw_content)
+    except json.JSONDecodeError:
+        try:
+            start = raw_content.find('{')
+            end = raw_content.rfind('}') + 1
+            if start != -1 and end != -1:
+                result_json = json.loads(raw_content[start:end])
+            else: raise ValueError("No JSON found")
+        except:
+            raise ValueError(f"Failed to parse JSON: {raw_content}")
+    return result_json
+
+def query_analyze(natural_query: str, chat_history_context: str = ""):
+    """
+    Analyzes the query with semantic expansion.
+    """
+    # Get system prompt
+    system_prompt = CURRENT_PROMPTS["analyzer_system"]
+    
+    # --- SEMANTIC EXPANSION ---
+    # Get hints from the graph (Offline Brain)
+    semantic_hints = normalizer.expand_query(natural_query)
+    
+    # --- CONTEXT INJECTION ---
+    # Combine History + Semantic Hints + User Query
+    full_human_input = (
+        f"=== PREVIOUS CONVERSATION CONTEXT ===\n{chat_history_context}\n" if chat_history_context else ""
+    )
+    
+    full_human_input += (
+        f"{semantic_hints}\n"
+        f"=====================================\n"
+        f"LATEST USER QUERY: {natural_query}\n"
+    )
+
+    # Debug print to see what LLM receives
+    print(f"[QueryAnalyzer] Context Injected:\n{semantic_hints}")
+
+    # Create prompt
+    chat_prompt = ChatPromptTemplate.from_messages([
+        ("system", system_prompt),
+        ("human", "{input_content}"),
+    ])
+
+    # Fill variables
+    prompt = chat_prompt.invoke({
+        "DEFAULT_LIMIT": DEFAULT_LIMIT,
+        "schema": ", ".join(GLOBAL_SCHEMA.keys()),
+        "input_content": full_human_input 
+    })
+
+    # Invoke LLM
+    response = llm.invoke(prompt.messages)
+    result_json = parse_llm_json_response(response)
+    
+    if result_json and "user_intent" not in result_json:
+        result_json["user_intent"] = natural_query
+
+    return result_json
+
+// D:\Projects\NextMove\components\analyzer_and_decomposer\query_decomposer.py
+import pprint
+from entities.config import GAV_MAPPINGS, SOURCE_TO_TABLE, SOURCE_TO_DB_Type, GLOBAL_SCHEMA
+from components.validator.SQLValidatorWrapper import FederatedSQLValidator
+from components.translator.MySQL_translator import SQLTranslator
+from components.LLM.query_retry_handler import QueryRetryHandler
+
+def prepare_federated_queries(
+    analyzed_result: dict,
+    max_retries: int = 3,
+    use_llm_retry: bool = True
+) -> dict:
+    """
+    Take analyzer result → validate global SQL → retry if invalid → translate to sources → retry if invalid.
+    Returns structured queries, global_sql, and unstructured query.
+    """
+
+    unstructured_query = analyzed_result.get("unstructured_query", "")
+    global_sql_query = analyzed_result.get("sql_query", "")
+    original_query = analyzed_result.get("original_query", "")
+
+    if not global_sql_query:
+        raise ValueError("Query Analyzer did not return a SQL query.")
+
+    # Initialize validator & retry handler
+    validator = FederatedSQLValidator()
+    retry_handler = QueryRetryHandler(max_retries=max_retries) if use_llm_retry else None
+
+    # Validate & retry global SQL
+    global_sql_valid = False
+    attempt = 0
+    while attempt < max_retries and not global_sql_valid:
+        validation_result = validator.validate_query(global_sql_query, source_name="GLOBAL_SCHEMA")
+        global_sql_valid = validation_result.get("is_valid", False)
+
+        if global_sql_valid:
+            break
+
+        if not use_llm_retry:
+            break
+
+        # Retry via LLM
+        global_sql_query = retry_handler.retry_global_sql(
+            natural_query=original_query,
+            previous_sql=global_sql_query,
+            validation_errors=validation_result.get("errors", [])
+        )
+        attempt += 1
+
+    # Translate and validate per source
+    structured_queries = {}
+    
+    # 
+    for source in GAV_MAPPINGS.keys():
+        db_type = SOURCE_TO_DB_Type.get(source, "MySQL")
+        dialect = "mysql" if db_type.lower() == "mysql" else "postgres"
+        
+        # Fetch correct target table name from config
+        target_table_name = SOURCE_TO_TABLE.get(source)
+        
+        # [Fix] Added debug print to confirm table selection
+        print(f"[DEBUG] Source: {source} -> Target Table: {target_table_name}")
+
+        if not target_table_name:
+            print(f"[WARN] No table mapping found for source {source}. Defaulting to 'jobs'.")
+            target_table_name = "jobs"
+
+        # 
+        # Initialize translator with the correct target table
+        translator = SQLTranslator(
+            source=source,
+            target_table_name=target_table_name, 
+            dialect=dialect
+        )
+
+        translated_query = translator.translate_query(global_sql_query)
+        attempt = 0
+        valid_translation = False
+        while attempt < max_retries and not valid_translation:
+            source_validation = validator.validate_query(translated_query, source_name=source)
+            valid_translation = source_validation.get("is_valid", False)
+
+            if valid_translation:
+                break
+
+            if not use_llm_retry:
+                break
+
+            local_schema = validator.get_source_schema(source)
+            translated_query = retry_handler.retry_translation(
+                global_sql=global_sql_query,
+                source_name=source,
+                db_type=db_type,
+                previous_translation=translated_query,
+                local_schema=local_schema,
+                validation_errors=source_validation.get("errors", [])
+            )
+            attempt += 1
+
+        structured_queries[source] = translated_query
+
+    # Return simplified JSON
+    return {
+        "structured": structured_queries,
+        "unstructured": unstructured_query,
+        "global_sql": global_sql_query
+    }
+
+// D:\Projects\NextMove\scripts\build_knowledge_base.py
+import json
+import os
+import networkx as nx
+import pandas as pd
+import faiss
+import numpy as np
+from sentence_transformers import SentenceTransformer
+
+# --- CONFIGURATION ---
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+WORKSPACE_DIR = os.path.join(BASE_DIR, 'workspace_folder')
+INPUT_DIR = os.path.join(WORKSPACE_DIR, 'input')
+ARTIFACTS_DIR = os.path.join(WORKSPACE_DIR, 'artifacts')
+
+ONTOLOGY_PATH = os.path.join(ARTIFACTS_DIR, 'ontology.json')
+INDEX_PATH = os.path.join(ARTIFACTS_DIR, 'skills.index')
+
+# Input Files
+FILE_ROLES = os.path.join(INPUT_DIR, 'roles.csv')
+FILE_SKILLS = os.path.join(INPUT_DIR, 'skills.csv')
+FILE_LOCATIONS = os.path.join(INPUT_DIR, 'locations.csv')
+FILE_COMPANIES = os.path.join(INPUT_DIR, 'companies.csv')
+
+def load_data_source():
+    terms_metadata = {} # Maps term -> type (e.g. "Java": "skill")
+    all_terms = []
+    synonyms_map = {}
+    graph_edges = []
+
+    # --- HELPER: Generic CSV Loader ---
+    def process_file(filepath, main_col, type_label, syn_col=None):
+        if not os.path.exists(filepath):
+            print(f"[WARN] Missing {filepath}")
+            return
+        
+        try:
+            df = pd.read_csv(filepath, on_bad_lines='skip')
+            if main_col not in df.columns: return
+            
+            for _, row in df.iterrows():
+                main_term = str(row[main_col]).strip()
+                all_terms.append(main_term)
+                terms_metadata[main_term] = type_label
+                
+                # Handle Synonyms
+                if syn_col and syn_col in row and pd.notna(row[syn_col]):
+                    for syn in str(row[syn_col]).split('|'):
+                        clean_syn = syn.strip()
+                        if clean_syn:
+                            synonyms_map[clean_syn.lower()] = main_term
+                            
+                # Handle Roles <-> Skills Graph Edges (Specific to roles.csv)
+                if type_label == 'role' and 'Skills' in row and pd.notna(row['Skills']):
+                    for s in str(row['Skills']).split('|'):
+                        s_clean = s.strip()
+                        if s_clean:
+                            graph_edges.append((main_term, s_clean))
+                            
+        except Exception as e:
+            print(f"[ERROR] Failed to process {filepath}: {e}")
+
+    # --- LOAD ALL DATA ---
+    print(f"[INFO] Loading Data from {INPUT_DIR}...")
+    process_file(FILE_ROLES, 'Role', 'role', 'Synonyms')
+    process_file(FILE_SKILLS, 'Skill', 'skill', 'Synonyms')
+    process_file(FILE_LOCATIONS, 'Location', 'location', 'Synonyms')
+    process_file(FILE_COMPANIES, 'Company', 'company', 'Synonyms')
+
+    # Fallback for Indian Context if empty
+    if not all_terms:
+        return generate_synthetic_data()
+
+    return all_terms, terms_metadata, synonyms_map, graph_edges
+
+def generate_synthetic_data():
+    """Fallback with Indian Context + Locations"""
+    print("[INFO] Generating Synthetic Data...")
+    terms = ["Data Scientist", "Python", "Bengaluru", "Mumbai", "Google", "TCS", "Fresher", "SDE-1"]
+    metadata = {
+        "Data Scientist": "role", "Python": "skill", 
+        "Bengaluru": "location", "Mumbai": "location",
+        "Google": "company", "TCS": "company"
+    }
+    synonyms = {"blr": "Bengaluru", "bombay": "Mumbai", "ml": "Machine Learning"}
+    edges = [("Data Scientist", "Python")]
+    return terms, metadata, synonyms, edges
+
+def build_knowledge_base():
+    os.makedirs(ARTIFACTS_DIR, exist_ok=True)
+    
+    all_terms, terms_metadata, synonyms, edges = load_data_source()
+    
+    if not all_terms:
+        print("[ERROR] No terms found.")
+        return
+
+    print(f"[INFO] Indexing {len(all_terms)} terms...")
+
+    # 1. Build Vector Index
+    model = SentenceTransformer('all-MiniLM-L6-v2')
+    embeddings = model.encode(all_terms, show_progress_bar=True)
+    index = faiss.IndexFlatL2(embeddings.shape[1])
+    index.add(embeddings)
+    faiss.write_index(index, INDEX_PATH)
+    
+    # 2. Build Graph
+    G = nx.Graph()
+    for u, v in edges:
+        G.add_edge(u, v)
+    
+    # 3. Save Metadata
+    metadata = {
+        "terms": all_terms, 
+        "term_types": terms_metadata, # Stores if "Python" is a skill or company
+        "graph_neighbors": {n: list(G.neighbors(n)) for n in G.nodes()},
+        "synonyms": synonyms
+    }
+    
+    with open(ONTOLOGY_PATH, 'w') as f:
+        json.dump(metadata, f, indent=2)
+        
+    print(f"[SUCCESS] Knowledge Base Built. Graph Nodes: {G.number_of_nodes()}")
+
+if __name__ == "__main__":
+    build_knowledge_base()
+
+// D:\Projects\NextMove\components\synthesizer\integration.py
+# D:\Projects\NextMove\components\synthesizer\integration.py
+
+import difflib
+import re
+import random
+from datetime import datetime
+from typing import List, Dict, Any
+from components.matcher.term_normalizer import TermNormalizer
+from entities.config import GAV_MAPPINGS
+
+class ResultIntegrator:
+    def __init__(self, threshold: float = 0.85):
+        self.threshold = threshold
+        self.normalizer = TermNormalizer()
+        
+        # --- SCORING WEIGHTS ---
+        self.WEIGHT_COMPANY_MATCH = 4.0  
+        self.WEIGHT_TITLE_MATCH = 3.0
+        self.WEIGHT_SKILL_MATCH = 2.0
+        self.WEIGHT_DESC_MATCH = 1.0
+        self.WEIGHT_LOCATION_MATCH = 2.0
+        self.WEIGHT_RECENCY = 2.5
+        self.WEIGHT_SEMANTIC_BONUS = 0.5
+
+        # Stopwords
+        self.STOPWORDS = {
+            "are", "there", "any", "jobs", "available", "at", "in", "for", 
+            "opening", "role", "position", "work", "vacancy", "hiring", "job", 
+            "give", "show", "me", "list", "find"
+        }
+
+    # ==========================================
+    # 0. NORMALIZATION & CLEANING
+    # ==========================================
+    def _standardize_job(self, raw_job: Dict, source: str) -> Dict:
+        """Maps source keys to Global Schema keys."""
+        standardized_job = {}
+        mapping = GAV_MAPPINGS.get(source, {})
+
+        for global_key, local_key in mapping.items():
+            # 1. Try mapped key
+            if local_key and local_key in raw_job:
+                standardized_job[global_key] = raw_job[local_key]
+            # 2. Try direct key match (e.g., from SQL aliases)
+            elif global_key in raw_job:
+                standardized_job[global_key] = raw_job[global_key]
+            else:
+                standardized_job[global_key] = None
+
+        standardized_job['_source'] = source
+        return standardized_job
+
+    def _prune_job(self, job: Dict) -> Dict:
+        """
+        Final cleanup: 
+        - Removes keys with None/Empty values (Optimization).
+        - [MODIFIED] KEEPS internal scoring keys for debugging.
+        """
+        pruned = {}
+        for k, v in job.items():
+            # --- DEBUG MODIFICATION START ---
+            # We comment this out so we can see the ranking score in the UI
+            # if k.startswith("_relevance"):
+            #    continue
+            # --- DEBUG MODIFICATION END ---
+            
+            # Remove empty data
+            if v is None or v == "" or str(v).lower() == "null":
+                continue
+                
+            pruned[k] = v
+        return pruned
+
+    # ==========================================
+    # 1. DEDUPLICATION UTILS
+    # ==========================================
+    def _normalize_text(self, text: Any) -> str:
+        if not text: return ""
+        return str(text).lower().strip()
+
+    def _normalize_company(self, text: Any) -> str:
+        s = self._normalize_text(text)
+        s = re.sub(r'\b(pvt|ltd|inc|corp|llc|private|limited)\b', '', s)
+        return s.strip()
+
+    def _is_synonym(self, term_a: str, term_b: str) -> bool:
+        if self.normalizer.synonyms.get(term_a) == term_b: return True
+        if self.normalizer.synonyms.get(term_b) == term_a: return True
+        return False
+
+    def _is_match(self, job_a: Dict, job_b: Dict) -> bool:
+        """Determines if two jobs are the same entity."""
+        title_a = self._normalize_text(job_a.get('title'))
+        title_b = self._normalize_text(job_b.get('title'))
+        comp_a = self._normalize_company(job_a.get('company_name'))
+        comp_b = self._normalize_company(job_b.get('company_name'))
+
+        if not comp_a or not comp_b: return False
+        
+        # Blocking on Company Name
+        if comp_a == comp_b:
+            comp_sim = 1.0
+        else:
+            comp_sim = difflib.SequenceMatcher(None, comp_a, comp_b).ratio()
+        
+        if comp_sim < 0.85: return False
+
+        # Matching on Title
+        if title_a == title_b: return True
+        if self._is_synonym(title_a, title_b): return True
+
+        title_sim = difflib.SequenceMatcher(None, title_a, title_b).ratio()
+        return title_sim >= self.threshold
+
+    def _merge_jobs(self, existing_job: Dict, new_job: Dict) -> Dict:
+        """Merges attributes to create a Golden Record."""
+        merged = existing_job.copy()
+        
+        # Merge strategy: Prefer existing non-empty values, else take new
+        fields = [
+            'salary_range', 'skills', 'description', 'location', 
+            'job_posting_date', 'experience_required', 'work_type'
+        ]
+
+        for field in fields:
+            val_exist = str(existing_job.get(field, '') or '')
+            val_new = str(new_job.get(field, '') or '')
+
+            if (not val_exist or val_exist.lower() == 'none') and (val_new and val_new.lower() != 'none'):
+                merged[field] = new_job[field]
+            elif len(val_new) > len(val_exist):
+                merged[field] = new_job[field]
+
+        # Merge Source Tag
+        if '_source' in existing_job and '_source' in new_job:
+            if new_job['_source'] not in existing_job['_source']:
+                merged['_source'] = f"{existing_job['_source']}, {new_job['_source']}"
+        
+        return merged
+
+    # ==========================================
+    # 2. RANKING LOGIC
+    # ==========================================
+    def _calculate_date_score(self, date_val: Any) -> float:
+        if not date_val or str(date_val).lower() == 'none': return 0.0
+        try:
+            date_obj = None
+            if isinstance(date_val, datetime):
+                date_obj = date_val
+            elif isinstance(date_val, str):
+                date_str = date_val.replace("Z", "").split(".")[0]
+                if "T" in date_str: 
+                    date_obj = datetime.fromisoformat(date_str)
+                else: 
+                    try:
+                        date_obj = datetime.strptime(date_str[:10], "%Y-%m-%d")
+                    except:
+                        return 0.5 
+
+            if date_obj:
+                if date_obj.tzinfo: date_obj = date_obj.replace(tzinfo=None)
+                days_old = (datetime.now() - date_obj).days
+                if days_old < 0: days_old = 0
+                return 1.0 / (days_old + 1)
+                
+            return 0.5
+        except Exception:
+            return 0.5
+
+    def _calculate_context_score(self, text: Any, direct_keywords: List[str], semantic_neighbors: List[str]) -> float:
+        if not text: return 0.0
+        text_lower = str(text).lower()
+        score = 0.0
+        
+        for kw in direct_keywords:
+            matches = len(re.findall(r'\b' + re.escape(kw) + r'\b', text_lower))
+            score += min(matches, 3) * 1.0 
+        
+        for neighbor in semantic_neighbors:
+            if re.search(r'\b' + re.escape(neighbor) + r'\b', text_lower):
+                score += self.WEIGHT_SEMANTIC_BONUS
+        return score
+
+    def _score_job(self, job: Dict, direct_keywords: List[str], semantic_neighbors: List[str]) -> float:
+        # 1. Keyword Matching
+        s_company = self._calculate_context_score(job.get('company_name'), direct_keywords, semantic_neighbors)
+        s_title = self._calculate_context_score(job.get('title'), direct_keywords, semantic_neighbors)
+        s_skills = self._calculate_context_score(job.get('skills'), direct_keywords, semantic_neighbors)
+        s_desc = self._calculate_context_score(job.get('description'), direct_keywords, semantic_neighbors)
+        s_loc = self._calculate_context_score(job.get('location'), direct_keywords, semantic_neighbors)
+
+        semantic_score = (
+            (s_company * self.WEIGHT_COMPANY_MATCH) +
+            (s_title * self.WEIGHT_TITLE_MATCH) +
+            (s_skills * self.WEIGHT_SKILL_MATCH) +
+            (s_desc * self.WEIGHT_DESC_MATCH) +
+            (s_loc * self.WEIGHT_LOCATION_MATCH)
+        )
+
+        # 2. Recency
+        recency_score = self._calculate_date_score(job.get('job_posting_date'))
+        
+        # 3. Completeness
+        completeness = 0.0
+        if job.get('salary_range'): completeness += 0.2
+        if job.get('work_type'): completeness += 0.1
+
+        total = semantic_score + (recency_score * self.WEIGHT_RECENCY) + completeness
+        return total + random.uniform(0, 0.01)
+
+    def _get_semantic_expansion(self, user_intent: str) -> tuple[List[str], List[str]]:
+        raw_words = re.findall(r'\w+', user_intent.lower())
+        direct_keywords = []
+        neighbors = set()
+
+        for word in raw_words:
+            if word in self.STOPWORDS or len(word) < 2: continue
+            direct_keywords.append(word)
+            if word in self.normalizer.synonyms:
+                neighbors.add(self.normalizer.synonyms[word])
+            
+            word_cap = word.title()
+            if word_cap in self.normalizer.graph_neighbors:
+                related_terms = self.normalizer.graph_neighbors[word_cap]
+                for term in related_terms[:3]:
+                    neighbors.add(term.lower())
+
+        return direct_keywords, list(neighbors)
+
+    # ==========================================
+    # MAIN ENTRY POINT
+    # ==========================================
+    def integrate_and_rank(self, results_dict: Dict[str, List[Dict]], user_intent: str, limit: int = 10) -> List[Dict]:
+        direct_keywords, semantic_neighbors = self._get_semantic_expansion(user_intent)
+        
+        seen_jobs = [] 
+
+        # Step 1: Standardize & Deduplicate
+        for source, jobs in results_dict.items():
+            if not isinstance(jobs, list): continue
+            
+            for raw_job in jobs:
+                if not isinstance(raw_job, dict): continue
+                
+                # 1. Standardize Keys
+                std_job = self._standardize_job(raw_job, source)
+                
+                # 2. Deduplicate
+                is_duplicate = False
+                for i, existing_job in enumerate(seen_jobs):
+                    if self._is_match(std_job, existing_job):
+                        seen_jobs[i] = self._merge_jobs(existing_job, std_job)
+                        is_duplicate = True
+                        break
+                
+                if not is_duplicate:
+                    seen_jobs.append(std_job)
+
+        # Step 2: Rank
+        for job in seen_jobs:
+            relevance = self._score_job(job, direct_keywords, semantic_neighbors)
+            job['_relevance_score'] = round(relevance, 3)
+
+        # Sort desc
+        seen_jobs.sort(key=lambda x: x['_relevance_score'], reverse=True)
+
+        # Step 3: Prune & Limit (Clean up for LLM)
+        final_jobs = []
+        for job in seen_jobs[:limit]:
+            final_jobs.append(self._prune_job(job))
+
+        return final_jobs
+
