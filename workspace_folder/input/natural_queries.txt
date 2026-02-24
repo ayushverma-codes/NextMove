@@ -1,5 +1,0 @@
-Find jobs in San Francisco with a minimum salary of $100,000.
-What does a DevOps Engineer typically do?
-Find remote jobs in data science that pay at least $120,000, offer stock options and flexible hours, and explain what a 'Data Scientist II' typically works on.
-List nursing jobs in Chicago that include health insurance, require a CPR certification, and briefly describe what a registered nurse does in an ICU
-Find remote entry-level jobs that require Python, SQL, and Tableau, and describe what a data analyst typically does at the beginning of their career.
