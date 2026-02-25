@@ -118,6 +118,8 @@ Desktop.ini
 
 # folderx
 workspace_folder/dataset/*.csv
+.pytest_cache/
+artifacts/
 
 # template.sh
 template.sh
